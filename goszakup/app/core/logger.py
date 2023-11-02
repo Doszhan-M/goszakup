@@ -57,8 +57,8 @@ class CustomLogger:
 
         handlers = [
             self._color_stream_handler(),
-            # self._common_file_handler(),
-            # self._error_file_handler(),
+            self._common_file_handler(),
+            self._error_file_handler(),
         ]
         logging.basicConfig(handlers=handlers, level=logging.INFO)
         for _log in [

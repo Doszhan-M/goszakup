@@ -28,7 +28,7 @@
     <link href="/fonts/fontawesome/css/all.min.css?1614940675" rel="stylesheet">
     <link href="/css/style.css?1683873049" rel="stylesheet">
     <link href='https://v3bl.goszakup.gov.kz/css/datepicker.css?1614940675' rel='stylesheet'>
-<link href='https://v3bl.goszakup.gov.kz/css/favorites.css?1614940675' rel='stylesheet'>
+<link href='https://v3bl.goszakup.gov.kz/css/countdownplug/jquery.countdown.css?1614940675' rel='stylesheet'>
 
     <script src="/js/jquery.js?1614940675"></script>
     <script src="/js/bootstrap.min.js?1614940675"></script>
@@ -38,19 +38,22 @@
     <script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/bootstrap.datepicker.js?1614940675' charset='utf-8'></script>
 <script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/bootstrap-datepicker.ru.js?1614940675' charset='utf-8'></script>
 <script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/helpers.js?1619609435' charset='utf-8'></script>
-<script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/favorites.js?1614940675' charset='utf-8'></script>
+<script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/announce.js?1652783084' charset='utf-8'></script>
+<script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/countdownplug/jquery.plugin.js?1614940675' charset='utf-8'></script>
+<script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/countdownplug/jquery.countdown.js?1614940675' charset='utf-8'></script>
+<script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/countdownplug/jquery.countdown-ru.js?1614940675' charset='utf-8'></script>
 
     <script>
             var user_id = 82608;
             window.lang_key = "ru";
-            window.current_controller_url = "https://v3bl.goszakup.gov.kz/ru/favorites";
+            window.current_controller_url = "https://v3bl.goszakup.gov.kz/ru/announce";
             
             window.current_directory = "";
-            window.current_controller = "favorites";
+            window.current_controller = "announce";
             window.current_method = "index";
 
-            window.url_params = [];
-            ; var lang = 'ru'; var controller = 'favorites';    </script>
+            window.url_params = ["10952784"];
+            ; var lang = 'ru'; var controller = 'announce'; var announce_id = 10952784;    </script>
 </head>
 <body>
 
@@ -71,8 +74,8 @@
             <div id="main-nav" class="navbar-collapse collapse">
                                 <ul class="nav navbar-nav"><li><a href="https://goszakup.gov.kz">Главная</a></li><li><a href="https://wiki.goszakup.gov.kz/">Справка</a></li><li class="dropdown"><a data-id="181" href="#" class="dropdown-toggle" data-toggle="dropdown">Реестры <b class="caret"></b> </a><ul class='dropdown-menu'><li><a href="https://v3bl.goszakup.gov.kz/ru/complaint/reestrcomplaint">Реестр жалоб</a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/careless/reestr">Реестр недобросовестных участников ГЗ</a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/register/dataWorkPerformed">Электронный депозитарий</a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/careless/reestr/index_quasi">Реестр недобросовестных участников закупок</a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/register/supplierreg">Реестр участников ГЗ </a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/register/plansreg">Планы ГЗ</a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/egzcontract/cpublic">Реестр договоров</a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/rqc/registry">Реестр квалифицированных поставщиков</a></li></ul></li><li class="dropdown"><a data-id="66" href="#" class="dropdown-toggle" data-toggle="dropdown">Закупки <b class="caret"></b> </a><ul class='dropdown-menu'><li><a href="https://v3bl.goszakup.gov.kz/ru/search/lots">Поиск лотов</a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/searchanno">Поиск объявлений</a></li></ul></li></ul>
                 <ul class="nav navbar-nav navbar-right">
-                <li><a href="https://v3bl.goszakup.gov.kz/kz/favorites">Қаз</a></li>
-                <li><a href="https://v3bl.goszakup.gov.kz/ru/favorites">Рус</a></li>
+                <li><a href="https://v3bl.goszakup.gov.kz/kz/announce/index/10952784">Қаз</a></li>
+                <li><a href="https://v3bl.goszakup.gov.kz/ru/announce/index/10952784">Рус</a></li>
               
                     <li class='dropdown'>
                     <a href='#' class='dropdown-toggle' data-toggle='dropdown'>
@@ -132,57 +135,269 @@
         
         <div id="loading" class="alert alert-info" style="display: none">Подождите, идет загрузка данных</div>
         
-        <div class="content-block">
-<div class="panel panel-default a-visited ">
-    <div class="panel-heading">
-        <h4>Избранное</h4>
-    </div>
-    <table class="table table-bordered">
-        <tr>
-            <th>№</th>
-            <th>Организатор</th>
-            <th>Название объявления</th>
-            <th>Способ закупки</th>
-            <th>Вид предмета закупки</th>
-            <th>Дата начала приема заявок</th>
-            <th>Дата окончания приема заявок</th>
-            <th>Кол-во лотов</th>
-            <th>Сумма объявления</th>
-            <th>Статус</th>
-        </tr>
-                                    <tr class="tr-favorite" id="tr_10779277">
-                    <td nowrap="nowrap">10779277-1</td>
-                    <td>Республиканское государственное учреждение "Республиканская средняя специализированная музыкальная школа-интернат для одаренных детей имени Куляш Байсеитовой" Министерства культуры и информации Республики Казахстан</td>
-                    <td class="trd-name">
-                        <a href="/ru/announce/index/10779277" target="_blank" rel="noopener noreferrer">
-                            <div>Приобретение продуктов питания для школы интернат </div>
-                            <div>Мектеп интернат үшін азық-түлік сатып алу</div>
-                        </a>
-                                                    <span class="glyphicon glyphicon-bookmark favorite active" data-id="10779277" title="Удалить из избранного"></span>
-                                            </td>
-                    <td>Конкурс по приобретению товаров, связанных с обеспечением питания воспитанников и обучающихся</td>
-                    <td>Товар</td>
-                    <td>2023-10-09 14:28:17</td>
-                    <td>2023-10-25 14:28:17</td>
-                    <td>62</td>
-                    <td nowrap="nowrap">10 094 168.33</td>
-                    <td>Рассмотрение заявок</td>
-                </tr>
-                            </table>
-</div>
-
-
-<script type="text/javascript">
-    $(function(){
-        $('.favorite').on('click', function(){
-            var id = $(this).data('id');
-            $.get('/ru/favorites/fav/', {action: "delete", id: id}, function(){
-                $('#tr_'+id).remove();
-            });
-        });
+        <div class="content-block"><script>
+    $(function () {
+        var newYear = new Date('2023/11/10 09:00:02');
+        $('#asNeeded').countdown({until: newYear, layout: '{dn} {dl}, {hn} {hl}, {mn} {ml}, {sn} {sl}', serverSync: function () {return new Date('2023/11/02 21:48:41');}});
     });
 </script>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+                            <h4 style="text-align: center">Просмотр объявления № 10952784-1</h4>
+                    </div>
+    </div>
+    <div class="panel-body">
+        <div class="alert alert-danger" role="alert" id="errors" style="display: none;"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Номер объявления</label>
+
+                    <div class="col-sm-7">
+                        <input type='text' class="form-control" value="10952784-1" readonly/>
+                    </div>
+                </div>
+                <br/> &nbsp;
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Наименование объявления</label>
+
+                    <div class="col-sm-7">
+                        <input type='text' class="form-control" value="Приобретение бухгалтерский сейф"
+                               readonly/>
+                    </div>
+                </div>
+                <br/> &nbsp;
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Статус объявления</label>
+
+                    <div class="col-sm-7">
+                        <input type='text' class="form-control" value="Опубликовано" readonly/>
+                    </div>
+                </div>
+                <br/> &nbsp;
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Дата публикации объявления</label>
+
+                    <div class="col-sm-7">
+                        <input type='text' class="form-control" value="2023-11-02 21:39:48" readonly/>
+                    </div>
+                </div>
+                <br/> &nbsp;
+            </div>
+            <div class="col-md-6">
+                                <div class="form-group">
+                    <label class="col-sm-4 control-label">Срок начала приема заявок</label>
+                    <div class="col-sm-7">
+                        <input type='text' class="form-control" value="2023-11-03 09:00:00" readonly/>
+                    </div>
+                </div>
+                <br/> &nbsp;
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Срок окончания приема заявок</label>
+                    <div class="col-sm-7">
+                        <input type='text' class="form-control" value="2023-11-10 09:00:02" readonly/>
+                    </div>
+                </div>
+                <br/>&nbsp;
+                                                                            </div>
+                    </div>
+    </div>
 </div>
+
+
+
+
+<div class="modal fade" id="startModal" tabindex="-1" role="dialog" aria-labelledby="startModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="startModalLabel">Возобновление закупки</h4>
+            </div>
+            <div class="modal-body">
+                <form id="formData">
+                    <div class="form-group text-center">
+                        Вы действительно хотите продолжить закупку?                        <input type="hidden" name="id_record" value="" id="id_record">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm"
+                        data-dismiss="modal">Нет</button>
+                <a href="https://v3bl.goszakup.gov.kz/ru/announce_start/index/10952784"
+                   class="btn btn-primary btn-sm">Да</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="suspendModal" tabindex="-1" role="dialog" aria-labelledby="suspendModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="suspendModalLabel">Приостановка закупки</h4>
+            </div>
+            <div class="modal-body">
+                <form id="formData">
+                    <div class="form-group text-center">
+                        Вы действительно хотите произвести приостановку закупки?                        <input type="hidden" name="id_record" value="" id="id_record">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm"
+                        data-dismiss="modal">Нет</button>
+                <a href="https://v3bl.goszakup.gov.kz/ru/announce_suspend/index/10952784"
+                   class="btn btn-primary btn-sm">Да</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="canceledModal" tabindex="-1" role="dialog" aria-labelledby="suspendModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"
+                    id="canceledModalLabel">Отмена закупки</h4>
+            </div>
+            <div class="modal-body">
+                <form id="formData">
+                    <div class="form-group text-center">
+                        Вы действительно хотите произвести отмену закупки?                        <input type="hidden" name="id_record" value="" id="id_record">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm"
+                        data-dismiss="modal">Нет</button>
+                <a href="https://v3bl.goszakup.gov.kz/ru/announce/canceled_by_court/10952784"
+                   class="btn btn-primary btn-sm">Да</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+        <div class="row">
+            <div role="tabpanel">
+                <ul class="nav nav-tabs" role="tablist">
+
+                    
+                    <li role="presentation" class="active">
+                        <a href="?tab=general">Общие сведения</a>
+                    </li>
+                    
+                    <li role="presentation" >
+                        <a href="?tab=lots">Лоты</a>
+                    </li>
+                    
+                    <li role="presentation" >
+                        <a href="?tab=documents">Документация</a>
+                    </li>
+                    
+                    <li role="presentation" >
+                        <a href="?tab=protocols">Протоколы</a>
+                    </li>
+                    
+                    <li role="presentation" >
+                        <a href="?tab=contracts">Договоры</a>
+                    </li>
+                    
+                    <li role="presentation" >
+                        <a href="?tab=appeal">Апелляции</a>
+                    </li>
+                                    </ul>
+                <br/>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active">
+                        <div class="col-md-12 col-lg-12 col-xs-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Общие сведения </b>
+        </div>
+        <table class="table table-bordered table-hover table-striped" style="margin-bottom: 0;border-top: 0;">
+            <tr>
+                <th>Способ проведения закупки</th>
+                <td>Запрос ценовых предложений</td>
+            </tr>
+                            <tr>
+                    <th>Тип закупки</th>
+                    <td>Повторная закупка</td>
+                </tr>
+                                                            <tr>
+                <th>Вид предмета закупок</th>
+                <td>Товар</td>
+            </tr>
+                            <tr>
+                    <th>Организатор</th>
+                    <td>161240002780 Государственное коммунальное казенное предприятие "Детская школа искусств Жалпақтал" отдела образования Казталовского района управления образования акимата Западно-Казахстанской области"</td>
+                </tr>
+                        <tr>
+                <th>Юр. адрес организатора</th>
+                <td>274843100, 090705, Казахстан, г. Жалпактал, ул. ИЗМУХАН МАСАЛИЕВ, д. 16, оф.                 </td>
+            </tr>
+            <tr>
+                <th>Кол-во лотов в объявлении</th>
+                <td>1</td>
+            </tr>
+            <tr>
+                <th>Сумма закупки</th>
+                <td>100 000.00</td>
+            </tr>
+            <tr>
+                <th>Признаки</th>
+                <td>
+                    <ul>
+                                        <li>
+                        Без учета НДС<br />                    </li>
+                                        </ul>
+                </td>
+            </tr>
+                    </table>
+    </div>
+</div>
+<div class="col-md-12 col-lg-12 col-xs-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Информация об организаторе </b>
+        </div>
+        <table class="table table-bordered table-hover table-striped" style="margin-bottom: 0;border-top: 0;">
+                            <tr>
+                    <th class="col-md-4">ФИО представителя</th>
+                    <td>САТЖАНОВА ГУЛГУЛ БАКТЫБАЕВНА</td>
+                </tr>
+                <tr>
+                    <th>Должность</th>
+                    <td>Директор</td>
+                </tr>
+                                <tr>
+                    <th>E-Mail</th>
+                    <td>zhalpaktal_onermektebi@mail.ru</td>
+                </tr>
+                                                <tr>
+                    <th>
+                        Банковские реквизиты                    </th>
+                    <td>Счет: KZ24601A181002792811, КБЕ: 15, БАНК: АО "Народный Банк Казахстана", Адрес: г.Алматы</td>
+                </tr>
+                                                </table>
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div></div>
         <div class="clearfix"></div>
         
             </div>

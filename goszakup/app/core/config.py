@@ -10,15 +10,11 @@ if getenv("IN_DOCKER") != "TRUE":
 
 
 class Settings(BaseSettings):
-    OPENAPI_USER: str
-    OPENAPI_PASS: str
-    REDIS_HOST: str
     EDSAUTH: str
     EDSGOS: str
     EDSPASS: str
-    NCANODEURL: str
-    DECLARANTUIN: str
     GOSZAKUP_PASSWORD: str
+    NCANODEURL: str
 
 
 settings = Settings()

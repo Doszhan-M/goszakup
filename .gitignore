@@ -1,0 +1,7 @@
+**/.idea/
+**/venv/
+**/__pycache__/
+*.log*
+
+test1.py
+test2.py
