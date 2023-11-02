@@ -1,5 +1,2 @@
-from .base import EgovBase
-from .egov import EgovParser
-from .cookie_egov import CookieParser
-from .cookie_sud import SudCookieParser
-from .cookie_goszakup import GoszakupCookieParser
+from .goszakup_tender import GoszakupParser
+from .goszakup_auth import GoszakupAuthParser, get_goszakup_auth_session

@@ -1,9 +1,6 @@
 import aiohttp
 
 
-async def get_aiohttp_session() -> aiohttp.ClientSession:
-    try:
-        async with aiohttp.ClientSession() as session:
-            yield session
-    finally:
-        await session.close()
+async def get_new_aiohttp_session() -> aiohttp.ClientSession:
+    async with aiohttp.ClientSession() as session:
+        return session
