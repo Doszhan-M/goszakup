@@ -1,5 +1,5 @@
 from aiohttp import ClientSession
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 
 from app.managers import get_goszakup_auth_session, GoszakupParser
 
@@ -18,6 +18,7 @@ async def auth_goszakup(
 
 @router.get("/goszakup/", tags=["goszakup"])
 async def goszakup(
+    announcement_number: str = Query(default=555555),
     goszakup_auth_session: ClientSession = Depends(get_goszakup_auth_session),
 ):
     try:

@@ -11,7 +11,7 @@ logger = getLogger("fastapi")
 class GoszakupParser(BaseParser):
     def __init__(self, aiohttp_session, *args, **kwargs):
         super().__init__(aiohttp_session=aiohttp_session, *args, **kwargs)
-        self.url: str = "https://v3bl.goszakup.gov.kz/ru/announce/index/10952784"
+        self.url: str = "https://v3bl.goszakup.gov.kz/ru/search/announce"
 
     async def goszakup(self) -> any:
 

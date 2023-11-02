@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="utf-8">
-    <title>Портал государственных закупок Республики Казахстан</title>
+    <title>Объявления о проведении государственных закупок</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="msapplication-TileColor" content="#ffffff">
@@ -28,7 +28,10 @@
     <link href="/fonts/fontawesome/css/all.min.css?1614940675" rel="stylesheet">
     <link href="/css/style.css?1683873049" rel="stylesheet">
     <link href='https://v3bl.goszakup.gov.kz/css/datepicker.css?1614940675' rel='stylesheet'>
-<link href='https://v3bl.goszakup.gov.kz/css/countdownplug/jquery.countdown.css?1614940675' rel='stylesheet'>
+<link href='https://v3bl.goszakup.gov.kz/css/favorites.css?1614940675' rel='stylesheet'>
+<link href='https://v3bl.goszakup.gov.kz//js/select2/css/select2.min.css?1614940675' rel='stylesheet'>
+<link href='https://v3bl.goszakup.gov.kz//js/bootstrap-select/css/bootstrap-select.min.css?1614940675' rel='stylesheet'>
+<link href='https://v3bl.goszakup.gov.kz/js/echarts/echarts.config.css?1614940675' rel='stylesheet'>
 
     <script src="/js/jquery.js?1614940675"></script>
     <script src="/js/bootstrap.min.js?1614940675"></script>
@@ -38,22 +41,27 @@
     <script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/bootstrap.datepicker.js?1614940675' charset='utf-8'></script>
 <script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/bootstrap-datepicker.ru.js?1614940675' charset='utf-8'></script>
 <script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/helpers.js?1619609435' charset='utf-8'></script>
-<script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/announce.js?1652783084' charset='utf-8'></script>
-<script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/countdownplug/jquery.plugin.js?1614940675' charset='utf-8'></script>
-<script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/countdownplug/jquery.countdown.js?1614940675' charset='utf-8'></script>
-<script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/countdownplug/jquery.countdown-ru.js?1614940675' charset='utf-8'></script>
+<script type='text/javascript' src='https://v3bl.goszakup.gov.kz//js/select2/js/select2.min.js?1614940675' charset='utf-8'></script>
+<script type='text/javascript' src='https://v3bl.goszakup.gov.kz//assets/js/pages/form-select2.js?' charset='utf-8'></script>
+<script type='text/javascript' src='https://v3bl.goszakup.gov.kz//js/bootstrap-datepicker/js/bootstrap-datepicker.js?1614940675' charset='utf-8'></script>
+<script type='text/javascript' src='https://v3bl.goszakup.gov.kz//js/bootstrap-select/js/bootstrap-select.js?1614940675' charset='utf-8'></script>
+<script type='text/javascript' src='https://v3bl.goszakup.gov.kz//js/bootstrap-select/js/i18n/defaults-ru_RU.js?1614940675' charset='utf-8'></script>
+<script type='text/javascript' src='https://v3bl.goszakup.gov.kz//js/select2/js/i18n/ru.js?1614940675' charset='utf-8'></script>
+<script type='text/javascript' src='https://v3bl.goszakup.gov.kz//js/bootstrap-datepicker/js/locales/bootstrap-datepicker.ru.js?1614940675' charset='utf-8'></script>
+<script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/echarts/echarts.min.js?1614940675' charset='utf-8'></script>
+<script type='text/javascript' src='https://v3bl.goszakup.gov.kz/js/number.format.js?1614940675' charset='utf-8'></script>
 
     <script>
             var user_id = 82608;
             window.lang_key = "ru";
-            window.current_controller_url = "https://v3bl.goszakup.gov.kz/ru/announce";
+            window.current_controller_url = "https://v3bl.goszakup.gov.kz/ru/search";
             
             window.current_directory = "";
-            window.current_controller = "announce";
-            window.current_method = "index";
+            window.current_controller = "search";
+            window.current_method = "announce";
 
-            window.url_params = ["10952784"];
-            ; var lang = 'ru'; var controller = 'announce'; var announce_id = 10952784;    </script>
+            window.url_params = [];
+            ; var lang = 'ru'; var controller = 'search';    </script>
 </head>
 <body>
 
@@ -74,8 +82,8 @@
             <div id="main-nav" class="navbar-collapse collapse">
                                 <ul class="nav navbar-nav"><li><a href="https://goszakup.gov.kz">Главная</a></li><li><a href="https://wiki.goszakup.gov.kz/">Справка</a></li><li class="dropdown"><a data-id="181" href="#" class="dropdown-toggle" data-toggle="dropdown">Реестры <b class="caret"></b> </a><ul class='dropdown-menu'><li><a href="https://v3bl.goszakup.gov.kz/ru/complaint/reestrcomplaint">Реестр жалоб</a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/careless/reestr">Реестр недобросовестных участников ГЗ</a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/register/dataWorkPerformed">Электронный депозитарий</a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/careless/reestr/index_quasi">Реестр недобросовестных участников закупок</a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/register/supplierreg">Реестр участников ГЗ </a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/register/plansreg">Планы ГЗ</a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/egzcontract/cpublic">Реестр договоров</a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/rqc/registry">Реестр квалифицированных поставщиков</a></li></ul></li><li class="dropdown"><a data-id="66" href="#" class="dropdown-toggle" data-toggle="dropdown">Закупки <b class="caret"></b> </a><ul class='dropdown-menu'><li><a href="https://v3bl.goszakup.gov.kz/ru/search/lots">Поиск лотов</a></li><li><a href="https://v3bl.goszakup.gov.kz/ru/searchanno">Поиск объявлений</a></li></ul></li></ul>
                 <ul class="nav navbar-nav navbar-right">
-                <li><a href="https://v3bl.goszakup.gov.kz/kz/announce/index/10952784">Қаз</a></li>
-                <li><a href="https://v3bl.goszakup.gov.kz/ru/announce/index/10952784">Рус</a></li>
+                <li><a href="https://v3bl.goszakup.gov.kz/kz/search/announce">Қаз</a></li>
+                <li><a href="https://v3bl.goszakup.gov.kz/ru/search/announce">Рус</a></li>
               
                     <li class='dropdown'>
                     <a href='#' class='dropdown-toggle' data-toggle='dropdown'>
@@ -135,269 +143,1689 @@
         
         <div id="loading" class="alert alert-info" style="display: none">Подождите, идет загрузка данных</div>
         
-        <div class="content-block"><script>
-    $(function () {
-        var newYear = new Date('2023/11/10 09:00:02');
-        $('#asNeeded').countdown({until: newYear, layout: '{dn} {dl}, {hn} {hl}, {mn} {ml}, {sn} {sl}', serverSync: function () {return new Date('2023/11/02 21:48:41');}});
+        <div class="content-block"><style type="text/css">
+    table#search-result a:visited{
+        color: #7ea0bd!important;
+    }
+</style>
+<h3>Поиск объявлений (общий)</h3>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+    <form action="" method="get" >    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+    <label for="in_name">
+        <b>Наименование объявления</b>
+    </label>
+    <div class="input-group m-b-sm">
+        <input type="text" id="in_name" name="filter[name]" value=""class="form-control" placeholder="Наименование объявления">
+        <span class="input-group-btn">
+            <button class="btn btn-success" type="submit" name="search">Поиск</button>
+        </span>
+    </div>
+</div>            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+    <label for="in_customer">
+        <b>Организатор</b>
+    </label>
+    <input type="text" id="in_customer" name="filter[customer]" value=""class="form-control" placeholder="БИН/Наименование организатора">
+</div>            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+    <label for="in_number">
+        <b>Номер</b>
+    </label>
+    <input type="text" id="in_number" name="filter[number]" value=""class="form-control" placeholder="Номер объявления">
+</div>            </div>
+            <div class="col-md-3 hidden-xs hide-xs hidden-sm hide-sm">
+                <div class="form-group">
+            <label for="s2_year">
+            <b>Финансовый год</b>
+        </label><br/>
+        <select data-size="7" id="s2_year" name="filter[year]" class="selectpicker form-control">
+        <option></option><option data-subtext="" value="2022">2022</option>
+<option data-subtext="" value="2023">2023</option>
+<option data-subtext="" value="2020">2020</option>
+<option data-subtext="" value="2021">2021</option>
+<option data-subtext="" value="2016">2016</option>
+<option data-subtext="" value="2017">2017</option>
+<option data-subtext="" value="2018">2018</option>
+<option data-subtext="" value="2019">2019</option>
+<option data-subtext="" value="0">0</option>
+<option data-subtext="" value="2024">2024</option>
+    </select>
+</div>            </div>
+        </div>
+        <div class="row hidden-xs hide-xs hidden-sm hide-sm">
+            <div class="col-md-3">
+                <div class="form-group">
+            <label for="s2_status">
+            <b>Статус</b>
+        </label><br/>
+        <select data-size="7" id="s2_status" name="filter[status][]" class="selectpicker form-control" multiple="multiple" data-selected-text-format="count &gt; 1" data-style="btn-white" data-size="10">
+        <option data-subtext="" value="350">Завершено</option>
+<option data-subtext="" value="270">Заполнение условных скидок</option>
+<option data-subtext="" value="190">Изменена документация</option>
+<option data-subtext="" value="440">На обжаловании</option>
+<option data-subtext="" value="445">Ожидание проведения контроля качества</option>
+<option data-subtext="" value="210">Опубликовано</option>
+<option data-subtext="" value="230">Опубликовано (дополнение заявок)</option>
+<option data-subtext="" value="220">Опубликовано (прием заявок)</option>
+<option data-subtext="" value="240">Опубликовано (прием ценовых предложений)</option>
+<option data-subtext="" value="410">Отказ от закупки</option>
+<option data-subtext="" value="430">Отменено</option>
+<option data-subtext="" value="450">Отправлено на контроль качества</option>
+<option data-subtext="" value="510">Пересмотр итогов</option>
+<option data-subtext="" value="540">Принятие решение об исполнении уведомления</option>
+<option data-subtext="" value="530">Принятие решения по пересмотру ППД</option>
+<option data-subtext="" value="420">Приостановлено</option>
+<option data-subtext="" value="460">Пройдено контроль качества</option>
+<option data-subtext="" value="260">Рассмотрение дополнений заявок</option>
+<option data-subtext="" value="250">Рассмотрение заявок</option>
+<option data-subtext="" value="320">Формирование протокола допуска</option>
+<option data-subtext="" value="330">Формирование протокола итогов</option>
+<option data-subtext="" value="310">Формирование протокола преддопуска</option>
+<option data-subtext="" value="325">Формирование протокола промежуточных итогов</option>
+    </select>
+</div>            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+            <label for="s2_method">
+            <b>Способ закупки</b>
+        </label><br/>
+        <select data-size="7" id="s2_method" name="filter[method][]" class="selectpicker form-control" multiple="multiple" data-selected-text-format="count &gt; 1" data-style="btn-white" data-size="10">
+        <option data-subtext="" value="3">Запрос ценовых предложений</option>
+<option data-subtext="" value="2">Открытый конкурс</option>
+<option data-subtext="" value="133">Второй этап конкурса с использованием рамочного соглашения</option>
+<option data-subtext="" value="7">Аукцион (до 2022)</option>
+<option data-subtext="" value="77">Аукцион (с 2022)</option>
+<option data-subtext="" value="6">Из одного источника по несостоявшимся закупкам</option>
+<option data-subtext="" value="50">Закупка жилища</option>
+<option data-subtext="" value="52">Закупка по государственному социальному заказу</option>
+<option data-subtext="" value="32">Конкурс с предварительным квалификационным отбором</option>
+<option data-subtext="" value="22">Конкурс с применением двухэтапных процедур </option>
+<option data-subtext="" value="132">Первый этап конкурса с использованием рамочного соглашения</option>
+<option data-subtext="" value="120">Конкурс по приобретению услуг по организации питания воспитанников и обучающихся</option>
+<option data-subtext="" value="121">Конкурс по приобретению товаров, связанных с обеспечением питания воспитанников и обучающихся</option>
+<option data-subtext="" value="124">Тендер</option>
+<option data-subtext="" value="190">Тендер с применением особого порядка</option>
+<option data-subtext="" value="125">Из одного источника по несостоявшимся закупкам не ГЗ</option>
+<option data-subtext="" value="126">Запрос ценовых предложений (не ГЗ new)</option>
+<option data-subtext="" value="128">Конкурс с применением специального порядка</option>
+<option data-subtext="" value="129">Аукцион (не ГЗ) до 2022 г</option>
+<option data-subtext="" value="177">Аукцион (не ГЗ) с 2022 г</option>
+<option data-subtext="" value="188">Конкурс с использованием рейтингово-балльной системы</option>
+<option data-subtext="" value="130">Государственные закупки с применением особого порядка</option>
+    </select>
+</div>            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+    <label for="in_amount_from">
+        <b>Сумма закупки с</b>
+    </label>
+    <input type="text" id="in_amount_from" name="filter[amount_from]" value=""class="form-control" placeholder="Сумма закупки с">
+</div>            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+    <label for="in_amount_to">
+        <b>Сумма закупки по</b>
+    </label>
+    <input type="text" id="in_amount_to" name="filter[amount_to]" value=""class="form-control" placeholder="Сумма закупки по">
+</div>            </div>
+        </div>
+        <div class="row hidden-xs hide-xs hidden-sm hide-sm">
+            <div class="col-md-3">
+                <div class="form-group">
+            <label for="s2_signs">
+            <b>Признаки закупки</b>
+        </label><br/>
+        <select data-size="7" id="s2_signs" name="filter[signs][]" class="selectpicker form-control" multiple="multiple" data-selected-text-format="count &gt; 1" data-style="btn-white" data-size="10">
+        <option value="ref_spec_purchase_type_id">Осуществление закупок с применением специального порядка</option>
+<option value="singl_org_sign">Закупки Единого организатора КГЗ МФ РК</option>
+<option value="is_light_industry">Закупка легкой и мебельной промышленности</option>
+<option value="disable_person_id">Закупка среди организаций инвалидов</option>
+<option value="is_construction_work">Закупка строительно-монтажных работ и проектирования</option>
+<option value="is_active">Активные для участия</option>
+<option value="is_not_active">Неактивные/завершенные</option>
+<option value="is_sign_car">Закупка автомобилей легковых и прочих моторных транспортных средств</option>
+<option value="is_sign_it">Закупка ТРУ программного обеспечения и продукции электронной промышленности</option>
+<option value="is_sign_inform_object">Закупка услуг по созданию и развитию объектов информатизации</option>
+<option value="is_sign_transformers">Закупка трансформаторов электрических, статических электрических преобразователей, выпрямителей, катушек индуктивности и дросселей</option>
+<option value="is_sign_isolated_wires">Закупка проводов изолированных (включая эмалированные или анодированные), кабелей (включая коаксиальные кабели) и других изолированных электрических проводников</option>
+    </select>
+</div>            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+    <label for="s2_kato">
+        <b>Место поставки</b>
+    </label><br/>
+    <select id="s2_kato" name="filter[kato]" style="display: none; width: 100%; height: 34px;" class="form-control">
+            </select>
+</div>
+<script type="text/javascript">
+    $("#s2_kato").select2({
+        ajax: {
+            url: "/ru/search/getKato",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    name: params.term,
+                    page: params.page
+                };
+            },
+            processResults: function (data, params) {
+                params.page = params.page || 1;
+
+                return {
+                    results: data.items,
+                    pagination: {
+                        more: (params.page * 30) < data.total_count
+                    }
+                };
+            },
+            placeholder: {
+                id: '-1', // the value of the option
+                text: 'Select an option'
+            },
+            cache: true,
+            allowClear: true
+        },
+        //escapeMarkup: function (markup) { return markup; }//,
+        minimumInputLength: 3,
+        language: 'ru'
     });
-</script>
-
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <div class="row">
-                            <h4 style="text-align: center">Просмотр объявления № 10952784-1</h4>
-                    </div>
-    </div>
-    <div class="panel-body">
-        <div class="alert alert-danger" role="alert" id="errors" style="display: none;"></div>
-        <div class="row">
-            <div class="col-md-6">
+</script>            </div>
+            <div class="col-md-3">
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">Номер объявления</label>
-
-                    <div class="col-sm-7">
-                        <input type='text' class="form-control" value="10952784-1" readonly/>
-                    </div>
-                </div>
-                <br/> &nbsp;
+            <label for="s2_trade_type">
+            <b>Предмет закупки</b>
+        </label><br/>
+        <select data-size="7" id="s2_trade_type" name="filter[trade_type]" class="selectpicker form-control">
+        <option></option><option data-subtext="" value="g">Товар</option>
+<option data-subtext="" value="s">Услуга</option>
+<option data-subtext="" value="r">Работа</option>
+    </select>
+</div>            </div>
+        </div>
+        <div class="row hide-filter" style="display: none;">
+            <div class="col-md-3">
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">Наименование объявления</label>
-
-                    <div class="col-sm-7">
-                        <input type='text' class="form-control" value="Приобретение бухгалтерский сейф"
-                               readonly/>
-                    </div>
-                </div>
-                <br/> &nbsp;
+    <label for="in_start_date_from">
+        <b>Начало приема заявок с</b>
+    </label>
+    <input type="text" id="in_start_date_from" name="filter[start_date_from]" value=""class="form-control date-picker" placeholder="Прием с">
+</div>            </div>
+            <div class="col-md-3">
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">Статус объявления</label>
-
-                    <div class="col-sm-7">
-                        <input type='text' class="form-control" value="Опубликовано" readonly/>
-                    </div>
-                </div>
-                <br/> &nbsp;
+    <label for="in_start_date_to">
+        <b>Начало приема заявок по</b>
+    </label>
+    <input type="text" id="in_start_date_to" name="filter[start_date_to]" value=""class="form-control date-picker" placeholder="Прием по">
+</div>            </div>
+            <div class="col-md-3">
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">Дата публикации объявления</label>
+    <label for="in_end_date_from">
+        <b>Окончание приема заявок с</b>
+    </label>
+    <input type="text" id="in_end_date_from" name="filter[end_date_from]" value=""class="form-control date-picker" placeholder="Окончание с">
+</div>            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+    <label for="in_end_date_to">
+        <b>Окончание приема заявок по</b>
+    </label>
+    <input type="text" id="in_end_date_to" name="filter[end_date_to]" value=""class="form-control date-picker" placeholder="Окончание по">
+</div>            </div>
+        </div>
+        <div class="row hide-filter" style="display: none;">
+            <div class="col-md-3">
+                <div class="form-group">
+    <label for="in_itog_date_from">
+        <b>Протокол итогов с</b>
+    </label>
+    <input type="text" id="in_itog_date_from" name="filter[itog_date_from]" value=""class="form-control date-picker" placeholder="Дата публикации с">
+</div>            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+    <label for="in_itog_date_to">
+        <b>Протокол итогов по</b>
+    </label>
+    <input type="text" id="in_itog_date_to" name="filter[itog_date_to]" value=""class="form-control date-picker" placeholder="Дата публикации по">
+</div>            </div>
+        </div>
 
-                    <div class="col-sm-7">
-                        <input type='text' class="form-control" value="2023-11-02 21:39:48" readonly/>
-                    </div>
-                </div>
-                <br/> &nbsp;
+        <div class="row visible-xs">
+            <div class="col-xs-12 text-center">
+                <button type="button" class="btn btn-default" id="show_all_xs" data-visible="hide">Показать все критерии поиска</button>
             </div>
-            <div class="col-md-6">
-                                <div class="form-group">
-                    <label class="col-sm-4 control-label">Срок начала приема заявок</label>
-                    <div class="col-sm-7">
-                        <input type='text' class="form-control" value="2023-11-03 09:00:00" readonly/>
-                    </div>
-                </div>
-                <br/> &nbsp;
-                <div class="form-group">
-                    <label class="col-sm-4 control-label">Срок окончания приема заявок</label>
-                    <div class="col-sm-7">
-                        <input type='text' class="form-control" value="2023-11-10 09:00:02" readonly/>
-                    </div>
-                </div>
-                <br/>&nbsp;
-                                                                            </div>
-                    </div>
-    </div>
-</div>
-
-
-
-
-<div class="modal fade" id="startModal" tabindex="-1" role="dialog" aria-labelledby="startModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="startModalLabel">Возобновление закупки</h4>
-            </div>
-            <div class="modal-body">
-                <form id="formData">
-                    <div class="form-group text-center">
-                        Вы действительно хотите продолжить закупку?                        <input type="hidden" name="id_record" value="" id="id_record">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-sm"
-                        data-dismiss="modal">Нет</button>
-                <a href="https://v3bl.goszakup.gov.kz/ru/announce_start/index/10952784"
-                   class="btn btn-primary btn-sm">Да</a>
+        </div>
+        <div class="row visible-sm">
+            <div class="col-xs-12 text-center">
+                <button type="button" class="btn btn-default" id="show_all_sm" data-visible="hide">Показать все критерии поиска</button>
             </div>
         </div>
     </div>
-</div>
-
-<div class="modal fade" id="suspendModal" tabindex="-1" role="dialog" aria-labelledby="suspendModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="suspendModalLabel">Приостановка закупки</h4>
-            </div>
-            <div class="modal-body">
-                <form id="formData">
-                    <div class="form-group text-center">
-                        Вы действительно хотите произвести приостановку закупки?                        <input type="hidden" name="id_record" value="" id="id_record">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-sm"
-                        data-dismiss="modal">Нет</button>
-                <a href="https://v3bl.goszakup.gov.kz/ru/announce_suspend/index/10952784"
-                   class="btn btn-primary btn-sm">Да</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="canceledModal" tabindex="-1" role="dialog" aria-labelledby="suspendModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"
-                    id="canceledModalLabel">Отмена закупки</h4>
-            </div>
-            <div class="modal-body">
-                <form id="formData">
-                    <div class="form-group text-center">
-                        Вы действительно хотите произвести отмену закупки?                        <input type="hidden" name="id_record" value="" id="id_record">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-sm"
-                        data-dismiss="modal">Нет</button>
-                <a href="https://v3bl.goszakup.gov.kz/ru/announce/canceled_by_court/10952784"
-                   class="btn btn-primary btn-sm">Да</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="panel">
-    <div class="panel-body">
+    <div class="panel-footer panel-footer-sm">
         <div class="row">
-            <div role="tabpanel">
-                <ul class="nav nav-tabs" role="tablist">
-
-                    
-                    <li role="presentation" class="active">
-                        <a href="?tab=general">Общие сведения</a>
-                    </li>
-                    
-                    <li role="presentation" >
-                        <a href="?tab=lots">Лоты</a>
-                    </li>
-                    
-                    <li role="presentation" >
-                        <a href="?tab=documents">Документация</a>
-                    </li>
-                    
-                    <li role="presentation" >
-                        <a href="?tab=protocols">Протоколы</a>
-                    </li>
-                    
-                    <li role="presentation" >
-                        <a href="?tab=contracts">Договоры</a>
-                    </li>
-                    
-                    <li role="presentation" >
-                        <a href="?tab=appeal">Апелляции</a>
-                    </li>
-                                    </ul>
-                <br/>
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade in active">
-                        <div class="col-md-12 col-lg-12 col-xs-12">
-    <div class="panel panel-default">
+            <div class="col-md-6 text-left">
+                <button class="btn btn-success btn-sm" type="submit" name="smb">Найти</button>                <button class="btn btn-default btn-sm" type="submit" name="reset" value="Y">Отменить</button>            </div>
+            <div class="col-md-6 text-right">
+                                    <button type="button" class="btn btn-default more-info" data-toggle="collapse" href="#collapseCharts" aria-expanded="false" aria-controls="collapseExample"> <span aria-hidden="true" class="icon-bar-chart"></span> Статистика</button>
+                                                    <button type="button" class="btn btn-info hidden-xs hidden-sm" id="show_filter" data-visible="hide">Расширенный поиск</button>
+                                            </div>
+        </div>
+        </form>    </div>
+</div>
+<script>
+    $(function() {
+        $('.date-picker').datepicker({
+            format: 'dd.mm.yyyy',
+            language: 'ru',
+            autoclose: true
+        });
+        $('.selectpicker').selectpicker({
+            showTick: true
+        });
+        $('.hide-filter').hide();        $('#show_all_xs').on('click', function(){
+            var vs = $(this).data('visible');
+            if (vs == 'hide')
+            {
+                $('.hide-xs').removeClass('hidden-xs');
+                $('.hide-filter').show();
+                $(this).data('visible', 'show').text('Скрыть критерии поиска');
+            }else{
+                $('.hide-xs').addClass('hidden-xs');
+                $('.hide-filter').hide();
+                $(this).data('visible', 'hide').text('Показать все критерии поиска');
+            }
+        });
+        $('#show_all_sm').on('click', function(){
+            var vs = $(this).data('visible');
+            if (vs == 'hide')
+            {
+                $('.hide-sm').removeClass('hidden-sm');
+                $('.hide-filter').show();
+                $(this).data('visible', 'show').text('Скрыть критерии поиска');
+            }else{
+                $('.hide-sm').addClass('hidden-sm');
+                $('.hide-filter').hide();
+                $(this).data('visible', 'hide').text('Показать все критерии поиска');
+            }
+        });
+        $('#show_filter').on('click', function(){
+            var vs = $(this).data('visible');
+            if (vs == 'hide')
+            {
+                $('.hide-filter').show();
+                $(this).data('visible', 'show').text('Краткий поиск');
+            }else{
+                $('.hide-filter').hide();
+                $(this).data('visible', 'hide').text('Расширенный поиск');
+            }
+        });
+    });
+</script>        <div class="collapse container-fluid" id="collapseCharts">
+            <div class="row flex-report">
+    <div class="col-md-6 col-xs-12 panel panel-default doughnut">
         <div class="panel-heading">
-            <b>Общие сведения </b>
+            <h3 class="panel-title">Статистика по опубликованным объявлениям за 2023 год</h3>
         </div>
-        <table class="table table-bordered table-hover table-striped" style="margin-bottom: 0;border-top: 0;">
+        <div id="main" class="main chartArea"></div>
+    </div>
+    <div class="col-md-6 col-xs-12 panel panel-default table-info">
+                <table class="table table-bordered table-striped table-responsive">
+            <thead>
             <tr>
-                <th>Способ проведения закупки</th>
-                <td>Запрос ценовых предложений</td>
-            </tr>
-                            <tr>
-                    <th>Тип закупки</th>
-                    <td>Повторная закупка</td>
-                </tr>
-                                                            <tr>
-                <th>Вид предмета закупок</th>
-                <td>Товар</td>
-            </tr>
-                            <tr>
-                    <th>Организатор</th>
-                    <td>161240002780 Государственное коммунальное казенное предприятие "Детская школа искусств Жалпақтал" отдела образования Казталовского района управления образования акимата Западно-Казахстанской области"</td>
-                </tr>
-                        <tr>
-                <th>Юр. адрес организатора</th>
-                <td>274843100, 090705, Казахстан, г. Жалпактал, ул. ИЗМУХАН МАСАЛИЕВ, д. 16, оф.                 </td>
-            </tr>
+                <th width="10" class="text-center">№</th>
+                <th class="text-center">Способ закупки</th>
+                <th class="text-center">Количество</th>
+                <th class="text-center">Сумма / тыс. тг</th>
+                                <th class="text-center">%</th>
+                            </tr>
+            </thead>
+            <tbody>
+                                <tr>
+                        <td>1</td>
+                        <td>Открытый конкурс</td>
+                        <td>82800</td>
+                        <td>6 395 546 366.11</td>
+                                                <td>5.32</td>
+                                            </tr>
+                                        <tr>
+                        <td>2</td>
+                        <td>Закупка жилища</td>
+                        <td>3389</td>
+                        <td>110 771 825.02</td>
+                                                <td>0.22</td>
+                                            </tr>
+                                        <tr>
+                        <td>3</td>
+                        <td>Запрос ценовых предложений</td>
+                        <td>1054569</td>
+                        <td>964 110 812.75</td>
+                                                <td>67.72</td>
+                                            </tr>
+                                        <tr>
+                        <td>4</td>
+                        <td>Конкурс с предварительным квалификационным отбором</td>
+                        <td>17322</td>
+                        <td>101 581 272.21</td>
+                                                <td>1.11</td>
+                                            </tr>
+                                        <tr>
+                        <td>5</td>
+                        <td>Закупка по государственному социальному заказу</td>
+                        <td>3562</td>
+                        <td>54 373 373.71</td>
+                                                <td>0.23</td>
+                                            </tr>
+                                        <tr>
+                        <td>6</td>
+                        <td>Из одного источника по несостоявшимся закупкам</td>
+                        <td>386320</td>
+                        <td>994 125 452.24</td>
+                                                <td>24.81</td>
+                                            </tr>
+                                        <tr>
+                        <td>7</td>
+                        <td>Конкурс с использованием рейтингово-балльной системы</td>
+                        <td>9338</td>
+                        <td>2 491 140 747.04</td>
+                                                <td>0.6</td>
+                                            </tr>
+                                </tbody>
+            <tfoot>
             <tr>
-                <th>Кол-во лотов в объявлении</th>
-                <td>1</td>
-            </tr>
-            <tr>
-                <th>Сумма закупки</th>
-                <td>100 000.00</td>
-            </tr>
-            <tr>
-                <th>Признаки</th>
+                <td colspan="2">
+                    <strong>
+                        Всего:                     </strong>
+                </td>
                 <td>
-                    <ul>
-                                        <li>
-                        Без учета НДС<br />                    </li>
-                                        </ul>
+                    <strong>
+                        1557300                    </strong>
+                </td>
+                <td>
+                    <strong>
+                        11 111 649 849.08                    </strong>
+                </td>
+                <td>
+                    <strong>
+                        100
+                    </strong>
                 </td>
             </tr>
-                    </table>
-    </div>
+            </tfoot>
+        </table>
+            </div>
 </div>
-<div class="col-md-12 col-lg-12 col-xs-12">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <b>Информация об организаторе </b>
-        </div>
-        <table class="table table-bordered table-hover table-striped" style="margin-bottom: 0;border-top: 0;">
-                            <tr>
-                    <th class="col-md-4">ФИО представителя</th>
-                    <td>САТЖАНОВА ГУЛГУЛ БАКТЫБАЕВНА</td>
-                </tr>
-                <tr>
-                    <th>Должность</th>
-                    <td>Директор</td>
-                </tr>
-                                <tr>
-                    <th>E-Mail</th>
-                    <td>zhalpaktal_onermektebi@mail.ru</td>
-                </tr>
-                                                <tr>
-                    <th>
-                        Банковские реквизиты                    </th>
-                    <td>Счет: KZ24601A181002792811, КБЕ: 15, БАНК: АО "Народный Банк Казахстана", Адрес: г.Алматы</td>
-                </tr>
-                                                </table>
-    </div>
-</div>
-                    </div>
+        <script type="text/javascript">
+            $( document ).ready(function() {
+                var myChart = echarts.init(document.getElementById("main"));
+                myChart.setOption({
+                    tooltip : {
+                        trigger: 'axis',
+                        axisPointer : {
+                            type : 'shadow'
+                        },
+                        formatter: function(params, ticket, callback)
+                        {
+                            var res = '<strong>' + params[0].name + '</strong>';
+                            for (var i = 0, l = params.length; i < l; i++) {
+                                res += '<br/>' + params[i].marker + ' ' + params[i].seriesName + ': ' + number_format(params[i].value, 0, '.', ' ');
+                            }
+                            return res;
+                        }
+                    },
+                    legend: {
+                        data:['Открытый конкурс','Закупка жилища','Запрос ценовых предложений','Конкурс с предварительным квалификационным отбором','Закупка по государственному социальному заказу','Из одного источника по несостоявшимся закупкам','Конкурс с использованием рейтингово-балльной системы']
+                    },
+                    toolbox: {
+                        show : false
+                    },
+                    calculable : true,
+                    grid: {y: 70, y2:20, x: 20, x2:20},
+                    xAxis : [
+                        {
+                            type : 'category',
+                            data : ['Статистика по опубликованным объявлениям за 2023 год']
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value',
+                            axisLabel:{show: false, formatter:'{value}'}
+                        }
+                    ],
+                    series : [{
+                    name:'Открытый конкурс',
+                    type:'bar',
+                    itemStyle: {normal: {color:'#FF6384', label:{show:true}}},
+                    data:[82800]
+                },{
+                    name:'Закупка жилища',
+                    type:'bar',
+                    itemStyle: {normal: {color:'#36A2EB', label:{show:true}}},
+                    data:[3389]
+                },{
+                    name:'Запрос ценовых предложений',
+                    type:'bar',
+                    itemStyle: {normal: {color:'#FF9F40', label:{show:true}}},
+                    data:[1054569]
+                },{
+                    name:'Конкурс с предварительным квалификационным отбором',
+                    type:'bar',
+                    itemStyle: {normal: {color:'#9966FF', label:{show:true}}},
+                    data:[17322]
+                },{
+                    name:'Закупка по государственному социальному заказу',
+                    type:'bar',
+                    itemStyle: {normal: {color:'#4bc0c0', label:{show:true}}},
+                    data:[3562]
+                },{
+                    name:'Из одного источника по несостоявшимся закупкам',
+                    type:'bar',
+                    itemStyle: {normal: {color:'', label:{show:true}}},
+                    data:[386320]
+                },{
+                    name:'Конкурс с использованием рейтингово-балльной системы',
+                    type:'bar',
+                    itemStyle: {normal: {color:'', label:{show:true}}},
+                    data:[9338]
+                }]
+                });
+                $(window).on('resize', function(){
+                    if(myChart != null && myChart != undefined){
+                        myChart.resize();
+                    }
+                });
+                $('#collapseCharts').on('shown.bs.collapse', function () {
+                    $(".chartArea").each(function(){
+                        var myChartR = echarts.init(this);
+                        myChartR.resize();
+                    });
+                });
+                $('#collapseCharts2').on('shown.bs.collapse', function () {
+                    $(".chartArea").each(function(){
+                        var myChartR = echarts.init(this);
+                        myChartR.resize();
+                    });
+                });
+            });
+        </script>
                 </div>
+        <div class="panel panel-white">
+            <div class="panel-heading">
+                <div class="row">
+    <div class="col-md-12">
+        <div class="dataTables_info" role="status" aria-live="polite">
+            <small class="text-muted">
+                Показано c 1 по 50 из 500000 записей            </small>
+        </div>
+    </div>
+</div>            </div>
+            <div class="panel-body">
+                <table id="search-result" class="table table-bordered table-striped dataTable responsive"
+                       style="width: 100%; cellspacing: 0;">
+                    <thead>
+                    <tr>
+                        <th class="min-tablet-p">№</th>
+                        <th class="all">Наименование объявления</th>
+                        <th class="desktop">Способ</th>
+                        <th class="desktop">Начало приема заявок</th>
+                        <th class="desktop">Окончание приема заявок</th>
+                        <th class="min-tablet-p">Сумма, тг.</th>
+                        <th class="desktop">Статус</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                                            <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952830-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952830" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Услуги по установке антивирусной программы</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952830" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное учреждение "Аппарат акима сельского округа Шалғай"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>08:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>08:00:00</td>
+                            <td nowrap="nowrap"><strong>22 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952824-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952824" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Приобретение прочих запасов (ель)</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952824" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение "Пешковский центр оказания специальных социальных услуг" Управления координации занятости и социальных программ акимата Костанайской области<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>22:01:56</td>
+                            <td nowrap="nowrap">2023-11-09<br>22:02:59</td>
+                            <td nowrap="nowrap"><strong>255 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952820-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 3</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952820" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Приобретение новогодних инвентарей</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952820" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное коммунальное казенное предприятие "Ясли-сад № 40 "Құлпынай" акимата города Астаны<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:00</td>
+                            <td nowrap="nowrap"><strong>290 500.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952819-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952819" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Қиыршық тас</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952819" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение «Общеобразовательная школа № 2 города Есиль отдела образования по Есильскому району управления образования Акмолинской области»<br>
+                                </small>
+                            </td>
+                            <td>Из одного источника по несостоявшимся закупкам</td>
+                            <td nowrap="nowrap">2023-11-02<br>22:27:05</td>
+                            <td nowrap="nowrap">2023-11-07<br>22:27:05</td>
+                            <td nowrap="nowrap"><strong>840.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952818-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952818" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Услуги сантехника по обслуживанию водопроводных/сантехнических сетей (замена труб для горячей воды, сифонов, кранов и т.д. за счет собственных средств)</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952818" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное коммунальное казенное предприятие "Ясли-сад "Айым" отдела образования Меркенского района управления образования акимата Жамбылской области"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>07:55:41</td>
+                            <td nowrap="nowrap">2023-11-10<br>08:55:59</td>
+                            <td nowrap="nowrap"><strong>110 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952815-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952815" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Услуги по аренде автовышки для замены светильников уличного освещения</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952815" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное учреждение "Аппарат акима поселка Майкаин Баянаульского района"<br>
+                                </small>
+                            </td>
+                            <td>Из одного источника по несостоявшимся закупкам</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:54:06</td>
+                            <td nowrap="nowrap">2023-11-07<br>18:00:00</td>
+                            <td nowrap="nowrap"><strong>908 928.00</strong></td>
+                            <td>Опубликовано (прием заявок)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952814-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952814" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Светильник Консольный светодиодный светильник Cobra </a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952814" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное учреждение "Аппарат акима Сулыкольского сельского округа"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:55:23</td>
+                            <td nowrap="nowrap">2023-11-09<br>22:55:26</td>
+                            <td nowrap="nowrap"><strong>60 000.00</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952811-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952811" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Приобретение прочих запасов (чайник)</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952811" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение "Пешковский центр оказания специальных социальных услуг" Управления координации занятости и социальных программ акимата Костанайской области<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:57:20</td>
+                            <td nowrap="nowrap">2023-11-09<br>21:58:25</td>
+                            <td nowrap="nowrap"><strong>120 000.00</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952810-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952810" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Услуги по оценке земельного участка</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952810" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение "Шантобинская детско-юношеская спортивная школа" управления физической культуры и спорта Акмолинской области<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:55:00</td>
+                            <td nowrap="nowrap">2023-11-09<br>21:55:00</td>
+                            <td nowrap="nowrap"><strong>150 000.00</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952808-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952808" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Костюмы национальные мужские и женские, согласно технической спецификации</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952808" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение "Қоғамдық келісім" управления информации и общественного развития Павлодарской области<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>05:54:04</td>
+                            <td nowrap="nowrap">2023-11-10<br>05:54:06</td>
+                            <td nowrap="nowrap"><strong>4 480 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952806-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 6</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952806" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Приобретение и доставка автозапчастей на автомобиль Нива марки 21214 2013 года</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952806" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное коммунальное предприятие на праве хозяйственного ведения "Ветеринарная станция Балхашского района с ветеринарными пунктами" государственного учреждения "Управление ветеринарии Алматинской области"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>08:59:34</td>
+                            <td nowrap="nowrap">2023-11-10<br>08:59:48</td>
+                            <td nowrap="nowrap"><strong>10 978 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952805-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952805" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Приобретение нотная тетрадь</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952805" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное коммунальное казенное предприятие "Детская школа искусств Жалпақтал" отдела образования Казталовского района управления образования акимата Западно-Казахстанской области"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:02</td>
+                            <td nowrap="nowrap"><strong>17 500.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952804-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952804" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    аботы по содержанию и ремонту компьютерной/периферийной оргтехники/оборудования и их частей.</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952804" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное учреждение "Аппарат акима Акобинского сельского округа Жанибекского района Западно-Казахстанской области"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>08:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>08:00:00</td>
+                            <td nowrap="nowrap"><strong>75 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952803-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952803" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Есіктегі қалқа</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952803" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение «Общеобразовательная школа № 2 города Есиль отдела образования по Есильскому району управления образования Акмолинской области»<br>
+                                </small>
+                            </td>
+                            <td>Из одного источника по несостоявшимся закупкам</td>
+                            <td nowrap="nowrap">2023-11-02<br>22:21:17</td>
+                            <td nowrap="nowrap">2023-11-07<br>22:21:17</td>
+                            <td nowrap="nowrap"><strong>3 720.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952801-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952801" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Услуга по изготовлению архивных папок для переплета. 67 штук.</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952801" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Республиканское государственное учреждение "Воинская часть 20982 Министерства по чрезвычайным ситуациям Республики Казахстан"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>22:00:00</td>
+                            <td nowrap="nowrap">2023-11-09<br>22:00:00</td>
+                            <td nowrap="nowrap"><strong>83 750.00</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952800-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952800" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    стулья для офиса</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952800" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное учреждение "Аппарат акима Ойтоганского сельского округа" акимата Аксуского района<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:00</td>
+                            <td nowrap="nowrap"><strong>339 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952799-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952799" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Установка двери, реконструкция старой конструкции (стены, двери ) в соответствии нормам для по созданию доступной среды для инвалидов/ </a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952799" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение "Основная средняя школа №134" отдела образования города Караганды управления образования Карагандинской области<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>22:00:33</td>
+                            <td nowrap="nowrap">2023-11-09<br>23:00:48</td>
+                            <td nowrap="nowrap"><strong>973 999.50</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952795-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952795" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Приобретение масляный радиатор</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952795" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное коммунальное казенное предприятие "Детская школа искусств Жалпақтал" отдела образования Казталовского района управления образования акимата Западно-Казахстанской области"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:02</td>
+                            <td nowrap="nowrap"><strong>25 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952794-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952794" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Услуги по размещению наружной рекламы/Баннер, /</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952794" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное учреждение "Аппарат акима Сулыкольского сельского округа"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:50:59</td>
+                            <td nowrap="nowrap">2023-11-09<br>22:50:02</td>
+                            <td nowrap="nowrap"><strong>70 000.00</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952789-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952789" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Приобретение продуктов (молока)</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952789" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение "Жамбылская средняя школа" отдела образования города Аксу, управления образования Павлодарской области<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:45:10</td>
+                            <td nowrap="nowrap">2023-11-09<br>22:41:17</td>
+                            <td nowrap="nowrap"><strong>63 000.00</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952788-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952788" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    клем для офиса</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952788" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное учреждение "Аппарат акима Ойтоганского сельского округа" акимата Аксуского района<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:00</td>
+                            <td nowrap="nowrap"><strong>200 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952787-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952787" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Дверная ручка из металла</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952787" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение «Общеобразовательная школа № 2 города Есиль отдела образования по Есильскому району управления образования Акмолинской области»<br>
+                                </small>
+                            </td>
+                            <td>Из одного источника по несостоявшимся закупкам</td>
+                            <td nowrap="nowrap">2023-11-02<br>22:12:28</td>
+                            <td nowrap="nowrap">2023-11-07<br>22:12:28</td>
+                            <td nowrap="nowrap"><strong>4 240.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952785-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952785" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Услуги по подписке на печатные периодические издания</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952785" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное учреждение «Аппарат акима Темиршинского сельского округа Каркаралинского района»<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>10:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>10:00:00</td>
+                            <td nowrap="nowrap"><strong>55 193.64</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952784-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952784" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Приобретение бухгалтерский сейф</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952784" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное коммунальное казенное предприятие "Детская школа искусств Жалпақтал" отдела образования Казталовского района управления образования акимата Западно-Казахстанской области"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:02</td>
+                            <td nowrap="nowrap"><strong>100 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952781-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952781" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    услуги телефонной связи и другие услуги телекоммуникации</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952781" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение "Шантобинская детско-юношеская спортивная школа" управления физической культуры и спорта Акмолинской области<br>
+                                </small>
+                            </td>
+                            <td>Второй этап конкурса с использованием рамочного соглашения</td>
+                            <td nowrap="nowrap">2023-11-08<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>18:00:00</td>
+                            <td nowrap="nowrap"><strong>1 688.50</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952780-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952780" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    приобретение спортивного штанга</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952780" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение "Детско-юношеская спортивная школа Сағыз" Управления физической культуры и спорта Атырауской области"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:00</td>
+                            <td nowrap="nowrap"><strong>600 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952779-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952779" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    услуги по сбору семян</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952779" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение «Курмангазинское учреждение по охране лесов и животного мира» Управления природных ресурсов и регулирования природопользования Атырауской области»<br>
+                                </small>
+                            </td>
+                            <td>Из одного источника по несостоявшимся закупкам</td>
+                            <td nowrap="nowrap">2023-11-02<br>22:14:40</td>
+                            <td nowrap="nowrap">2023-11-07<br>22:14:40</td>
+                            <td nowrap="nowrap"><strong>267 857.14</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952778-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 3</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952778" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Приобретение запасных частей</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952778" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение "Жамбылская средняя школа" отдела образования города Аксу, управления образования Павлодарской области<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:40:36</td>
+                            <td nowrap="nowrap">2023-11-09<br>22:36:43</td>
+                            <td nowrap="nowrap"><strong>7 400.00</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952777-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952777" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Потолок подвесной Армстронг</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952777" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное коммунальное казенное предприятие "Детская школа искусств Жалпақтал" отдела образования Казталовского района управления образования акимата Западно-Казахстанской области"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:02</td>
+                            <td nowrap="nowrap"><strong>54 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952776-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952776" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Насос циркуляционный 110/180 XM</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952776" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное учреждение "Отдел образования Чингирлауского района управления образования акимата Западно-Казахстанской области"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>10:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>10:00:00</td>
+                            <td nowrap="nowrap"><strong>439 984.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952774-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952774" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    производственный контроль - proizvodstvenni control</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952774" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное коммунальное казенное предприятие "Детский сад "Еркемай" города Кокшетау при отделе образования по городу Кокшетау управления образования Акмолинской области<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:00</td>
+                            <td nowrap="nowrap"><strong>184 539.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952773-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952773" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Гарнитур мебельный для кабинета</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952773" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное учреждение "Аппарат акима Ойтоганского сельского округа" акимата Аксуского района<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:00</td>
+                            <td nowrap="nowrap"><strong>500 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952770-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952770" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Международная стажировка по программе курсов повышения квалификации руководителя организации технического и профессионального образования</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952770" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное казенное предприятие "Алматинский колледж моды и дизайна" Управления образования города Алматы<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:37:12</td>
+                            <td nowrap="nowrap">2023-11-09<br>21:37:22</td>
+                            <td nowrap="nowrap"><strong>2 950 000.00</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952769-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952769" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Приобретение сварочных перчаток</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952769" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Республиканское государственное учреждение "Воинская часть 20982 Министерства по чрезвычайным ситуациям Республики Казахстан"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:40:00</td>
+                            <td nowrap="nowrap">2023-11-09<br>21:40:00</td>
+                            <td nowrap="nowrap"><strong>17 857.12</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952767-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 16</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952767" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Приобретение хозяйственных товаров</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952767" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное коммунальное казенное предприятие "Ясли-сад № 40 "Құлпынай" акимата города Астаны<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:00</td>
+                            <td nowrap="nowrap"><strong>1 032 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952766-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 2</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952766" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Услуги по подключению электроэнергии и опломбировке прибора учета</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952766" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение "Аппарат акима Дубровинского сельского округа Мамлютского района Северо-Казахстанской области"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:00</td>
+                            <td nowrap="nowrap"><strong>38 174.10</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952764-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952764" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Распечатка цветная гербовых бланков приказов и исходящей документации</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952764" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение «Школа-лицей имени Ыбырая Алтынсарина» отдела образования города Сатпаев управления образования области Ұлытау<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:32:26</td>
+                            <td nowrap="nowrap">2023-11-09<br>21:32:31</td>
+                            <td nowrap="nowrap"><strong>64 000.00</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952761-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952761" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Дорожка узелковая, ворсовая, из шерстяной пряжи, машинного производства, согласно технической спецификации</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952761" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение "Детско-юношеская спортивная школа Дамба" Управления физической культуры, спорта и туризма Атырауской области<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:00</td>
+                            <td nowrap="nowrap"><strong>400 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952759-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952759" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                     Средство дезинфицирующее  Белизна</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952759" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное учреждение "Отдел сельского хозяйства акимата Житикаринского района"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:44:36</td>
+                            <td nowrap="nowrap">2023-11-09<br>21:45:52</td>
+                            <td nowrap="nowrap"><strong>3 000.00</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952757-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952757" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Комплектующие к полупантографу модели «SOLO»</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952757" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Товарищество с ограниченной ответственностью "Транспортная компания города Усть-Каменогорска"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:35:00</td>
+                            <td nowrap="nowrap">2023-11-09<br>21:35:00</td>
+                            <td nowrap="nowrap"><strong>445 838.00</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952756-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 11</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952756" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Приобретение хозяйственных товаров</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952756" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение "Усть-Каменогорский колледж сферы обслуживания" управления образования Восточно-Казахстанской области<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:59:32</td>
+                            <td nowrap="nowrap">2023-11-09<br>21:59:37</td>
+                            <td nowrap="nowrap"><strong>263 700.00</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952755-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952755" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Услуги по обучению водителя перевозке опасных грузов автомашины КАМАЗ-53215 (АТЗ). Общее количество обучаемых - 3 человека</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952755" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Республиканское государственное учреждение "Воинская часть 20982 Министерства по чрезвычайным ситуациям Республики Казахстан"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:40:00</td>
+                            <td nowrap="nowrap">2023-11-09<br>21:40:00</td>
+                            <td nowrap="nowrap"><strong>120 535.71</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952754-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952754" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Обучение сотрудников Qyzmetkerlerdi oqytý</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952754" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное коммунальное казенное предприятие "Детский сад "Еркемай" города Кокшетау при отделе образования по городу Кокшетау управления образования Акмолинской области<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:00</td>
+                            <td nowrap="nowrap"><strong>720 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952753-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952753" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Услуги по предоставлению доменного имени</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952753" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение «Общеобразовательная школа № 2 города Есиль отдела образования по Есильскому району управления образования Акмолинской области»<br>
+                                </small>
+                            </td>
+                            <td>Из одного источника по несостоявшимся закупкам</td>
+                            <td nowrap="nowrap">2023-11-02<br>22:03:37</td>
+                            <td nowrap="nowrap">2023-11-07<br>22:03:37</td>
+                            <td nowrap="nowrap"><strong>7 321.43</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952751-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952751" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Приобретение белизна 1 литр</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952751" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное коммунальное казенное предприятие "Детская школа искусств Жалпақтал" отдела образования Казталовского района управления образования акимата Западно-Казахстанской области"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:02</td>
+                            <td nowrap="nowrap"><strong>2 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952750-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952750" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Файл-вкладыш Файл- вкладыш канцелярский</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952750" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Государственное коммунальное казенное предприятие "Ясли-сад №33 "Орленок" отдела образования города Уральск управления образования акимата Западно-Казахстанской области"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>21:26:37</td>
+                            <td nowrap="nowrap">2023-11-10<br>21:26:40</td>
+                            <td nowrap="nowrap"><strong>6 000.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952749-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952749" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Светильник светодиодный потолочный LED</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952749" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение "Детская школа искусств отдела образования Житикаринского района" Управления образования акимата Костанайской области<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-03<br>09:00:00</td>
+                            <td nowrap="nowrap">2023-11-10<br>09:00:00</td>
+                            <td nowrap="nowrap"><strong>194 200.00</strong></td>
+                            <td>Опубликовано</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952748-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952748" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    работы по установке металлических ограждений</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952748" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> республиканское государственное учреждение "Спортивный комитет Министерства обороны Республики Казахстан ‒ Центральный спортивный клуб"<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:28:26</td>
+                            <td nowrap="nowrap">2023-11-10<br>08:00:32</td>
+                            <td nowrap="nowrap"><strong>1 050 000.00</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952746-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 1</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952746" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Батарейка для материнской платы</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952746" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение "Усть-Каменогорский колледж сферы обслуживания" управления образования Восточно-Казахстанской области<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:25:05</td>
+                            <td nowrap="nowrap">2023-11-09<br>21:25:10</td>
+                            <td nowrap="nowrap"><strong>14 000.00</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                                <tr>
+                            <td nowrap="nowrap">
+                                <strong>10952744-1</strong><br><br>
+                                <small class="hidden-xs"><b>Лотов:</b> 4</small>
+                            </td>
+                            <td class="trd-name">
+                                <a href="/ru/announce/index/10952744" target="_blank" rel="noopener noreferrer" style="font-size: 13px">
+                                    Приобретение литературы в организацию</a>
+                                                                    <span class="glyphicon glyphicon-bookmark favorite "  data-id="10952744" title="Добавить в избранное"></span>
+                                                                <br>
+                                <small class="hidden-xs">
+                                    <b>Организатор:</b> Коммунальное государственное учреждение "Областная универсальная библиотека имени Абая" управления культуры, развития языков и архивного дела области Абай<br>
+                                </small>
+                            </td>
+                            <td>Запрос ценовых предложений</td>
+                            <td nowrap="nowrap">2023-11-02<br>21:25:00</td>
+                            <td nowrap="nowrap">2023-11-09<br>21:25:00</td>
+                            <td nowrap="nowrap"><strong>57 000.00</strong></td>
+                            <td>Опубликовано (прием ценовых предложений)</td>
+                        </tr>
+                                            </tbody>
+                </table>
+                <div class="row">
+    <div class="col-md-3 text-left">
+        <div class="dataTables_info" role="status" aria-live="polite">Показано 1 по 50 из 500000 записей</div>
+    </div>
+    <div class="col-md-6 text-center">
+        <nav aria-label="Постраничная навигация">
+            <ul class="pagination m-t-xxs">
+                <li>
+                                        <a href="javascript:void(0)" aria-label="Назад">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                                    </li>
+                                                            <li class="active"><a href="javascript:void(0)">1</a></li>
+                                                                                <li><a href="https://v3bl.goszakup.gov.kz/ru/search/announce?count_record=50&page=2">2</a></li>
+                                                                                <li><a href="https://v3bl.goszakup.gov.kz/ru/search/announce?count_record=50&page=3">3</a></li>
+                                                                                <li><a href="https://v3bl.goszakup.gov.kz/ru/search/announce?count_record=50&page=4">4</a></li>
+                                                                                <li><a href="https://v3bl.goszakup.gov.kz/ru/search/announce?count_record=50&page=5">5</a></li>
+                                                                                <li><a href="https://v3bl.goszakup.gov.kz/ru/search/announce?count_record=50&page=6">6</a></li>
+                                                                                <li><a href="https://v3bl.goszakup.gov.kz/ru/search/announce?count_record=50&page=7">7</a></li>
+                                                    <li>
+                                    <a href="https://v3bl.goszakup.gov.kz/ru/search/announce?count_record=50&page=10000" aria-label="Вперед">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="col-md-3 text-left">
+        <div class="form-group">
+            <label class="col-sm-8 control-label text-right">Показывать по </label>
+            <div class="col-sm-4">
+                <select class="form-control m-b-sm" style="width: 80px" onchange="ajax_set_count_record(this)">
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="30">30</option>
+                                            <option value="40">40</option>
+                                            <option value="50" selected="selected">50</option>
+                                            <option value="70">70</option>
+                                            <option value="100">100</option>
+                                            <option value="500">500</option>
+                                            <option value="2000">2000</option>
+                                    </select>
             </div>
         </div>
     </div>
-</div></div>
+</div>
+<script type="text/javascript">
+    function site_url() {
+        var lang = 'ru';
+        var url = window.location.href.split('/');
+        var http = location.protocol;
+        var hostname = window.location.hostname;
+
+        switch (url[3]) {
+            case 'kz':
+            case 'en':
+                lang = url[3];
+                break;
+            default:
+                lang = 'ru';
+                break;
+        }
+
+        return http + '//' + hostname + '/' + lang + '/register/plansreg';
+    }
+    function ajax_set_count_record(select) {
+        var count = $(select).val();
+        var href = location.pathname+'?ajax=Y&count_record='+count;
+        $.ajax({
+            type: "POST",
+            async: true,
+            cache: false,
+            url: href,
+            data: count,
+            success: function (data) {
+                location.reload(true);
+            },
+            error: function () {
+                $('#ajax_result').html('<div class="alert alert-danger">Ошибка выполнения запроса, попробуйте позже</div>').removeClass('hidden');
+                return;
+            }
+        });
+    }
+</script>            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var table = $('.dataTable').dataTable({
+            "sDom": '<"row"<"col-md-6"f>>rt<"clear">',
+            "info": false,
+            "searching": false,
+            "language": {
+                "lengthMenu": "Отображать _MENU_",
+                "zeroRecords": "Ничего не найдено",
+                "info": "Страница _PAGE_ из _PAGES_",
+                "infoEmpty": "Ничего не найдено",
+                "infoFiltered": "(найдено из _MAX_ заказов)",
+                "sSearch": "Быстрый поиск:&nbsp;",
+                "paginate": {
+                    "first": "В начало",
+                    "last": "В конец",
+                    "next": "Вперед",
+                    "previous": "Назад"
+                }
+            },
+            "pageLength": 10,
+            bSort : false,
+            paging: false,
+            responsive: {
+                details: {
+                    display: $.fn.dataTable.Responsive.display.childRowImmediate,
+                    type: '',
+                    renderer: function ( api, rowIdx, columns ) {
+                        var data = $.map( columns, function ( col, i ) {
+                            return col.hidden ?
+                                '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
+                                '<td>'+col.title+':'+'</td> '+
+                                '<td>'+col.data+'</td>'+
+                                '</tr>' :
+                                '';
+                        } ).join('');
+
+                        return data ?
+                            $('<table class="table"/>').append( data ) :
+                            false;
+                    }
+                }
+            }
+        });
+        //new $.fn.dataTable.FixedHeader( table );
+    });
+
+    $('.favorite').on('click', function () {
+        var id = $(this).data('id');
+        $.get('/ru/favorites/fav/', {action: "add", id: id}, function () {
+            location.reload();
+        });
+    });
+
+</script></div>
         <div class="clearfix"></div>
         
             </div>
