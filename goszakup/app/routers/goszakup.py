@@ -19,14 +19,25 @@ async def goszakup_auth(
     return result
 
 
-@router.post("/check_tender/", tags=["goszakup"])
-async def check_tender(
+@router.post("/tender_check/", tags=["goszakup"])
+async def tender_check(
     auth_data: AuthScheme,
     announce_number: str = Query(default=11656750),
 ):
     auth_session = await get_auth_session(auth_data)
     tender = TenderManager(auth_session, announce_number, auth_data)
     result = await tender.check_announce()
+    return result
+
+
+@router.post("/tender_start/", tags=["goszakup"])
+async def tender_start(
+    auth_data: AuthScheme,
+    announce_number: str = Query(default=11608669),
+):
+    auth_session = await get_auth_session(auth_data)
+    tender = TenderManager(auth_session, announce_number, auth_data)
+    result = await tender.start()
     return result
 
     # try:
