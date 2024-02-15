@@ -5,12 +5,15 @@ class ProjectError(Exception):
     pass
 
 
-class AsyncRequestFailed(HTTPException):
+class RequestFailed(HTTPException):
     def __init__(self, status_code, url, html) -> None:
+        error_code = "request_failed"
+        if status_code == 500:
+            error_code = "goszakup_server_error"
         detail = {
-            "error_code": "AsyncRequestFailed",
+            "error_code": error_code,
             "url": url,
-            "status_code": status_code,
+            "response_status_code": status_code,
             "HTML": html,
         }
         super().__init__(status_code, detail)

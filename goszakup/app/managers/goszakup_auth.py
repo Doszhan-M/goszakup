@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from .base import BaseParser
 from app.core.config import settings
-from app.services import get_new_aiohttp_session
+from app.services import get_aiohttp_session
 
 
 logger = getLogger("fastapi")
@@ -13,7 +13,7 @@ cookie_time_delta = 110
 cookie_time_delta_test = 5
 
 
-class GoszakupAuthParser(BaseParser):
+class GoszakupAuthorization(BaseParser):
     """Manager for getting cookie from sud.kz."""
 
     def __init__(self, aiohttp_session, *args, **kwargs):
@@ -55,16 +55,15 @@ class GoszakupAuthParser(BaseParser):
 
 async def get_goszakup_auth_session() -> aiohttp.ClientSession:
     session: aiohttp.ClientSession = active_sessions.get("aiohttp_session")
-    delta = timedelta(minutes=cookie_time_delta)
-    # delta = timedelta(seconds=cookie_time_delta_test)
     if session:
+        delta = timedelta(minutes=cookie_time_delta)
         cookie_not_fresh = active_sessions["set_time"] + delta < datetime.now()
         if cookie_not_fresh:
             await session.close()
             session = None
     if not session:
-        new_aiohttp_session = await get_new_aiohttp_session()
-        manager = GoszakupAuthParser(new_aiohttp_session)
+        new_aiohttp_session = await get_aiohttp_session()
+        manager = GoszakupAuthorization(new_aiohttp_session)
         session = await manager.login_goszakup()
-        print('session: ', session)
+        print("session: ", session)
     return session

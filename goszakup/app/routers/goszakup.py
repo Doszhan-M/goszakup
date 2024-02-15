@@ -8,7 +8,7 @@ router = APIRouter()
 
 
 @router.get("/auth/", tags=["goszakup"])
-async def auth_goszakup(
+async def goszakup_auth(
     goszakup_auth_session: ClientSession = Depends(get_goszakup_auth_session),
 ):
     if goszakup_auth_session:

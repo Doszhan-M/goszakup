@@ -6,7 +6,7 @@ from aiohttp import TCPConnector
 from aiohttp import ClientSession
 
 from app.core.config import settings
-from app.services.exception import AsyncRequestFailed
+from app.services.exception import RequestFailed
 
 
 logger = getLogger("fastapi")
@@ -48,7 +48,7 @@ class BaseParser:
         ) as response:
             if response.status not in (200,):
                 html = await response.text()
-                raise AsyncRequestFailed(response.status, url, html)
+                raise RequestFailed(response.status, url, html)
             if decode == "text":
                 return await response.text()
             elif decode == "json":
