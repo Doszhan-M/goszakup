@@ -54,7 +54,6 @@ class BaseParser:
     def prepare_payload_for_sign(self, xml, eds, eds_pass) -> dict:
         """Prepare payload for sign by ncanode."""
 
-        # xml = re.sub("<\?xml[^>]+>", "", xml)
         xml = re.sub(r"<\?xml[^>]+>", "", xml)
         payload = {
             "version": "1.0",

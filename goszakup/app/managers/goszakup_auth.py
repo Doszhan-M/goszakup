@@ -22,7 +22,7 @@ class GoszakupAuthorization(BaseParser):
         self.eds_auth: str = auth_data.eds_auth
         self.eds_pass: str = auth_data.eds_pass
         self.goszakup_pass: str = auth_data.goszakup_pass
-        self.session_expire = 60
+        self.session_expire = 60  # minute
 
     async def login_goszakup(self) -> any:
         """Log in to sud via eds and return cookie."""
@@ -46,7 +46,7 @@ class GoszakupAuthorization(BaseParser):
         return response_html
 
     async def send_password(self) -> str:
-        data = {"password": self.eds_pass, "agreed_check": "on"}
+        data = {"password": self.goszakup_pass, "agreed_check": "on"}
         confirm_url: str = "https://v3bl.goszakup.gov.kz/ru/user/auth_confirm"
         confirm = await self.async_request("POST", confirm_url, payload=data)
         return confirm
@@ -59,12 +59,13 @@ class GoszakupAuthorization(BaseParser):
 
 
 async def get_auth_session(auth_data: AuthScheme = Depends()) -> aiohttp.ClientSession:
-    session: aiohttp.ClientSession = active_sessions.get(auth_data.iin_bin)
-    if session:
-        if session["expire"] < datetime.now():
+    auth_session = active_sessions.get(auth_data.iin_bin)
+    if auth_session:
+        session: aiohttp.ClientSession = auth_session["session"]
+        if auth_session["expire"] < datetime.now():
             await session.close()
-            session = None
-    if not session:
+            auth_session = None
+    if not auth_session:
         new_aiohttp_session = await get_aiohttp_session()
         manager = GoszakupAuthorization(new_aiohttp_session, auth_data)
         session = await manager.login_goszakup()

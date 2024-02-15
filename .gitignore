@@ -3,6 +3,7 @@
 **/__pycache__/
 *.log*
 rm_volume
+test.html
 
 test1.py
 test2.py

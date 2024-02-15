@@ -2,19 +2,22 @@ import asyncio
 from logging import getLogger
 
 from .base import BaseParser
-from app.core.config import settings
 
 
 logger = getLogger("fastapi")
 
 
-class GoszakupParser(BaseParser):
-    
-    def __init__(self, aiohttp_session, *args, **kwargs):
-        super().__init__(aiohttp_session=aiohttp_session, *args, **kwargs)
-        self.url: str = "https://v3bl.goszakup.gov.kz/ru/announce/index/11257729"
+class TenderManager(BaseParser):
 
-    async def goszakup(self) -> any:
+    def __init__(self, aiohttp_session, announcement_number, auth_data, *args, **kwargs):
+        super().__init__(aiohttp_session=aiohttp_session, *args, **kwargs)
+        self.eds_gos: str = auth_data.eds_gos
+        self.eds_pass: str = auth_data.eds_pass        
+        self.url: str = (
+            f"https://v3bl.goszakup.gov.kz/ru/announce/index/{announcement_number}"
+        )
+
+    async def start(self) -> any:
 
         async with self.aiohttp_session.get(self.url) as response:
             response_text = await response.text()

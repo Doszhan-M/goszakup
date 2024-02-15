@@ -2,7 +2,7 @@ from aiohttp import ClientSession
 from fastapi import APIRouter, Depends, Query
 
 from app.schemas import AuthScheme
-from app.managers import GoszakupParser, get_auth_session
+from app.managers import TenderManager, get_auth_session
 
 
 router = APIRouter()
@@ -19,16 +19,20 @@ async def goszakup_auth(
     return result
 
 
-@router.get("/goszakup/", tags=["goszakup"])
+@router.post("/goszakup/", tags=["goszakup"])
 async def goszakup(
-    announcement_number: str = Query(default=555555),
-    auth_session: ClientSession = Depends(get_auth_session),
+    auth_data: AuthScheme,
+    announcement_number: str = Query(default=11257729),
 ):
-    try:
-        goszakup = GoszakupParser(auth_session)
-        await goszakup.goszakup()
-    except RuntimeError as e:
-        if str(e) == "Session is closed":
-            auth_session = await get_auth_session()
-            goszakup = GoszakupParser(auth_session)
-            await goszakup.goszakup()
+    auth_session = await get_auth_session(auth_data)
+    tender = TenderManager(auth_session, announcement_number, auth_data)
+    await tender.start()
+    # try:
+    #     auth_session = await get_auth_session(auth_data)
+    #     goszakup = TenderManager(auth_session, announcement_number)
+    #     await goszakup.goszakup()
+    # except RuntimeError as e:
+    #     if str(e) == "Session is closed":
+    #         auth_session = await get_auth_session(auth_data)
+    #         goszakup = TenderManager(auth_session)
+    #         await goszakup.goszakup()
