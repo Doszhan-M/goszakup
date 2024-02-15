@@ -22,14 +22,14 @@ async def goszakup_auth(
 @router.post("/goszakup/", tags=["goszakup"])
 async def goszakup(
     auth_data: AuthScheme,
-    announcement_number: str = Query(default=11257729),
+    announce_number: str = Query(default=11656750),
 ):
     auth_session = await get_auth_session(auth_data)
-    tender = TenderManager(auth_session, announcement_number, auth_data)
+    tender = TenderManager(auth_session, announce_number, auth_data)
     await tender.start()
     # try:
     #     auth_session = await get_auth_session(auth_data)
-    #     goszakup = TenderManager(auth_session, announcement_number)
+    #     goszakup = TenderManager(auth_session, announce_number)
     #     await goszakup.goszakup()
     # except RuntimeError as e:
     #     if str(e) == "Session is closed":
