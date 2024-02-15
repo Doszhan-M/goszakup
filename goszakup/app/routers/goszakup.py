@@ -8,7 +8,7 @@ from app.managers import TenderManager, get_auth_session
 router = APIRouter()
 
 
-@router.post("/auth/", tags=["goszakup"])
+@router.post("/goszakup_auth/", tags=["goszakup"])
 async def goszakup_auth(
     auth_data: AuthScheme,
     auth_session: ClientSession = Depends(get_auth_session),
@@ -19,14 +19,16 @@ async def goszakup_auth(
     return result
 
 
-@router.post("/goszakup/", tags=["goszakup"])
-async def goszakup(
+@router.post("/check_tender/", tags=["goszakup"])
+async def check_tender(
     auth_data: AuthScheme,
     announce_number: str = Query(default=11656750),
 ):
     auth_session = await get_auth_session(auth_data)
     tender = TenderManager(auth_session, announce_number, auth_data)
-    await tender.start()
+    result = await tender.check_announce()
+    return result
+
     # try:
     #     auth_session = await get_auth_session(auth_data)
     #     goszakup = TenderManager(auth_session, announce_number)
