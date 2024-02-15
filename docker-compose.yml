@@ -27,6 +27,8 @@ services:
       RABBITMQ_DEFAULT_PASS: "rabbitmq_pass"
       TZ: Asia/Almaty
       RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit consumer_timeout 2592000000
+    volumes:
+      - "./rm_volume:/var/lib/rabbitmq"      
     ports:
       - "5672:5672"
       - "15672:15672"

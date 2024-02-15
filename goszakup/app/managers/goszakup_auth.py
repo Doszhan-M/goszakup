@@ -2,39 +2,38 @@ import aiohttp
 from logging import getLogger
 from datetime import datetime, timedelta
 
+from fastapi import Depends
+
 from .base import BaseParser
-from app.core.config import settings
-from app.services import get_aiohttp_session
+from app.schemas import AuthScheme
+from app.services import get_aiohttp_session, active_sessions
 
 
 logger = getLogger("fastapi")
-active_sessions = {"aiohttp_session": None}
-cookie_time_delta = 110
-cookie_time_delta_test = 5
 
 
 class GoszakupAuthorization(BaseParser):
     """Manager for getting cookie from sud.kz."""
 
-    def __init__(self, aiohttp_session, *args, **kwargs):
-        super().__init__(aiohttp_session=aiohttp_session, *args, **kwargs)
+    def __init__(self, aiohttp_session, auth_data, *args, **kwargs):
+        super().__init__(aiohttp_session, *args, **kwargs)
         self._login_key_url: str = "https://v3bl.goszakup.gov.kz/ru/user/sendkey/kz"
+        self.iin_bin: str = auth_data.iin_bin
+        self.eds_auth: str = auth_data.eds_auth
+        self.eds_pass: str = auth_data.eds_pass
+        self.goszakup_pass: str = auth_data.goszakup_pass
+        self.session_expire = 60
 
     async def login_goszakup(self) -> any:
         """Log in to sud via eds and return cookie."""
 
         key_for_sign = await self.async_request("POST", self._login_key_url)
         xml_to_sign = self.build_xml(key_for_sign)
-        signed_xml = await self.sign_xml(xml_to_sign, self._eds_auth)
+        signed_xml = await self.sign_xml(xml_to_sign, self.eds_auth, self.eds_pass)
         await self.send_signed_eds(signed_xml)
         await self.send_password()
-        self.set_aiohttp_session()
+        await self.store_aiohttp_session()
         return self.aiohttp_session
-
-    def set_aiohttp_session(self) -> None:
-        active_sessions["aiohttp_session"] = self.aiohttp_session
-        active_sessions["set_time"] = datetime.now()
-        logger.info("Acquired a new auth cookie!")
 
     def build_xml(self, key_for_sign) -> str:
         xml = f'<?xml version="1.0" encoding="UTF-8"?><root><key>{key_for_sign}</key></root>'
@@ -47,23 +46,26 @@ class GoszakupAuthorization(BaseParser):
         return response_html
 
     async def send_password(self) -> str:
-        data = {"password": settings.GOSZAKUP_PASSWORD, "agreed_check": "on"}
+        data = {"password": self.eds_pass, "agreed_check": "on"}
         confirm_url: str = "https://v3bl.goszakup.gov.kz/ru/user/auth_confirm"
         confirm = await self.async_request("POST", confirm_url, payload=data)
         return confirm
 
+    async def store_aiohttp_session(self) -> None:
+        delta = timedelta(minutes=self.session_expire)
+        session = {"session": self.aiohttp_session, "expire": datetime.now() + delta}
+        active_sessions[self.iin_bin] = session
+        logger.info(f"Store new session for {self.iin_bin}!")
 
-async def get_auth_session() -> aiohttp.ClientSession:
-    session: aiohttp.ClientSession = active_sessions.get("aiohttp_session")
+
+async def get_auth_session(auth_data: AuthScheme = Depends()) -> aiohttp.ClientSession:
+    session: aiohttp.ClientSession = active_sessions.get(auth_data.iin_bin)
     if session:
-        delta = timedelta(minutes=cookie_time_delta)
-        cookie_not_fresh = active_sessions["set_time"] + delta < datetime.now()
-        if cookie_not_fresh:
+        if session["expire"] < datetime.now():
             await session.close()
             session = None
     if not session:
         new_aiohttp_session = await get_aiohttp_session()
-        manager = GoszakupAuthorization(new_aiohttp_session)
+        manager = GoszakupAuthorization(new_aiohttp_session, auth_data)
         session = await manager.login_goszakup()
-        print("session: ", session)
     return session

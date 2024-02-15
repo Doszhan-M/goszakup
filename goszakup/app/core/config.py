@@ -10,10 +10,6 @@ if getenv("IN_DOCKER") != "TRUE":
 
 
 class Settings(BaseSettings):
-    EDSAUTH: str
-    EDSGOS: str
-    EDSPASS: str
-    GOSZAKUP_PASSWORD: str
     NCANODEURL: str
 
 

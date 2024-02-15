@@ -8,7 +8,7 @@ ENV TZ=Asia/Almaty \
     PYTHONUNBUFFERED=1 
 
 # Install Google Chrome and Chromedriver 
-RUN apt update && apt install curl -y
+RUN apt update && apt install curl -y && apt clean
     
 WORKDIR /goszakup/
 

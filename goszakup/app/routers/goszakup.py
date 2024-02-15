@@ -1,19 +1,22 @@
 from aiohttp import ClientSession
 from fastapi import APIRouter, Depends, Query
 
-from app.managers import get_auth_session, GoszakupParser
+from app.schemas import AuthScheme
+from app.managers import GoszakupParser, get_auth_session
 
 
 router = APIRouter()
 
 
-@router.get("/auth/", tags=["goszakup"])
+@router.post("/auth/", tags=["goszakup"])
 async def goszakup_auth(
+    auth_data: AuthScheme,
     auth_session: ClientSession = Depends(get_auth_session),
 ):
-    if auth_session:
-        return {"success": True}
-    return {"success": False}
+    result = {"iin_bin": auth_data.iin_bin, "auth_session_exist": True}
+    if not auth_session:
+        result["auth_session_exist"] = False
+    return result
 
 
 @router.get("/goszakup/", tags=["goszakup"])

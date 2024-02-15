@@ -15,11 +15,6 @@ logger = getLogger("fastapi")
 class BaseParser:
     """Common methods to parsers."""
 
-    _eds_auth: str = settings.EDSAUTH
-    _eds_gos: str = settings.EDSGOS
-    _eds_pass: str = settings.EDSPASS
-    _ncanode_url: str = settings.NCANODEURL
-
     def __init__(self, aiohttp_session, *args, **kwargs) -> None:
         self.aiohttp_session: ClientSession = aiohttp_session
         ssl_context = ssl.create_default_context()
@@ -56,10 +51,11 @@ class BaseParser:
             elif not decode:
                 return response
 
-    def prepare_payload_for_sign(self, xml, eds) -> dict:
+    def prepare_payload_for_sign(self, xml, eds, eds_pass) -> dict:
         """Prepare payload for sign by ncanode."""
 
-        xml = re.sub("<\?xml[^>]+>", "", xml)
+        # xml = re.sub("<\?xml[^>]+>", "", xml)
+        xml = re.sub(r"<\?xml[^>]+>", "", xml)
         payload = {
             "version": "1.0",
             "method": "XML.sign",
@@ -67,7 +63,7 @@ class BaseParser:
                 "checkCrl": "false",
                 "checkOcsp": "false",
                 "p12": eds,
-                "password": self._eds_pass,
+                "password": eds_pass,
                 "xml": xml,
                 "createTsp": False,
                 "verifyOcsp": "false",
@@ -83,14 +79,14 @@ class BaseParser:
         signed_data = str(signed_xml["result"]["xml"])
         return signed_data
 
-    async def sign_xml(self, xml, eds) -> str:
+    async def sign_xml(self, xml, eds, eds_pass) -> str:
         """Sign xml from egov by local ncanode"""
 
-        payload = self.prepare_payload_for_sign(xml, eds)
+        payload = self.prepare_payload_for_sign(xml, eds, eds_pass)
         headers = {"Content-Type": "application/json"}
         signed_xml = await self.async_request(
             "POST",
-            self._ncanode_url,
+            settings.NCANODEURL,
             headers=headers,
             payload=payload,
             decode="json",
