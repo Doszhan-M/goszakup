@@ -1,11 +1,38 @@
 version: '3.9'
 
 services:
+  goszakup:
+    build: goszakup/.
+    restart: always
+    env_file:
+      - ./env/goszakup.env
+    volumes:
+      - ./goszakup/app:/goszakup/app
+    ports:
+      - "8001:8000"
 
   ncanode:
-    image: nurdinkz/ncanode:2.3.1
+    image: uchetkz/nca-node:2.3
     restart: always
     logging:
       driver: "none"
     ports:
       - "14579:14579"
+
+  rabbitmq:
+    image: "rabbitmq:3.12.12-management"
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: "rabbitmq_user"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq_pass"
+      TZ: Asia/Almaty
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit consumer_timeout 2592000000
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  redis:
+    image: redis:7.2.4
+    restart: always
+    ports:
+      - 6379:6379

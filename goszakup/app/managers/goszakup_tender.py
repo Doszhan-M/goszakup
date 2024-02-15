@@ -17,6 +17,6 @@ class GoszakupParser(BaseParser):
 
         async with self.aiohttp_session.get(self.url) as response:
             response_text = await response.text()
-            with open("test.html", "w") as file:
+            with open("app/test.html", "w") as file:
                 file.write(response_text)
         return response_text

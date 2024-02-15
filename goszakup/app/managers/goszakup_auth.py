@@ -53,7 +53,7 @@ class GoszakupAuthorization(BaseParser):
         return confirm
 
 
-async def get_goszakup_auth_session() -> aiohttp.ClientSession:
+async def get_auth_session() -> aiohttp.ClientSession:
     session: aiohttp.ClientSession = active_sessions.get("aiohttp_session")
     if session:
         delta = timedelta(minutes=cookie_time_delta)

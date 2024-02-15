@@ -1,11 +1,4 @@
-aiohttp==3.8.6
-beautifulsoup4==4.12.2
+aiohttp==3.9.3
 colorlog == 6.7.0
-gunicorn == 20.1.0
-fastapi[all]==0.104.1
-lxml==4.9.3
+fastapi[all]==0.109.2
 redis==5.0.1
-# redis==4.6.0
-requests==2.31.0
-tenacity==8.2.3
-selenium==4.14.0
