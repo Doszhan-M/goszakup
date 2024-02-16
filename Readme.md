@@ -9,4 +9,5 @@
 
 941140001504
 
-https://v3bl.goszakup.gov.kz/ru/application/create/11608669
+https://v3bl.goszakup.gov.kz/ru/application/create/11608950
+

@@ -55,7 +55,7 @@ class GoszakupAuthorization(BaseParser):
         delta = timedelta(minutes=self.session_expire)
         session = {"session": self.aiohttp_session, "expire": datetime.now() + delta}
         active_sessions[self.iin_bin] = session
-        logger.info(f"Store new session for {self.iin_bin}!")
+        logger.info(f"Store new session for {self.iin_bin}")
 
 
 async def get_auth_session(auth_data: AuthScheme = Depends()) -> aiohttp.ClientSession:

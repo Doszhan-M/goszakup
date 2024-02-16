@@ -4,6 +4,7 @@ from json import dumps
 from logging import getLogger
 from aiohttp import TCPConnector
 from aiohttp import ClientSession
+from aiohttp.client_reqrep import ClientResponse
 
 from app.core.config import settings
 from app.services.exception import RequestFailed
@@ -30,7 +31,7 @@ class BaseParser:
         headers={"content-type": "application/x-www-form-urlencoded"},
         payload=None,
         decode="text",
-    ) -> str | dict:
+    ) -> str | dict | ClientResponse:
         """Send request by aiohttp."""
 
         if (
@@ -38,18 +39,18 @@ class BaseParser:
             and headers.get("Content-Type") == "application/json"
         ):
             payload = dumps(payload).encode("utf-8")
-        async with self.aiohttp_session.request(
+        response = await self.aiohttp_session.request(
             method, url, headers=headers, data=payload
-        ) as response:
-            if response.status not in (200,):
-                html = await response.text()
-                raise RequestFailed(response.status, url, html)
-            if decode == "text":
-                return await response.text()
-            elif decode == "json":
-                return await response.json()
-            elif not decode:
-                return response
+        )
+        if response.status == 500:
+            html = await response.text()
+            raise RequestFailed(response.status, url, html)
+        if decode == "text":
+            return await response.text()
+        elif decode == "json":
+            return await response.json()
+        elif not decode:
+            return response
 
     def prepare_payload_for_sign(self, xml, eds, eds_pass) -> dict:
         """Prepare payload for sign by ncanode."""
