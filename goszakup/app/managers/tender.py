@@ -16,8 +16,4 @@ class TenderManager(EdsManager):
 
     def check_announce(self) -> any:
         
-        self.web_driver.get(self.auth_url)
-        eds_select = self.web_driver.find_element(By.ID, "selectP12File")
-        self.execute_sign_by_eds("auth_eds", eds_select)
-        
-        sleep(5)
+        pass

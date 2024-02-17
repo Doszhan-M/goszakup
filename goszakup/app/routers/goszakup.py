@@ -9,7 +9,7 @@ router = APIRouter()
 
 
 @router.post("/goszakup_auth/", tags=["goszakup"])
-async def goszakup_auth(
+def goszakup_auth(
     auth_data: AuthScheme,
     auth_session: ClientSession = Depends(get_auth_session),
 ):

@@ -6,4 +6,3 @@ async def get_aiohttp_session() -> aiohttp.ClientSession:
         return session
 
 
-active_sessions = {}

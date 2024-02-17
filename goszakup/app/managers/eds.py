@@ -4,7 +4,7 @@ from time import sleep
 import pyautogui
 
 from app.schemas import AuthScheme
-from app.services import webdriver_manager
+from app.services import WebDriverManager
 
 
 logger = getLogger("fastapi")
@@ -13,7 +13,8 @@ eds_manager_busy = False
 
 class EdsManager:
 
-    def __init__(self, auth_data: AuthScheme, *args, **kwargs) -> None:
+    def __init__(self, auth_data: AuthScheme, session=None, *args, **kwargs) -> None:
+        self.web_driver = session
         self.eds_auth = auth_data.eds_auth
         self.eds_gos = auth_data.eds_gos
         self.eds_pass = auth_data.eds_pass
@@ -21,13 +22,15 @@ class EdsManager:
 
     def __enter__(self):
 
-        self.webdriver_manager = webdriver_manager
+        self.webdriver_manager = WebDriverManager(self.web_driver)
+        if not self.web_driver:
+            self.web_driver = self.webdriver_manager.start_window()
         self.web_driver: Chrome = self.webdriver_manager.open_new_tab()
         self.web_driver.implicitly_wait(10)
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        print("finish TenderManager")
+        logger.info("close tab")
         self.webdriver_manager.close_current_tab()
 
     def execute_sign_by_eds(self, type_, call_bnt) -> None:
