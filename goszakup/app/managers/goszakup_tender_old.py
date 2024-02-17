@@ -26,16 +26,16 @@ class TenderManager(BaseParser):
         self.all_applications = "https://v3bl.goszakup.gov.kz/ru/myapp"
 
     async def start(self) -> any:
-        # await self.waiting_until_the_start()
-        # application_data = await self.collect_application_data()
-        # success = await self.request_application(application_data)
-        # if success:
-        #     docs_url = await self.get_docs_url()
-        #     required_docs_urls = await self.get_required_docs_links(docs_url)
-        #     res = await self.sign_docs(required_docs_urls)
-        docs_url = await self.get_docs_url()
-        required_docs_urls = await self.get_required_docs_links(docs_url)
-        res = await self.sign_docs(required_docs_urls)
+        await self.waiting_until_the_start()
+        application_data = await self.collect_application_data()
+        success = await self.request_application(application_data)
+        if success:
+            docs_url = await self.get_docs_url()
+            required_docs_urls = await self.get_required_docs_links(docs_url)
+            res = await self.sign_docs(required_docs_urls)
+        # docs_url = await self.get_docs_url()
+        # required_docs_urls = await self.get_required_docs_links(docs_url)
+        # res = await self.sign_docs(required_docs_urls)
 
     async def sign_docs(self, required_docs_urls) -> any:
         """Подписать документы."""

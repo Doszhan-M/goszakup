@@ -24,7 +24,8 @@ def tender_check(
     auth_data: AuthScheme,
     announce_number: str = Query(default=11656750),
 ):
-    with TenderManager(announce_number, auth_data) as tender:
+    auth_session = get_auth_session(auth_data)
+    with TenderManager(auth_session, announce_number, auth_data) as tender:
         result = tender.check_announce()
     return result
 

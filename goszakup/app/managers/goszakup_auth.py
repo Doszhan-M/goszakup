@@ -77,6 +77,7 @@ class GoszakupAuthorization(EdsManager):
 
 
 def get_auth_session(auth_data: AuthScheme = Depends()) -> any:
+    global active_sessions
     auth_session = active_sessions.get(auth_data.iin_bin)
     if auth_session:
         session = auth_session["session"]
