@@ -6,12 +6,18 @@ from .config import clear_envs
 from .logger import CustomLogger
 
 
+async def lifespan(app: FastAPI):
+    clear_envs()
+    yield
+
+
 app = FastAPI(
-    title="Egov Parsers",
-    version="1.0.0",
+    title="Goszakup",
+    version="2.0.0",
     docs_url=None,
     redoc_url=None,
     openapi_url=None,
+    lifespan=lifespan,
 )
 app.logger = CustomLogger().set_logger()
 app.add_middleware(
@@ -22,11 +28,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(base.router)
-
-
-@app.on_event("startup")
-async def startup():
-    clear_envs()
 
 
 @app.get("/healthcheck/")

@@ -2,3 +2,4 @@ aiohttp==3.9.3
 beautifulsoup4==4.12.3
 colorlog == 6.7.0
 fastapi[all]==0.109.2
+selenium==4.17.2

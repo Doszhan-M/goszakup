@@ -10,6 +10,7 @@ if getenv("IN_DOCKER") != "TRUE":
 
 
 class Settings(BaseSettings):
+    IN_DOCKER: bool
     NCANODEURL: str
 
 

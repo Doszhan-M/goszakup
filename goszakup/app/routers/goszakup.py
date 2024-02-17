@@ -20,13 +20,12 @@ async def goszakup_auth(
 
 
 @router.post("/tender_check/", tags=["goszakup"])
-async def tender_check(
+def tender_check(
     auth_data: AuthScheme,
     announce_number: str = Query(default=11656750),
 ):
-    auth_session = await get_auth_session(auth_data)
-    tender = TenderManager(auth_session, announce_number, auth_data)
-    result = await tender.check_announce()
+    with TenderManager(announce_number, auth_data) as tender:
+        result = tender.check_announce()
     return result
 
 
