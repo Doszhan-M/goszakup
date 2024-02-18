@@ -2,33 +2,58 @@ version: '3.9'
 
 services:
   goszakup:
-    build: goszakup/.
+    build: ncalayer/.
     restart: always
-    env_file:
-      - ./env/goszakup.env
+    privileged: true
     volumes:
-      - ./goszakup/app:/goszakup/app
-    ports:
-      - "8001:8000"
-
-  ncanode:
-    image: uchetkz/nca-node:2.3
-    restart: always
-    logging:
-      driver: "none"
-    ports:
-      - "14579:14579"
-
-  rabbitmq:
-    image: "rabbitmq:3.12.12-management"
-    restart: always
+        - /tmp/.X11-unix:/tmp/.X11-unix
+        - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+    #   - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+    #   - /tmp/.X11-unix:/tmp/.X11-unix
+    # environment:
+    #   - DISPLAY=${DISPLAY}      
+    network_mode: host
     environment:
-      RABBITMQ_DEFAULT_USER: "rabbitmq_user"
-      RABBITMQ_DEFAULT_PASS: "rabbitmq_pass"
-      TZ: Asia/Almaty
-      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit consumer_timeout 2592000000
-    volumes:
-      - "./rm_volume:/var/lib/rabbitmq"      
+      - TZ=Asia/Almaty
+      - DISPLAY=unix$DISPLAY
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "5900:5900"
+      - "80:80"
+
+  # goszakup:
+  #   build: goszakup/.
+  #   restart: always
+  #   privileged: true
+  #   env_file:
+  #     - ./env/goszakup.env
+  #   volumes:
+  #     - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+  #     - /tmp/.X11-unix:/tmp/.X11-unix
+  #     - ./goszakup/app:/goszakup/app
+  #   environment:
+  #     - DISPLAY=${DISPLAY}      
+  #   network_mode: host
+    # ports:
+    #   - "8001:8000"
+
+  # ncanode:
+  #   image: uchetkz/nca-node:2.3
+  #   restart: always
+  #   logging:
+  #     driver: "none"
+  #   ports:
+  #     - "14579:14579"
+
+  # rabbitmq:
+  #   image: "rabbitmq:3.12.12-management"
+  #   restart: always
+  #   environment:
+  #     RABBITMQ_DEFAULT_USER: "rabbitmq_user"
+  #     RABBITMQ_DEFAULT_PASS: "rabbitmq_pass"
+  #     TZ: Asia/Almaty
+  #     RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit consumer_timeout 2592000000
+  #   volumes:
+  #     - "./rm_volume:/var/lib/rabbitmq"      
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"

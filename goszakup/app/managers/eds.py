@@ -1,7 +1,7 @@
 from logging import getLogger
 from selenium.webdriver import Chrome
 from time import sleep
-import pyautogui
+# import pyautogui
 
 from app.schemas import AuthScheme
 from app.services import WebDriverManager
@@ -9,6 +9,16 @@ from app.services import WebDriverManager
 
 logger = getLogger("fastapi")
 eds_manager_busy = False
+
+import os
+from pyvirtualdisplay.display import Display
+import Xlib.display
+
+disp = Display(visible=True, size=(1366, 768), backend="xvfb", use_xauth=True)
+disp.start()
+import pyautogui
+pyautogui._pyautogui_x11._display = Xlib.display.Display(os.environ['DISPLAY'])
+
 
 
 class EdsManager:
@@ -62,7 +72,7 @@ class EdsManager:
     def click_choose_btn(self) -> None:
         logger.info("click_choose_btn")
         choose_btn_path = (
-            "/home/asus/github/goszakup/goszakup/app/static/img/choose_btn.png"
+            "/goszakup/app/static/img/choose_btn.png"
         )
         self.click_btn(choose_btn_path)
 
@@ -77,7 +87,7 @@ class EdsManager:
     def click_open_btn(self) -> None:
         logger.info("click_open_btn")
         open_btn_path = (
-            "/home/asus/github/goszakup/goszakup/app/static/img/open_btn.png"
+            "/goszakup/app/static/img/open_btn.png"
         )
         self.click_btn(open_btn_path)
 
@@ -87,7 +97,7 @@ class EdsManager:
 
     def click_ok_btn(self) -> None:
         logger.info("click_ok_btn")
-        open_btn_path = "/home/asus/github/goszakup/goszakup/app/static/img/ok_btn.png"
+        open_btn_path = "/goszakup/app/static/img/ok_btn.png"
         self.click_btn(open_btn_path)
         global eds_manager_busy
         eds_manager_busy = False
