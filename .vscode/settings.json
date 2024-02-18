@@ -153,6 +153,7 @@
     "Ocsp",
     "parturl",
     "poolclass",
+    "prefs",
     "pyautogui",
     "pycache",
     "pydub",

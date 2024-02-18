@@ -31,21 +31,11 @@ def tender_check(
 
 
 @router.post("/tender_start/", tags=["goszakup"])
-async def tender_start(
+def tender_start(
     auth_data: AuthScheme,
     announce_number: str = Query(default=11608669),
 ):
-    auth_session = await get_auth_session(auth_data)
-    tender = TenderManager(auth_session, announce_number, auth_data)
-    result = await tender.start()
+    auth_session = get_auth_session(auth_data)
+    with TenderManager(auth_session, announce_number, auth_data) as tender:
+        result = tender.start()
     return result
-
-    # try:
-    #     auth_session = await get_auth_session(auth_data)
-    #     goszakup = TenderManager(auth_session, announce_number)
-    #     await goszakup.goszakup()
-    # except RuntimeError as e:
-    #     if str(e) == "Session is closed":
-    #         auth_session = await get_auth_session(auth_data)
-    #         goszakup = TenderManager(auth_session)
-    #         await goszakup.goszakup()
