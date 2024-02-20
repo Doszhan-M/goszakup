@@ -33,7 +33,7 @@ def tender_check(
 @router.post("/tender_start/", tags=["goszakup"])
 def tender_start(
     auth_data: AuthScheme,
-    announce_number: str = Query(default=11608669),
+    announce_number: str = Query(default=11674559),
 ):
     auth_session = get_auth_session(auth_data)
     with TenderManager(auth_session, announce_number, auth_data) as tender:

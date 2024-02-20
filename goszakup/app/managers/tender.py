@@ -4,6 +4,9 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
 
 from .eds import EdsManager
 from app.services.exception import TenderStartFailed
@@ -26,52 +29,120 @@ class TenderManager(EdsManager):
             f"https://v3bl.goszakup.gov.kz/ru/application/create/{announce_number}"
         )
 
-    def start(self) -> any:
+    def start(self) -> dict:
         self.waiting_until_the_start()
-        application_page = self.tender_start()
-        self.fill_application_data(application_page)
+        self.tender_start()
+        # self.fill_and_submit_application()
+        # required_docs_urls = self.get_required_docs_links()
+        # for url in required_docs_urls:
+        #     self.generate_document(url)
+        #     self.sign_document()
+        # self.next_page()
+        self.web_driver.get("https://v3bl.goszakup.gov.kz/ru/application/preview/11674559/53090028")
+        self.apply_application()
+        result = self.check_application_result()
         sleep(50)
-        # success = await self.request_application(application_data)
-        # if success:
-        #     docs_url = await self.get_docs_url()
-        #     required_docs_urls = await self.get_required_docs_links(docs_url)
-        #     res = await self.sign_docs(required_docs_urls)
+        return result
 
-    def fill_application_data(self, soup: BeautifulSoup) -> any:
-        """Заполнить необходимы поля заявки."""
+    def check_application_result(self) -> dict:
+        "После подтверждения может выйти ошибка."
+        
+        result = {"success": True, "error_text" : None, "success_text" : None}
+        try:
+            success = WebDriverWait(self.web_driver, 30).until(
+                EC.element_to_be_clickable((By.ID, "success"))
+            )
+            result["success_text"] = success.text
+        except TimeoutException:
+            error = WebDriverWait(self.web_driver, 30).until(
+                EC.element_to_be_clickable((By.ID, "errors"))
+            )
+            result["success"] = False
+            result["error_text"] = error.text
+        return result
+        
+    def apply_application(self) -> None:
+        "Нажать кнопку подать заявку."
+
+        apply_button = WebDriverWait(self.web_driver, 30).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, "//button[@id='next' and contains(text(), 'Подать заявку')]")
+            )
+        )
+        apply_button.click()
+        yes_button = WebDriverWait(self.web_driver, 30).until(
+            EC.element_to_be_clickable((By.ID, "btn_price_agree"))
+        )
+        yes_button.click()
+
+    def next_page(self) -> None:
+        "Вернуться к списку документов и нажать далее."
+
+        while True:
+            try:
+                footer = WebDriverWait(self.web_driver, 30).until(
+                    EC.element_to_be_clickable((By.CLASS_NAME, "panel-footer"))
+                )
+                button = footer.find_element(By.TAG_NAME, "a")
+                button.click()
+                break
+            except StaleElementReferenceException:
+                pass
+        next_button = WebDriverWait(self.web_driver, 30).until(
+            EC.element_to_be_clickable((By.ID, "next"))
+        )
+        next_button.click()
+
+    def sign_document(self) -> None:
+        "Подписать документ ЭЦП."
+
+        call_bnt = self.web_driver.find_element(By.CSS_SELECTOR, ".btn-add-signature")
+        self.execute_sign_by_eds("gos_eds", call_bnt)
+
+    def generate_document(self, url) -> None:
+        "Сформировать документ."
+
+        self.web_driver.get(url)
+        submit_button = self.web_driver.find_element(By.CSS_SELECTOR, ".btn.btn-info")
+        submit_button.click()
+
+    def get_required_docs_links(self) -> list:
+        """Вернуть список ссылок на документы обязательных для подписания."""
+
+        WebDriverWait(self.web_driver, 10).until(
+            EC.element_to_be_clickable((By.ID, "docs"))
+        )
+        html = self.web_driver.page_source
+        soup = BeautifulSoup(html, "html.parser")
+        table = soup.find("table")
+        rows = table.find_all("tr")
+        required_docs = []
+        for row in rows:
+            if "Не Обязателен" not in row.text:
+                link = row.find("a", href=True)
+                if link:
+                    required_docs.append(link["href"])
+        return required_docs
+
+    def fill_and_submit_application(self) -> None:
+        """Заполнить необходимые поля заявки и подать заявку."""
 
         must_select_data = {
             "subject_address": "050061",
             "iik": "KZ5696502F0017154550",
             "contact_phone": "7014333488",
         }
-        for field_name, partial_value in must_select_data.items():
-            print(field_name)
+        for field_name, search_text in must_select_data.items():
             select_element = self.web_driver.find_element(By.NAME, field_name)
-            print("select_element: ", select_element)
             select = Select(select_element)
             for option in select.options:
-                if partial_value in option.get_attribute("value"):
-                    select.select_by_value(option.get_attribute("value"))
+                if search_text in option.text:
+                    select.select_by_visible_text(option.text)
                     break
-        # address_option = soup.find("select", {"name": "subject_address"}).find(
-        #     lambda option: "050061" in option.text if option else False
-        # )
-        # address = address_option["value"].replace(" ", "+") if address_option else None
-        # iik_option = soup.find("select", {"name": "iik"}).find(
-        #     lambda option: ("KZ5696502F0017154550" in option.text if option else False)
-        # )
-        # iik = iik_option["value"].replace(" ", "+") if iik_option else None
-        # phone_option = soup.find("select", {"name": "contact_phone"}).find(
-        #     lambda option: "7014333488" in option.text if option else False
-        # )
-        # phone = (
-        #     phone_option["value"].strip().replace(" ", "+") if phone_option else None
-        # )
-        # data = {"subject_address": address, "iik": iik, "contact_phone": phone}
-        # return data
+        next_button = self.web_driver.find_element(By.ID, "next-without-captcha")
+        next_button.click()
 
-    def tender_start(self, try_count=2):
+    def tender_start(self, try_count=3600) -> None:
         """Запросить страницу заявки и ждать фактическое начало тендера."""
 
         self.web_driver.get(self.application_url)
