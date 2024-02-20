@@ -11,3 +11,4 @@
 
 https://v3bl.goszakup.gov.kz/ru/application/create/11608950
 
+https://v3bl.goszakup.gov.kz/ru/announce/index/11703621
