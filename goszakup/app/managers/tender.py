@@ -2,6 +2,7 @@ from time import sleep
 from logging import getLogger
 from bs4 import BeautifulSoup
 from datetime import datetime
+from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
@@ -9,18 +10,21 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
 
 from .eds import EdsManager
+from app.services import WebDriverManager
+from .goszakup_auth import GoszakupAuthorization
 from app.services.exception import TenderStartFailed
 
 
 logger = getLogger("fastapi")
 
 
-class TenderManager(EdsManager):
+class TenderManager():
 
-    def __init__(
-        self, auth_session, announce_number, auth_data, *args, **kwargs
-    ) -> None:
-        super().__init__(auth_data=auth_data, session=auth_session, *args, **kwargs)
+    def __init__(self, announce_number, auth_data, *args, **kwargs) -> None:
+        self.session_manager = GoszakupAuthorization(auth_data)
+        self.web_driver: Chrome = self.session_manager.get_auth_session()
+        self.webdriver_manager = WebDriverManager(self.web_driver)
+        self.eds_manager = EdsManager(auth_data)
         self.announce_number = announce_number
         self.announce_url: str = (
             f"https://v3bl.goszakup.gov.kz/ru/announce/index/{announce_number}"
@@ -40,6 +44,8 @@ class TenderManager(EdsManager):
         self.next_page()
         self.apply_application()
         result = self.check_application_result()
+        sleep(30)
+        self.session_manager.close_session()
         return result
 
     def waiting_until_the_start(self) -> None:
@@ -48,7 +54,6 @@ class TenderManager(EdsManager):
         self.web_driver.get(self.announce_url)
         announce = self.web_driver.page_source
         announce_detail = self.gather_announce_data(announce)
-        announce_detail["start_time"] = "2024-02-18 13:29:00"
         start_time_format = "%Y-%m-%d %H:%M:%S"
         start_time = datetime.strptime(announce_detail["start_time"], start_time_format)
         now = datetime.now()
@@ -122,7 +127,7 @@ class TenderManager(EdsManager):
         "Подписать документ ЭЦП."
 
         call_bnt = self.web_driver.find_element(By.CSS_SELECTOR, ".btn-add-signature")
-        self.execute_sign_by_eds("gos_eds", call_bnt)
+        self.eds_manager.execute_sign_by_eds("gos_eds", call_bnt)
 
     def next_page(self) -> None:
         "Вернуться к списку документов и нажать далее."
@@ -181,6 +186,7 @@ class TenderManager(EdsManager):
         announce = self.web_driver.page_source
         announce_detail = self.gather_announce_data(announce)
         result.update(announce_detail)
+        self.session_manager.close_session()
         return result
 
     def gather_announce_data(self, raw_data) -> dict:

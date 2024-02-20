@@ -2,12 +2,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import base
-from .config import clear_envs
 from .logger import CustomLogger
 
 
 async def lifespan(app: FastAPI):
-    clear_envs()
     yield
 
 

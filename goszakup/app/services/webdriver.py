@@ -1,6 +1,5 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import WebDriverException
 
 from app.core.config import settings
 
@@ -18,7 +17,7 @@ class WebDriverManager:
         options.add_argument("--disable-blink-features=AutomationControlled")
         options.add_argument("--ignore-certificate-errors")
         options.add_argument("--no-proxy-server")
-        if settings.IN_DOCKER:
+        if settings.HEADLESS_DRIVER:
             options.add_argument("--headless")  # off window
         self.options = options
         self.driver = web_driver
@@ -27,18 +26,5 @@ class WebDriverManager:
         self.driver = webdriver.Chrome(options=self.options)
         return self.driver
 
-    def open_new_tab(self) -> webdriver.Chrome:
-        try:
-            self.driver.execute_script("window.open('');")
-            self.driver.switch_to.window(self.driver.window_handles[-1])
-            return self.driver
-        except WebDriverException:
-            self.start_window()
-            return self.open_new_tab()
-
-    def close_current_tab(self):
-        self.driver.close()
-        self.driver.switch_to.window(self.driver.window_handles[0])
-
-    def switch_to_zero_tab(self):
-        self.driver.switch_to.window(self.driver.window_handles[0])
+    def quite_window(self) -> webdriver.Chrome:
+        self.driver.quit()

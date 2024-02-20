@@ -1,38 +1,25 @@
 import pyautogui
-from time import sleep
+from time import sleep, time
 from logging import getLogger
-from selenium.webdriver import Chrome
 
 from app.schemas import AuthScheme
-from app.services import WebDriverManager
+from app.core.config import settings
 
 
 logger = getLogger("fastapi")
-pyautogui_static = "app/static/img/"
+if settings.DEVELOPMENT:
+    pyautogui_images = settings.BASE_DIR + "/static/pyautogui/images/dev/"
+else:
+    pyautogui_images = settings.BASE_DIR + "/static/pyautogui/images/prod/"
 eds_manager_busy = False
 
 
 class EdsManager:
 
-    def __init__(self, auth_data: AuthScheme, session=None, *args, **kwargs) -> None:
-        self.web_driver = session
+    def __init__(self, auth_data: AuthScheme, *args, **kwargs) -> None:
         self.eds_auth = auth_data.eds_auth
         self.eds_gos = auth_data.eds_gos
         self.eds_pass = auth_data.eds_pass
-        self.goszakup_pass = auth_data.goszakup_pass
-
-    def __enter__(self):
-
-        self.webdriver_manager = WebDriverManager(self.web_driver)
-        if not self.web_driver:
-            self.web_driver = self.webdriver_manager.start_window()
-        self.web_driver: Chrome = self.webdriver_manager.open_new_tab()
-        self.web_driver.implicitly_wait(10)
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        logger.info("close tab")
-        self.webdriver_manager.close_current_tab()
 
     def execute_sign_by_eds(self, type_, call_bnt) -> None:
         self.call_nclayer(call_bnt)
@@ -50,9 +37,10 @@ class EdsManager:
         call_bnt.click()
         eds_manager_busy = True
 
-    def click_btn(self, btn_path) -> None:
+    def click_btn(self, btn_path, timeout=5) -> None:
+        start_time = time() 
         button = None
-        while not button:
+        while not button and time() - start_time < timeout:
             try:
                 button = pyautogui.locateOnScreen(btn_path, confidence=0.8)
             except pyautogui.ImageNotFoundException:
@@ -62,8 +50,8 @@ class EdsManager:
 
     def click_choose_btn(self) -> None:
         logger.info("click_choose_btn")
-        choose_btn_path = pyautogui_static + "choose_btn.png"
-        self.click_btn(choose_btn_path)
+        choose_btn_path = pyautogui_images + "choose_btn.png"
+        self.click_btn(choose_btn_path, 15)
 
     def indicate_eds_path(self, type_) -> None:
         logger.info("indicate_eds_path")
@@ -75,7 +63,7 @@ class EdsManager:
 
     def click_open_btn(self) -> None:
         logger.info("click_open_btn")
-        open_btn_path = pyautogui_static + "open_btn.png"
+        open_btn_path = pyautogui_images + "open_btn.png"
         self.click_btn(open_btn_path)
 
     def enter_eds_password(self) -> None:
@@ -84,7 +72,7 @@ class EdsManager:
 
     def click_ok_btn(self) -> None:
         logger.info("click_ok_btn")
-        open_btn_path = pyautogui_static + "ok_btn.png"
+        open_btn_path = pyautogui_images + "ok_btn.png"
         self.click_btn(open_btn_path)
         global eds_manager_busy
         eds_manager_busy = False

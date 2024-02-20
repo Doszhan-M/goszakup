@@ -1,17 +1,19 @@
+from os import getenv
+from pathlib import Path
 from dotenv import load_dotenv
 from functools import lru_cache
-from os import path, environ, getenv
-
 from pydantic_settings import BaseSettings
 
 
 if getenv("IN_DOCKER") != "TRUE":
-    load_dotenv(f"{path.dirname(__file__)}/.env.local")
+    load_dotenv(f"{Path(__file__).resolve().parent}/.env")
 
 
 class Settings(BaseSettings):
-    IN_DOCKER: bool
-    NCANODEURL: str
+    IN_DOCKER: bool = False
+    HEADLESS_DRIVER: bool = True
+    BASE_DIR: str = str(Path(__file__).resolve().parent.parent)
+    DEVELOPMENT: bool = False
 
 
 settings = Settings()
@@ -20,16 +22,3 @@ settings = Settings()
 @lru_cache()
 def get_settings():
     return settings
-
-
-def clear_envs():
-    """Clear environment variables after assigning BaseSettings."""
-
-    env_variables: list = [
-        attribute
-        for attribute in dir(settings)
-        if not attribute.startswith("_")
-        and not attribute.startswith("__")
-        and not callable(getattr(settings, attribute))
-    ]
-    [environ.pop(variable, None) for variable in env_variables]
