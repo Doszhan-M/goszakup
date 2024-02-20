@@ -1,25 +1,6 @@
 version: '3.9'
 
 services:
-  goszakup:
-    build: ncalayer/.
-    restart: always
-    privileged: true
-    volumes:
-        - /tmp/.X11-unix:/tmp/.X11-unix
-        - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
-    #   - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
-    #   - /tmp/.X11-unix:/tmp/.X11-unix
-    # environment:
-    #   - DISPLAY=${DISPLAY}      
-    network_mode: host
-    environment:
-      - TZ=Asia/Almaty
-      - DISPLAY=unix$DISPLAY
-    ports:
-      - "5900:5900"
-      - "80:80"
-
   # goszakup:
   #   build: goszakup/.
   #   restart: always
@@ -44,16 +25,16 @@ services:
   #   ports:
   #     - "14579:14579"
 
-  # rabbitmq:
-  #   image: "rabbitmq:3.12.12-management"
-  #   restart: always
-  #   environment:
-  #     RABBITMQ_DEFAULT_USER: "rabbitmq_user"
-  #     RABBITMQ_DEFAULT_PASS: "rabbitmq_pass"
-  #     TZ: Asia/Almaty
-  #     RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit consumer_timeout 2592000000
-  #   volumes:
-  #     - "./rm_volume:/var/lib/rabbitmq"      
-  #   ports:
-  #     - "5672:5672"
-  #     - "15672:15672"
+  rabbitmq:
+    image: "rabbitmq:3.12.12-management"
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: "rabbitmq_user"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq_pass"
+      TZ: Asia/Almaty
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit consumer_timeout 2592000000
+    volumes:
+      - "./rm_volume:/var/lib/rabbitmq"      
+    ports:
+      - "5672:5672"
+      - "15672:15672"

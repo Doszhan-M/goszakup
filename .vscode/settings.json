@@ -159,6 +159,7 @@
     "pycache",
     "pydub",
     "pytz",
+    "pyvirtualdisplay",
     "qamqor",
     "redoc",
     "regdate",

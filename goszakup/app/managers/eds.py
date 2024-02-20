@@ -1,24 +1,15 @@
+import pyautogui
+from time import sleep
 from logging import getLogger
 from selenium.webdriver import Chrome
-from time import sleep
-# import pyautogui
 
 from app.schemas import AuthScheme
 from app.services import WebDriverManager
 
 
 logger = getLogger("fastapi")
+pyautogui_static = "app/static/img/"
 eds_manager_busy = False
-
-import os
-from pyvirtualdisplay.display import Display
-import Xlib.display
-
-disp = Display(visible=True, size=(1366, 768), backend="xvfb", use_xauth=True)
-disp.start()
-import pyautogui
-pyautogui._pyautogui_x11._display = Xlib.display.Display(os.environ['DISPLAY'])
-
 
 
 class EdsManager:
@@ -71,9 +62,7 @@ class EdsManager:
 
     def click_choose_btn(self) -> None:
         logger.info("click_choose_btn")
-        choose_btn_path = (
-            "/goszakup/app/static/img/choose_btn.png"
-        )
+        choose_btn_path = pyautogui_static + "choose_btn.png"
         self.click_btn(choose_btn_path)
 
     def indicate_eds_path(self, type_) -> None:
@@ -86,9 +75,7 @@ class EdsManager:
 
     def click_open_btn(self) -> None:
         logger.info("click_open_btn")
-        open_btn_path = (
-            "/goszakup/app/static/img/open_btn.png"
-        )
+        open_btn_path = pyautogui_static + "open_btn.png"
         self.click_btn(open_btn_path)
 
     def enter_eds_password(self) -> None:
@@ -97,7 +84,7 @@ class EdsManager:
 
     def click_ok_btn(self) -> None:
         logger.info("click_ok_btn")
-        open_btn_path = "/goszakup/app/static/img/ok_btn.png"
+        open_btn_path = pyautogui_static + "ok_btn.png"
         self.click_btn(open_btn_path)
         global eds_manager_busy
         eds_manager_busy = False

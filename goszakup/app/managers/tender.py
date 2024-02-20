@@ -3,8 +3,10 @@ from logging import getLogger
 from bs4 import BeautifulSoup
 from datetime import datetime
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
 
 from .eds import EdsManager
+from app.services.exception import TenderStartFailed
 
 
 logger = getLogger("fastapi")
@@ -26,14 +28,50 @@ class TenderManager(EdsManager):
 
     def start(self) -> any:
         self.waiting_until_the_start()
-        application_data = self.tender_start()
+        application_page = self.tender_start()
+        self.fill_application_data(application_page)
+        sleep(50)
         # success = await self.request_application(application_data)
         # if success:
         #     docs_url = await self.get_docs_url()
         #     required_docs_urls = await self.get_required_docs_links(docs_url)
         #     res = await self.sign_docs(required_docs_urls)
 
-    def tender_start(self) -> BeautifulSoup:
+    def fill_application_data(self, soup: BeautifulSoup) -> any:
+        """Заполнить необходимы поля заявки."""
+
+        must_select_data = {
+            "subject_address": "050061",
+            "iik": "KZ5696502F0017154550",
+            "contact_phone": "7014333488",
+        }
+        for field_name, partial_value in must_select_data.items():
+            print(field_name)
+            select_element = self.web_driver.find_element(By.NAME, field_name)
+            print("select_element: ", select_element)
+            select = Select(select_element)
+            for option in select.options:
+                if partial_value in option.get_attribute("value"):
+                    select.select_by_value(option.get_attribute("value"))
+                    break
+        # address_option = soup.find("select", {"name": "subject_address"}).find(
+        #     lambda option: "050061" in option.text if option else False
+        # )
+        # address = address_option["value"].replace(" ", "+") if address_option else None
+        # iik_option = soup.find("select", {"name": "iik"}).find(
+        #     lambda option: ("KZ5696502F0017154550" in option.text if option else False)
+        # )
+        # iik = iik_option["value"].replace(" ", "+") if iik_option else None
+        # phone_option = soup.find("select", {"name": "contact_phone"}).find(
+        #     lambda option: "7014333488" in option.text if option else False
+        # )
+        # phone = (
+        #     phone_option["value"].strip().replace(" ", "+") if phone_option else None
+        # )
+        # data = {"subject_address": address, "iik": iik, "contact_phone": phone}
+        # return data
+
+    def tender_start(self, try_count=2):
         """Запросить страницу заявки и ждать фактическое начало тендера."""
 
         self.web_driver.get(self.application_url)
@@ -43,11 +81,12 @@ class TenderManager(EdsManager):
         tender_not_starting = any(
             "Страница не найдена" in element.text for element in elements
         )
-        while tender_not_starting:
+        if try_count == 0:
+            raise TenderStartFailed(self.announce_number)
+        elif tender_not_starting:
             sleep(1)
-            print("Tender not start!")
-            return self.tender_start()
-        return soup
+            try_count -= 1
+            return self.tender_start(try_count)
 
     def waiting_until_the_start(self) -> None:
         """Ждать до времени старта указанной в карте."""

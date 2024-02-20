@@ -17,3 +17,15 @@ class RequestFailed(HTTPException):
             "HTML": html,
         }
         super().__init__(status_code, detail)
+
+
+class TenderStartFailed(HTTPException):
+    def __init__(self, announce_number) -> None:
+        status_code = 200
+        error_code = "tender_not_start"
+        detail = {
+            "success": False,
+            "error_code": error_code,
+            "description": f"Тендер №{announce_number} не начался на сайте! Количество попыток исчерпано!",
+        }
+        super().__init__(status_code, detail)

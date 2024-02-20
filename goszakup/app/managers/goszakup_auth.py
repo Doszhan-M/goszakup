@@ -42,9 +42,6 @@ class GoszakupAuthorization(EdsManager):
 
     def login_goszakup(self) -> any:
         self.web_driver.get(self.auth_url)
-        html = self.web_driver.page_source
-        print('html: ', html)
-        
         eds_select = self.web_driver.find_element(By.ID, "selectP12File")
         self.execute_sign_by_eds("auth_eds", eds_select)
         self.enter_goszakup_password()
