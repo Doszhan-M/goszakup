@@ -11,7 +11,7 @@ from selenium.common.exceptions import StaleElementReferenceException, TimeoutEx
 
 from .eds import EdsManager
 from app.services import WebDriverManager
-from .goszakup_auth import GoszakupAuthorization
+from .auth import GoszakupAuthorization
 from app.services.exception import TenderStartFailed
 
 

@@ -1,2 +1,2 @@
 from .tender import TenderManager
-from .goszakup_auth import GoszakupAuthorization
+from .auth import GoszakupAuthorization
