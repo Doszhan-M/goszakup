@@ -20,4 +20,7 @@ django-admin startproject core
 python manage.py migrate
 python manage.py startapp dashboard
 python manage.py runserver 0.0.0.0:8080
-gunicorn --workers=1 --threads=2 dashboard.wsgi --bind 0.0.0.0:80 --log-level=info --access-logfile '-' --error-logfile '-' --access-logformat "%(m)s: %(U)s - %(s)s" --reload
+gunicorn --workers=1 --threads=2 core.wsgi --bind 0.0.0.0:8080 --log-level=info --access-logfile '-' --error-logfile '-' --access-logformat "%(m)s: %(U)s - %(s)s" --reload
+
+
+admin:aCiOnIQuArdE

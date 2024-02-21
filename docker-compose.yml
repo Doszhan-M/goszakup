@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   rabbitmq:
-    image: "rabbitmq:3.12.12-management"
+    image: "rabbitmq:3.12.13"
     restart: always
     environment:
       RABBITMQ_DEFAULT_USER: "rabbitmq_user"
@@ -10,7 +10,6 @@ services:
       TZ: Asia/Almaty
       RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit consumer_timeout 2592000000
     volumes:
-      - "./rm_volume:/var/lib/rabbitmq"      
+      - "./rabbitmq:/var/lib/rabbitmq"      
     ports:
       - "5672:5672"
-      - "15672:15672"
