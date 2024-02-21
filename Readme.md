@@ -24,3 +24,8 @@ gunicorn --workers=1 --threads=2 core.wsgi --bind 0.0.0.0:8080 --log-level=info 
 
 
 admin:aCiOnIQuArdE
+
+
+bin:141140001428
+name:ТОО "Сивер плюс"
+daniald2011@mail.ru

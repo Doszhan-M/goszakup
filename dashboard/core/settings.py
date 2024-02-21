@@ -114,6 +114,7 @@ WHITENOISE_AUTOREFRESH = True
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "static/"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = "/media/"
 
 # Default primary key field type
