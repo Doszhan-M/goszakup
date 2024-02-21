@@ -8,6 +8,8 @@
 8. Статус заявки - Подана                         
 
 941140001504
+021240015299
+120540009382
 
 https://v3bl.goszakup.gov.kz/ru/application/create/11608950
 

@@ -28,8 +28,10 @@ class GoszakupAuthorization():
 
     def get_auth_session(self) -> Chrome:
         self.web_driver.get(self.auth_url)
-        eds_select = self.web_driver.find_element(By.ID, "selectP12File")
-        self.eds_manager.execute_sign_by_eds("auth_eds", eds_select)
+        nclayer_call_btn = self.web_driver.find_element(By.ID, "selectP12File")
+        if self.eds_manager.is_not_busy():
+            nclayer_call_btn.click()
+            self.eds_manager.execute_sign_by_eds("auth_eds")
         self.enter_goszakup_password()
         self.store_auth_session()
         return self.web_driver

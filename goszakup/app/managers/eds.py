@@ -21,21 +21,20 @@ class EdsManager:
         self.eds_gos = auth_data.eds_gos
         self.eds_pass = auth_data.eds_pass
 
-    def execute_sign_by_eds(self, type_, call_bnt) -> None:
-        self.call_nclayer(call_bnt)
+    def execute_sign_by_eds(self, type_) -> None:
         self.click_choose_btn()
         self.indicate_eds_path(type_)
         self.click_open_btn()
         self.enter_eds_password()
         self.click_ok_btn()
 
-    def call_nclayer(self, call_bnt):
+    def is_not_busy(self):
         global eds_manager_busy
         while eds_manager_busy:
             logger.info("eds_manager_busy")
             sleep(0.1)
-        call_bnt.click()
         eds_manager_busy = True
+        return True
 
     def click_btn(self, btn_path, timeout=5) -> None:
         start_time = time() 
@@ -51,7 +50,7 @@ class EdsManager:
     def click_choose_btn(self) -> None:
         logger.info("click_choose_btn")
         choose_btn_path = pyautogui_images + "choose_btn.png"
-        self.click_btn(choose_btn_path, 15)
+        self.click_btn(choose_btn_path, 60)
 
     def indicate_eds_path(self, type_) -> None:
         logger.info("indicate_eds_path")

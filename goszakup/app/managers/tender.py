@@ -34,9 +34,10 @@ class TenderManager():
         )
 
     def start(self) -> dict:
-        self.waiting_until_the_start()
-        self.tender_start()
-        self.fill_and_submit_application()
+        # self.waiting_until_the_start()
+        # self.tender_start()
+        # self.fill_and_submit_application()
+        self.web_driver.get("https://v3bl.goszakup.gov.kz/ru/application/docs/11688546/53147715")
         required_docs_urls = self.get_required_docs_links()
         for url in required_docs_urls:
             self.generate_document(url)
@@ -120,14 +121,22 @@ class TenderManager():
         "Сформировать документ."
 
         self.web_driver.get(url)
-        submit_button = self.web_driver.find_element(By.CSS_SELECTOR, ".btn.btn-info")
-        submit_button.click()
+        # submit_button = self.web_driver.find_element(By.CSS_SELECTOR, ".btn.btn-info")
+        # submit_button.click()
 
     def sign_document(self) -> None:
         "Подписать документ ЭЦП."
 
-        call_bnt = self.web_driver.find_element(By.CSS_SELECTOR, ".btn-add-signature")
-        self.eds_manager.execute_sign_by_eds("gos_eds", call_bnt)
+        # nclayer_call_btn = self.web_driver.find_element(By.CSS_SELECTOR, ".btn-add-signature")
+        nclayer_call_btn = WebDriverWait(self.web_driver, 30).until(
+            EC.element_to_be_clickable((By.CLASS_NAME, "btn-add-signature"))
+        )        
+        if self.eds_manager.is_not_busy():
+            # nclayer_call_btn.click()      
+            print(1)
+            self.web_driver.execute_script("arguments[0].click();", nclayer_call_btn)  
+            print(2)
+            self.eds_manager.execute_sign_by_eds("gos_eds")
 
     def next_page(self) -> None:
         "Вернуться к списку документов и нажать далее."
@@ -137,8 +146,9 @@ class TenderManager():
                 footer = WebDriverWait(self.web_driver, 30).until(
                     EC.element_to_be_clickable((By.CLASS_NAME, "panel-footer"))
                 )
-                button = footer.find_element(By.TAG_NAME, "a")
-                button.click()
+                return_button = footer.find_element(By.TAG_NAME, "a")
+                link = return_button.get_attribute("href")
+                self.web_driver.get(link)
                 break
             except StaleElementReferenceException:
                 pass

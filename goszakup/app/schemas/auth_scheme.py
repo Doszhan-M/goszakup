@@ -15,4 +15,5 @@ class AuthScheme(BaseModel):
     eds_pass: str = "Aa1234"
     goszakup_pass: str = "ZAQwsxcde32"
 
-# TODO: must_select_data
+
+
