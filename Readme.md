@@ -14,3 +14,8 @@
 https://v3bl.goszakup.gov.kz/ru/application/create/11608950
 
 https://v3bl.goszakup.gov.kz/ru/announce/index/11703621
+
+
+python manage.py runserver 0.0.0.0:8080
+python manage.py migrate
+gunicorn --workers=1 --threads=2 dashboard.wsgi --bind 0.0.0.0:80 --log-level=info --access-logfile '-' --error-logfile '-' --access-logformat "%(m)s: %(U)s - %(s)s" --reload

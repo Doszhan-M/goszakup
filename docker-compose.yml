@@ -1,30 +1,6 @@
 version: '3.9'
 
 services:
-  # goszakup:
-  #   build: goszakup/.
-  #   restart: always
-  #   privileged: true
-  #   env_file:
-  #     - ./env/goszakup.env
-  #   volumes:
-  #     - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
-  #     - /tmp/.X11-unix:/tmp/.X11-unix
-  #     - ./goszakup/app:/goszakup/app
-  #   environment:
-  #     - DISPLAY=${DISPLAY}      
-  #   network_mode: host
-    # ports:
-    #   - "8001:8000"
-
-  # ncanode:
-  #   image: uchetkz/nca-node:2.3
-  #   restart: always
-  #   logging:
-  #     driver: "none"
-  #   ports:
-  #     - "14579:14579"
-
   rabbitmq:
     image: "rabbitmq:3.12.12-management"
     restart: always

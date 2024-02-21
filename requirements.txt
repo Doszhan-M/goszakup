@@ -1,0 +1,15 @@
+# goszakup
+beautifulsoup4==4.12.3
+colorlog == 6.7.0
+fastapi[all]==0.109.2
+opencv-python==4.9.0.80
+PyAutoGUI==0.9.54
+selenium==4.17.2
+
+# dashboard
+celery==5.3.6
+Django==5.0.2
+djangorestframework==3.14.0
+django-admin-menu==1.6
+gunicorn == 20.1.0
+whitenoise==6.2.0
