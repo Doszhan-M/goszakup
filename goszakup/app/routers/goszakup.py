@@ -1,7 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 from app.schemas import AuthScheme
-from app.managers import GoszakupAuthorization
+from app.managers import GoszakupAuthorization, TaxDebtManager
 
 
 router = APIRouter()
@@ -17,3 +17,14 @@ def goszakup_auth(
     if close_session:
         auth_manager.close_session()
     return {"success": True}
+
+
+@router.post("/check_tax_debt/", tags=["goszakup"])
+def check_tax_debt(
+    auth_data: AuthScheme,
+    delta: int = Query(default=10),
+):
+
+    tax_debt = TaxDebtManager(auth_data, delta)
+    result = tax_debt.start()
+    return result
