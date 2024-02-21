@@ -11,7 +11,7 @@ from .auth import GoszakupAuthorization
 from app.services import WebDriverManager
 
 
-logger = getLogger("fastapi")
+logger = getLogger("business")
 
 
 class TaxDebtManager:
@@ -54,3 +54,4 @@ class TaxDebtManager:
     def set_result(self, date_received) -> None:
         self.result["finish_time"] = datetime.now()
         self.result["last_received_date"] = date_received
+        logger.info(f"Finish {self.__class__.__name__}! Last received: {date_received}")

@@ -22,6 +22,11 @@ class CustomLogger:
         "%(asctime)s - %(levelname)s -%(message)s (%(filename)s:%(lineno)d)",
         datefmt="%H:%M:%S",
     )
+    
+    business_formatter = logging.Formatter(
+        "%(asctime)s - %(levelname)s -%(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
 
     @classmethod
     def _color_stream_handler(cls):
@@ -52,6 +57,17 @@ class CustomLogger:
         file_handler.setFormatter(cls.color_formatter)
         return file_handler
 
+    @classmethod
+    def _business_file_handler(cls):
+        file_handler = TimedRotatingFileHandler(
+            filename="app/logs/business.log",
+            when="MIDNIGHT",
+            backupCount=30,
+        )
+        file_handler.setLevel(logging.INFO)
+        file_handler.setFormatter(cls.business_formatter)
+        return file_handler
+    
     def set_logger(self):
         """Переопределить логгеры uvicorn и fastapi."""
 
@@ -71,4 +87,10 @@ class CustomLogger:
             _logger.handlers = handlers
             _logger.propagate = False
 
+        business_logger = logging.getLogger("business")
+        business_handler = self._business_file_handler()
+        business_logger.setLevel(logging.INFO)
+        business_logger.addHandler(business_handler)
+        business_logger.propagate = False 
+        
         return logging.getLogger("fastapi")

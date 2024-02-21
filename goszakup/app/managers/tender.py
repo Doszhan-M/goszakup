@@ -16,6 +16,7 @@ from app.services.exception import TenderStartFailed
 
 
 logger = getLogger("fastapi")
+business_logger = getLogger("business")
 
 
 class TenderManager:
@@ -62,7 +63,7 @@ class TenderManager:
             wait_seconds = (start_time - now).total_seconds()
             logger.info(f"Waiting {wait_seconds} seconds for {self.announce_number}.")
             sleep(wait_seconds)
-        logger.info(f"Starting tender at {datetime.now()} for {self.announce_number}")
+        business_logger.info(f"Starting tender at {datetime.now()} for {self.announce_number}")
 
     def tender_start(self, try_count=3600) -> None:
         """Запросить страницу заявки и ждать фактическое начало тендера."""
@@ -175,12 +176,16 @@ class TenderManager:
             self.result["duration"] = (
                 self.result["finish_time"] - self.result["start_time"]
             )
+            msg = f"Success finish tender at {datetime.now()} for {self.announce_number}"
+            business_logger.info(msg)
         except TimeoutException:
             error = WebDriverWait(self.web_driver, 120).until(
                 EC.element_to_be_clickable((By.ID, "errors"))
             )
             self.result["success"] = False
             self.result["error_text"] = error.text
+            msg = f"Failed finish tender at {datetime.now()} for {self.announce_number}"
+            business_logger.error(msg)            
         return self.result
 
     def check_announce(self) -> any:
