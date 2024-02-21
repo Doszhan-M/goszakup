@@ -1,3 +1,12 @@
-from django.db import models
+from django.db.models import (
+    CharField,
+    ForeignKey,
+    PositiveIntegerField,
+    CASCADE,
+    Model,
+)
 
-# Create your models here.
+
+class Company(Model):
+    pass
+
