@@ -77,6 +77,11 @@ class Task(Model):
         verbose_name="Номер объявления",
         unique=True,
     )
+    announce_name = TextField(
+        blank=True,
+        null=True,
+        verbose_name="Название конкурса",
+    )
     status = CharField(
         max_length=256,
         choices=Status.choices,
@@ -87,7 +92,7 @@ class Task(Model):
         default=timezone.now,
         verbose_name="Время создания",
     )
-    company = ForeignKey(
+    participant = ForeignKey(
         Participant,
         on_delete=CASCADE,
         verbose_name="Участник",
@@ -121,6 +126,11 @@ class Task(Model):
         blank=True,
         null=True,
         verbose_name="Описание ошибки",
+    )
+    last_check_time = DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name="Время последней ошибки",
     )
 
     class Meta:

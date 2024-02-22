@@ -30,6 +30,8 @@ class TaskDash(BaseAdmin):
         "create_time",
         "status",
         "error",
+        "announce_name",
+        "last_check_time",
     )
 
 

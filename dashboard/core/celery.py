@@ -6,6 +6,6 @@ from celery.schedules import crontab
 
 environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
 app = Celery("core")
-app.config_from_object("django.core:settings", namespace="CELERY")
+app.config_from_object("django.conf:settings", namespace="CELERY")
 app.conf.timezone = "Asia/Almaty"
 app.autodiscover_tasks()
