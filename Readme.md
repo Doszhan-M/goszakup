@@ -8,3 +8,12 @@
 8. Статус заявки - Подана                         
 
 
+
+sudo mkdir projects
+sudo chmod -R 777 /projects
+sudo setfacl -m d:u::rwx /projects
+sudo setfacl -m d:g::rwx /projects
+sudo setfacl -m d:o::rwx /projects
+cd /projects
+git clone git@github.com:Doszhan-M/goszakup.git
+cd /goszakup
