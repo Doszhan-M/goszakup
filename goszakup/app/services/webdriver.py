@@ -6,6 +6,7 @@ from app.core.config import settings
 
 class WebDriverManager:
 
+
     def __init__(self, web_driver=None, *args, **kwargs) -> None:
         options = Options()
         options.add_argument(

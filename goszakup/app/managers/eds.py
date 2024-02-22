@@ -7,11 +7,11 @@ from app.core.config import settings
 
 
 logger = getLogger("fastapi")
-if settings.DEVELOPMENT:
-    pyautogui_images = settings.BASE_DIR + "/static/pyautogui/images/dev/"
-else:
-    pyautogui_images = settings.BASE_DIR + "/static/pyautogui/images/prod/"
 eds_manager_busy = False
+if settings.ENVIRONMENT == "GNOME":
+    pyautogui_images = settings.BASE_DIR + "/static/pyautogui/images/gnome/"
+elif settings.ENVIRONMENT == "LXDE":
+    pyautogui_images = settings.BASE_DIR + "/static/pyautogui/images/lxde/"
 
 
 class EdsManager:
@@ -37,7 +37,7 @@ class EdsManager:
         return True
 
     def click_btn(self, btn_path, timeout=5) -> None:
-        start_time = time() 
+        start_time = time()
         button = None
         while not button and time() - start_time < timeout:
             try:

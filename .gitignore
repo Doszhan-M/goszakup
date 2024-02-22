@@ -6,6 +6,7 @@
 rabbitmq
 test.html
 celerybeat-schedule.db
+installer/
 
 test1.py
 test2.py

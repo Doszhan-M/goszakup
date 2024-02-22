@@ -14,3 +14,14 @@ watchfiles --filter python 'celery -A core worker -Q beat_tasks -B --pool=prefor
 
 https://v3bl.goszakup.gov.kz/ru/application/create/11695620
 https://v3bl.goszakup.gov.kz/ru/announce/index/11695620
+
+
+надо создать скрипт, который создает systemd задачу для запуска приложения на fastapi.
+команда запуска такая: uvicorn app.core.main:app --host 0.0.0.0 --port 8000 --workers 2 --reload
+директория из которой надо ее выполнить: /projects/goszakup/goszakup
+программа должна автозапускаться после перезагрузки системы
+должно использоваться venv, который находиться по пути: /projects/goszakup/venv
+
+надо чтобы перед стартом программы создавался файл .env c содержимым:
+HEADLESS_DRIVER=TRUE
+ENVIRONMENT=LXDE
