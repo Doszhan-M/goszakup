@@ -15,7 +15,6 @@ sudo setfacl -m d:o::rwx /projects
 cd /projects
 git clone git@github.com:Doszhan-M/goszakup.git
 
-# Переход в директорию склонированного репозитория
-cd goszakup
+echo "Cloning completed."
 
-echo "Скрипт выполнен."
+# sudo chmod +x clone_proj.sh
