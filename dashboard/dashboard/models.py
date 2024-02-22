@@ -8,7 +8,7 @@ from django.db.models import (
     ForeignKey,
     DateTimeField,
     TextChoices,
-    DurationField,
+    FloatField,
 )
 
 
@@ -117,7 +117,7 @@ class Task(Model):
         null=True,
         verbose_name="Время завершения",
     )
-    duration = DurationField(
+    duration = FloatField(
         blank=True,
         null=True,
         verbose_name="Продолжительность выполнения",
@@ -126,11 +126,6 @@ class Task(Model):
         blank=True,
         null=True,
         verbose_name="Описание ошибки",
-    )
-    last_check_time = DateTimeField(
-        blank=True,
-        null=True,
-        verbose_name="Время последней ошибки",
     )
 
     class Meta:

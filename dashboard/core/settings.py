@@ -1,4 +1,5 @@
 import os
+import pytz
 from pathlib import Path
 
 from . import logger
@@ -102,6 +103,7 @@ LANGUAGE_CODE = "ru"
 TIME_ZONE = "Asia/Almaty"
 USE_I18N = True
 USE_TZ = True
+ALMATY_TZ = pytz.timezone("Asia/Almaty")
 
 # CELERY SETTINGS
 CELERY_BROKER_URL = setup.CELERY_BROKER_URL

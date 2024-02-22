@@ -3,12 +3,13 @@ import requests
 from logging import getLogger
 from datetime import timedelta, datetime
 
-from django.utils import timezone
+from django.conf import settings
 from django.utils.timezone import make_aware
 from django.utils.dateparse import parse_datetime
 
 from core.celery import app
 from dashboard.models import Participant, Task
+from .tender import start_tender
 
 
 logger = getLogger("django")
@@ -38,7 +39,7 @@ def check_and_schedule_task(announce_number, participant_id):
         }
     )
     task = Task.objects.get(announce_number=announce_number)
-    task._suppress_post_save_signal = True
+    task._suppress_schedule_announce = True
     max_attempts = 3
     attempts = 0
     while attempts < max_attempts:
@@ -54,18 +55,31 @@ def check_and_schedule_task(announce_number, participant_id):
             if attempts == max_attempts:
                 logger.error("Достигнуто максимальное количество попыток.")
                 task.status = "error"
-                task.last_check_time = timezone.now()
                 task.error = f"Не удалось запланировать задачу, попробуйте после {datetime.now() + timedelta(minutes=5)}"
                 task.save()
                 return
     announce_data = response.json()
     task.error = ""
     task.announce_name = announce_data["announce_name"]
-    start_time = make_aware(parse_datetime(announce_data["start_time"]))
-    task.scheduled_time = start_time - timedelta(minutes=5)
+    start_time = parse_datetime(announce_data["start_time"])
+    task.scheduled_time = make_aware(start_time) - timedelta(minutes=5)
     finish_time = parse_datetime(announce_data["finish_time"])
     if finish_time < datetime.now():
         task.status = "success"
-    else:
+    elif start_time < datetime.now() and finish_time > datetime.now():
+        task.status = "in_progress"
+        scheduled_time = settings.ALMATY_TZ.localize(
+            datetime.now() + timedelta(seconds=1)
+        )
+        start_tender.apply_async(
+            args=(announce_number, data),
+            eta=scheduled_time,
+        )
+    elif start_time > datetime.now():
         task.status = "pending"
+        start_tender.apply_async(
+            args=(announce_number, data),
+            eta=task.scheduled_time,
+        )
     task.save()
+    return task.status

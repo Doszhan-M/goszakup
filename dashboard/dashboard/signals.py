@@ -1,8 +1,6 @@
-import pytz
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 
-from django.utils import timezone
+from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
@@ -17,23 +15,17 @@ def schedule_announce(
     """Запланировать задачу."""
 
     if (
-        hasattr(instance, "_suppress_post_save_signal")
-        and instance._suppress_post_save_signal
+        hasattr(instance, "_suppress_schedule_announce")
+        and instance._suppress_schedule_announce
     ):
         return
-    if (
-        instance.last_check_time is None
-        or timezone.now() - instance.last_check_time > timedelta(minutes=5)
-        and not instance.scheduled_time
-    ):
+    if instance.status in ("checking", "error"):
         announce_number = instance.announce_number
         participant_id = instance.participant.id
-        almaty_tz = pytz.timezone("Asia/Almaty")
-        scheduled_time = almaty_tz.localize(datetime.now() + timedelta(seconds=2))
+        scheduled_time = settings.ALMATY_TZ.localize(
+            datetime.now() + timedelta(seconds=2)
+        )
         announce.check_and_schedule_task.apply_async(
-            args=(
-                announce_number,
-                participant_id,
-            ),
+            args=(announce_number, participant_id),
             eta=scheduled_time,
         )

@@ -13,3 +13,20 @@ services:
       - "./rabbitmq:/var/lib/rabbitmq"      
     ports:
       - "5672:5672"
+
+  flower:
+    image: mher/flower:2.0
+    command: [ "celery", "flower", "--url-prefix=flower_backend" ]
+    restart: always
+    environment:
+      - CELERY_ENABLE_UTC=True
+      - CELERY_BROKER=amqp://rabbitmq_user:rabbitmq_pass@rabbitmq
+      - FLOWER_BASIC_AUTH=pk_flower:flower_pass
+    logging:
+      driver: "none"
+    ports:
+      - 5554:5555
+    depends_on:
+      - rabbitmq
+    mem_limit: 500M
+    mem_reservation: 100m    
