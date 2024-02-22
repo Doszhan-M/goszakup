@@ -30,3 +30,4 @@ services:
       - rabbitmq
     mem_limit: 500M
     mem_reservation: 100m    
+    
