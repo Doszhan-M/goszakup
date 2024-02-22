@@ -19,7 +19,7 @@ logger = getLogger("django")
 def check_and_schedule_task(announce_number, participant_id):
     """Запланировать задачу."""
 
-    url = f"http://127.0.0.1:8000/goszakup/tender_check/?announce_number={announce_number}"
+    url = f"{settings.GOSZAKUP_URL}/goszakup/tender_check/?announce_number={announce_number}"
     headers = {
         "accept": "application/json",
         "Content-Type": "application/json",

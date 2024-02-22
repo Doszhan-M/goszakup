@@ -1,5 +1,6 @@
 import requests
 
+from django.conf import settings
 from django.utils.timezone import make_aware
 from django.utils.dateparse import parse_datetime
 
@@ -11,7 +12,7 @@ from dashboard.models import Task
 def start_tender(announce_number, data):
     """Начать тендер."""
 
-    url = f"http://127.0.0.1:8000/goszakup/tender_start/?announce_number={announce_number}"
+    url = f"{settings.GOSZAKUP_URL}/goszakup/tender_start/?announce_number={announce_number}"
     headers = {
         "accept": "application/json",
         "Content-Type": "application/json",
