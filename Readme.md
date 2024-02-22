@@ -11,9 +11,9 @@
 021240015299
 120540009382
 
-https://v3bl.goszakup.gov.kz/ru/application/create/11608950
+https://v3bl.goszakup.gov.kz/ru/application/create/11695620
 
-https://v3bl.goszakup.gov.kz/ru/announce/index/11703621
+https://v3bl.goszakup.gov.kz/ru/announce/index/11695620
 
 
 django-admin startproject core

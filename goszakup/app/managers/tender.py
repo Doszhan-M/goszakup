@@ -10,8 +10,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
 
 from .eds import EdsManager
-from app.services import WebDriverManager
 from .auth import GoszakupAuthorization
+from .tender_cancel import TenderCancelManager
+from app.services import WebDriverManager
 from app.services.exception import TenderStartFailed
 
 
@@ -26,6 +27,9 @@ class TenderManager:
         self.web_driver: Chrome = self.session_manager.get_auth_session()
         self.webdriver_manager = WebDriverManager(self.web_driver)
         self.eds_manager = EdsManager(auth_data)
+        self.cancel_manager = TenderCancelManager(
+            announce_number, auth_data, self.web_driver
+        )
         self.announce_number: str = announce_number
         self.result = {"success": True, "start_time": datetime.now()}
         self.application_data: dict = auth_data.application_data.model_dump()
@@ -35,6 +39,23 @@ class TenderManager:
         self.application_url = (
             f"https://v3bl.goszakup.gov.kz/ru/application/create/{announce_number}"
         )
+
+    def start_with_retry(self, max_attempts=3):
+        for attempt in range(max_attempts):
+            try:
+                result = self.start()
+                return result
+            except Exception as e:
+                print(e)
+                if attempt < max_attempts - 1:
+                    sleep(2)
+                    self.cancel_manager.cancel()
+                else:
+                    self.session_manager.close_session()
+                    self.result["success"] = False
+                    self.result["finish_time"] = datetime.now()
+                    self.result["error_text"] = e
+                    return self.result
 
     def start(self) -> dict:
         self.waiting_until_the_start()
@@ -63,7 +84,9 @@ class TenderManager:
             wait_seconds = (start_time - now).total_seconds()
             logger.info(f"Waiting {wait_seconds} seconds for {self.announce_number}.")
             sleep(wait_seconds)
-        business_logger.info(f"Starting tender at {datetime.now()} for {self.announce_number}")
+        business_logger.info(
+            f"Starting tender at {datetime.now()} for {self.announce_number}"
+        )
 
     def tender_start(self, try_count=3600) -> None:
         """Запросить страницу заявки и ждать фактическое начало тендера."""
@@ -176,7 +199,9 @@ class TenderManager:
             self.result["duration"] = (
                 self.result["finish_time"] - self.result["start_time"]
             )
-            msg = f"Success finish tender at {datetime.now()} for {self.announce_number}"
+            msg = (
+                f"Success finish tender at {datetime.now()} for {self.announce_number}"
+            )
             business_logger.info(msg)
         except TimeoutException:
             error = WebDriverWait(self.web_driver, 120).until(
@@ -185,7 +210,7 @@ class TenderManager:
             self.result["success"] = False
             self.result["error_text"] = error.text
             msg = f"Failed finish tender at {datetime.now()} for {self.announce_number}"
-            business_logger.error(msg)            
+            business_logger.error(msg)
         return self.result
 
     def check_announce(self) -> any:
