@@ -175,6 +175,7 @@
     "samruk",
     "seleniumwire",
     "sessionmaker",
+    "setfacl",
     "SHEP",
     "soapenv",
     "sqlmodel",
