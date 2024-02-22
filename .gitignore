@@ -5,6 +5,7 @@
 .env
 rabbitmq
 test.html
+celerybeat-schedule.db
 
 test1.py
 test2.py
