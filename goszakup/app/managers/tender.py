@@ -152,6 +152,7 @@ class TenderManager:
         if self.eds_manager.is_not_busy():
             self.web_driver.execute_script("arguments[0].click();", nclayer_call_btn)
             self.eds_manager.execute_sign_by_eds("gos_eds")
+            sleep(1)
 
     def next_page(self) -> None:
         "Вернуться к списку документов и нажать далее."

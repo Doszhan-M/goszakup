@@ -30,6 +30,8 @@ find /projects/goszakup/sh -type f -name "*.sh" -exec sudo chmod +x {} \;
 ```
 cd /projects/goszakup/sh
 ./3_ncalayer_install.sh
+Настроить автозапуск либо через скрипт либо через окружение
+./8_ncalayer.sh
 ```
 6. Установить Docker
 ```
@@ -53,10 +55,10 @@ cd /projects/goszakup/sh
 cd /projects/goszakup/sh
 ./7_setup_venv.sh
 ```
-10. Запустить приложение Goszakup
+10. Создать env для сервиса Goszakup
 ```
 cd /projects/goszakup/sh
-./8_goszakup_service.sh
+./9_goszakup_env.sh
 ```
 
 
@@ -83,3 +85,15 @@ cd /projects/goszakup/sh
 6. Вернуться к списку
 7. Далее - Подать заявку - Да
 8. Статус заявки - Подана                         
+
+
+## Удаление сервиса
+```
+sudo systemctl stop ncalayer.service
+sudo systemctl disable ncalayer.service
+sudo rm /etc/systemd/system/ncalayer.service
+sudo systemctl daemon-reload
+sudo systemctl status ncalayer.service
+
+Если все сделано правильно, сообщение об ошибке, указывающее, что службы нет
+```
