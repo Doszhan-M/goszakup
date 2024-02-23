@@ -22,13 +22,21 @@ class EdsManager:
         self.eds_pass = auth_data.eds_pass
 
     def execute_sign_by_eds(self, type_) -> None:
+        self.move_cursor_to_corner()
         self.click_choose_btn()
         self.indicate_eds_path(type_)
         self.click_open_btn()
         self.enter_eds_password()
         self.click_ok_btn()
 
-    def is_not_busy(self):
+    def move_cursor_to_corner(self) -> None:
+        "Переместить курсор на край стола."
+
+        pyautogui.FAILSAFE = False
+        screen_width, screen_height = pyautogui.size()
+        pyautogui.moveTo(screen_width - 100, screen_height - 100)
+
+    def is_not_busy(self) -> bool:
         global eds_manager_busy
         while eds_manager_busy:
             logger.info("eds_manager_busy")

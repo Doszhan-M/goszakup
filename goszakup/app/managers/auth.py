@@ -1,4 +1,5 @@
 from uuid import uuid4
+from time import sleep
 from logging import getLogger
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
@@ -32,6 +33,7 @@ class GoszakupAuthorization():
         if self.eds_manager.is_not_busy():
             nclayer_call_btn.click()
             self.eds_manager.execute_sign_by_eds("auth_eds")
+            sleep(1)
         self.enter_goszakup_password()
         self.store_auth_session()
         return self.web_driver
