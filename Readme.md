@@ -22,59 +22,49 @@ vim 2_clone_project.sh
 sudo chmod +x 2_clone_project.sh
 sudo ./2_clone_project.sh
 ```
-4. Сделать все скрипты исполняемыми
+
+4. Установить NCALayer
 ```
-find /projects/goszakup/sh -type f -name "*.sh" -exec sudo chmod +x {} \;
-```
-5. Установить NCALayer
-```
-cd /projects/goszakup/sh
-./3_ncalayer_install.sh
+cd /projects/goszakup/sh/ncalayer
 Настроить автозапуск либо через скрипт либо через окружение
-./8_ncalayer.sh
+./4_ncalayer_config.sh
 ```
 6. Установить Docker
 ```
 cd /projects/goszakup/sh
-./4_docker_install.sh
+./6_docker_install.sh
 ```
 
-7. Запустить rabbitmq и flower
+7. Запустить сервисы из docker compose 
 ```
 cd /projects/goszakup/sh
-./5_compose_start.sh
+./7_compose_start.sh
 
 ```
 8. Установить webdriver
 ```
 cd /projects/goszakup/sh
-./6_chromedriver.sh
+./8_chromedriver.sh
 ```
 9. Настроить зависимости
 ```
 cd /projects/goszakup/sh
-./7_setup_venv.sh
+./9_setup_venv.sh
 ```
 10. Создать env для сервиса Goszakup
 ```
 cd /projects/goszakup/sh
-./9_goszakup_env.sh
+./10_goszakup_env.sh
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+11. Настроить автозапуск сервиса Goszakup
+```
+cd /projects/goszakup/sh
+./13_setup_goszakup.sh
+```
+12. Перезапустит систему
+```
+sudo reboot
+```
 
 ## Порядок участия в тендере
 1. Доступные действия - Создать заявку 
@@ -86,14 +76,6 @@ cd /projects/goszakup/sh
 7. Далее - Подать заявку - Да
 8. Статус заявки - Подана                         
 
-
-## Удаление сервиса
-```
-sudo systemctl stop ncalayer.service
-sudo systemctl disable ncalayer.service
-sudo rm /etc/systemd/system/ncalayer.service
-sudo systemctl daemon-reload
-sudo systemctl status ncalayer.service
-
-Если все сделано правильно, сообщение об ошибке, указывающее, что службы нет
-```
+## Страницы доступа
+http://127.0.0.1:8000/goszakup/docs#/  
+http://127.0.0.1:8080/admin/  
