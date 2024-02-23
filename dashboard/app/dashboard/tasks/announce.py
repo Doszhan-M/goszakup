@@ -27,8 +27,8 @@ def check_and_schedule_task(announce_number, participant_id):
     participant = Participant.objects.get(id=participant_id)
     data = json.dumps(
         {
-            "eds_auth": participant.eds_auth.path,
-            "eds_gos": participant.eds_gos.path,
+            "eds_auth": participant.eds_auth_path,
+            "eds_gos": participant.eds_gos_path,
             "eds_pass": participant.eds_pass,
             "goszakup_pass": participant.goszakup_pass,
             "application_data": {

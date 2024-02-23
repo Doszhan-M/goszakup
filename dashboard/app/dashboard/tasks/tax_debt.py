@@ -21,8 +21,8 @@ def check_tax_debt():
     for participant in all_participants:
         data = json.dumps(
             {
-                "eds_auth": participant.eds_auth.path,
-                "eds_gos": participant.eds_gos.path,
+                "eds_auth": participant.eds_auth_path,
+                "eds_gos": participant.eds_gos_path,
                 "eds_pass": participant.eds_pass,
                 "goszakup_pass": participant.goszakup_pass,
             }

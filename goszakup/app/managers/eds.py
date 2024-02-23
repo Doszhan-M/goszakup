@@ -44,7 +44,7 @@ class EdsManager:
         eds_manager_busy = True
         return True
 
-    def click_btn(self, btn_path, timeout=5) -> None:
+    def click_btn(self, btn_path: str, timeout=5) -> None:
         start_time = time()
         button = None
         while not button and time() - start_time < timeout:
@@ -54,31 +54,31 @@ class EdsManager:
                 sleep(0.1)
             else:
                 pyautogui.click(button)
+                logger.info(f"click {btn_path.split('/')[-1]}")
+        if not button:
+            logger.error(f"not found {btn_path.split('/')[-1]}")
 
     def click_choose_btn(self) -> None:
-        logger.info("click_choose_btn")
         choose_btn_path = pyautogui_images + "choose_btn.png"
         self.click_btn(choose_btn_path, 60)
 
     def indicate_eds_path(self, type_) -> None:
-        logger.info("indicate_eds_path")
         if type_ == "auth_eds":
             eds_path = self.eds_auth
         else:
             eds_path = self.eds_gos
         pyautogui.write(eds_path)
+        logger.info("enter_eds_path")
 
     def click_open_btn(self) -> None:
-        logger.info("click_open_btn")
         open_btn_path = pyautogui_images + "open_btn.png"
         self.click_btn(open_btn_path)
 
     def enter_eds_password(self) -> None:
-        logger.info("enter_eds_password")
         pyautogui.write(self.eds_pass)
+        logger.info("enter_eds_password")
 
     def click_ok_btn(self) -> None:
-        logger.info("click_ok_btn")
         open_btn_path = pyautogui_images + "ok_btn.png"
         self.click_btn(open_btn_path)
         global eds_manager_busy

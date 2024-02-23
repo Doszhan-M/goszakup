@@ -11,6 +11,8 @@ from django.db.models import (
     FloatField,
 )
 
+from core.config import setup
+
 
 def eds_directory_path(instance, filename):
     return "eds/{0}/{1}".format(instance.iin_bin, filename)
@@ -62,6 +64,16 @@ class Participant(Model):
     def __str__(self):
         return self.name
 
+    @property
+    def eds_auth_path(self):
+        path_on_host = self.eds_auth.path.replace("/dashboard/media/", setup.MEDIA_PATH_ON_HOST)
+        return path_on_host
+    
+    @property
+    def eds_gos_path(self):
+        path_on_host = self.eds_gos.path.replace("/dashboard/media/", setup.MEDIA_PATH_ON_HOST)
+        return path_on_host
+    
 
 class Status(TextChoices):
     checking = "checking", "Проверка объявления"
