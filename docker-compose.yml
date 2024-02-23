@@ -9,7 +9,9 @@ services:
     volumes:
       - ./dashboard/app:/dashboard/
     network_mode: host
-
+    depends_on:
+      - rabbitmq
+      
   beat_dashboard:
     build:
       context: ./dashboard
@@ -18,6 +20,8 @@ services:
     volumes:
       - ./dashboard/app:/dashboard/
     network_mode: host
+    depends_on:
+      - rabbitmq
 
   rabbitmq:
     image: "rabbitmq:3.12.13"

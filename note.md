@@ -16,18 +16,22 @@ https://v3bl.goszakup.gov.kz/ru/application/create/11695620
 https://v3bl.goszakup.gov.kz/ru/announce/index/11695620
 
 
-на fastapi.
-команда запуска такая: uvicorn app.core.main:app --host 0.0.0.0 --port 8000 --workers 2
-директория из которой надо ее выполнить: /projects/goszakup/goszakup
-программа должна автозапускаться после перезагрузки системы
-должно использоваться venv, который находиться по пути: /projects/goszakup/venv
+сейчас я запускаю программу на fastapi таким скриптом start_project.sh:
+#!/bin/bash
+# Запускаем GNOME Terminal и выполняем в нем run_app.sh
+gnome-terminal -- /bin/bash -c './11_start_goszakup.sh; exec bash'
 
-надо чтобы перед стартом программы создавался файл .env c содержимым:
-HEADLESS_DRIVER=TRUE
-ENVIRONMENT=LXDE
+содержимое скрипта 11_start_goszakup.sh такое:
+#!/bin/bash
+source /projects/goszakup/venv/bin/activate
+cd /projects/goszakup/goszakup
+nohup uvicorn app.core.main:app --host 0.0.0.0 --port 8000 --workers 1 &
 
+надо создать скрипт, который создаст systemd задачу для запуска скрипта start_project.sh
+который в свою очередь запустить 11_start_goszakup.sh
 
-надо создать скрипт, который создает systemd задачу для запуска приложения ncalayer.
-команда запуска такая:  ./ncalayer.sh --restart 
-директория из которой надо ее выполнить: ~/Programs/NCALayer/
-программа должна автозапускаться после перезагрузки системы
+[Desktop Entry]
+Type=Application
+Name=Goszakup
+Exec=/projects/goszakup/sh/start_project.sh
+Terminal=false
