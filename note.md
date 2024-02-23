@@ -33,5 +33,5 @@ nohup uvicorn app.core.main:app --host 0.0.0.0 --port 8000 --workers 1 &
 [Desktop Entry]
 Type=Application
 Name=Goszakup
-Exec=/projects/goszakup/sh/start_project.sh
+Exec=/projects/goszakup/sh/12_launch_goszakup.sh
 Terminal=false

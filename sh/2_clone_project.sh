@@ -17,4 +17,6 @@ git clone git@github.com:Doszhan-M/goszakup.git
 
 echo "Cloning completed."
 
-# sudo chmod +x clone_proj.sh
+# Сделать все скрипты исполняемыми
+cd /projects/goszakup/sh
+find /projects/goszakup/sh -type f -name "*.sh" -exec sudo chmod +x {} \; 
