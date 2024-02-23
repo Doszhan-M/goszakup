@@ -4,4 +4,4 @@
 cd /projects/goszakup/
 
 # Запуск Docker Compose
-docker compose up -d
+docker compose up --build -d

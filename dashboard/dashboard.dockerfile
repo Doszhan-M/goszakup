@@ -1,0 +1,15 @@
+FROM python:3.12.2-bookworm
+
+
+ENV TZ=Asia/Almaty \
+    PYTHONUNBUFFERED=1 
+
+WORKDIR /dashboard/
+
+COPY ./app/requirements.txt ./
+RUN pip install --no-cache-dir --upgrade pip && \ 
+    pip install --no-cache-dir -r requirements.txt
+
+COPY app/ ./
+
+ENTRYPOINT ["sh", "./sh/run_app.sh" ]
