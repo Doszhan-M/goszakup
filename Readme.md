@@ -32,6 +32,9 @@ cp NURSignBundle-4.3.1.jar /home/debian/.config/NCALayer/bundles
 Настроить автозапуск либо через скрипт либо через окружение
 cd /projects/goszakup/sh/ncalayer
 ./4_ncalayer_config.sh
+
+Если есть ошибка на xdd, то установить
+sudo apt install xdd -y
 ```
 6. Установить Docker
 ```
