@@ -12,7 +12,7 @@ SECRET_KEY = "django-insecure-vix#(ofw!k(00xpq49ef($awagrgey@#n@ntp#-4zl&&#wk$xq
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["10.192.168.10"]
 
 
 # Application definition

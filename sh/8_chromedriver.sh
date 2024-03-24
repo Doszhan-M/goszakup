@@ -13,7 +13,7 @@ CHROMEDRIVER_URL=$(jq -r '.channels.Stable.downloads.chromedriver[] | select(.pl
 
 # Скачивание и распаковка Chromedriver
 wget "$CHROMEDRIVER_URL" -O chromedriver.zip
-unzip -j ./chromedriver.zip 'chromedriver-linux64/chromedriver' -d /usr/local/bin/
+sudo unzip -j ./chromedriver.zip 'chromedriver-linux64/chromedriver' -d /usr/local/bin/
 
 # Очистка
 rm ./google-chrome-stable_current_amd64.deb

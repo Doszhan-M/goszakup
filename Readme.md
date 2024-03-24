@@ -1,5 +1,5 @@
 # Install and Start
-1. Настроить debian lxde:
+1. Настроить debian gnome:
 ```
 su -  
 apt update && apt upgrade -y  
@@ -72,6 +72,7 @@ cd /projects/goszakup/sh
 ```
 sudo reboot
 ```
+
 
 ## Порядок участия в тендере
 1. Доступные действия - Создать заявку 
