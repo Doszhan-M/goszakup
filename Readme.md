@@ -25,8 +25,12 @@ sudo ./2_clone_project.sh
 
 4. Установить NCALayer
 ```
-cd /projects/goszakup/sh/ncalayer
+Установить NCALayer из офф сайта.
+Скопировать NURSignBundle-4.3.1.jar в конфиг:
+cp NURSignBundle-4.3.1.jar /home/debian/.config/NCALayer/bundles
+
 Настроить автозапуск либо через скрипт либо через окружение
+cd /projects/goszakup/sh/ncalayer
 ./4_ncalayer_config.sh
 ```
 6. Установить Docker
