@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt install python3-tk python3-dev xvfb
+sudo apt install python3-tk python3-dev xvfb xclip
 
 # Создаем переменную с путем до файла
 DESKTOP_FILE=~/.config/autostart/goszakup.desktop

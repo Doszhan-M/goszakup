@@ -1,4 +1,5 @@
 import pyautogui
+import pyperclip
 from time import sleep, time
 from logging import getLogger
 
@@ -8,10 +9,10 @@ from app.core.config import settings
 
 logger = getLogger("fastapi")
 eds_manager_busy = False
-if settings.ENVIRONMENT == "GNOME":
-    pyautogui_images = settings.BASE_DIR + "/static/pyautogui/images/gnome/"
-elif settings.ENVIRONMENT == "LXDE":
-    pyautogui_images = settings.BASE_DIR + "/static/pyautogui/images/lxde/"
+if settings.ENVIRONMENT == "TUF17":
+    pyautogui_images = settings.BASE_DIR + "/static/pyautogui/images/tuf17/"
+elif settings.ENVIRONMENT == "X541S":
+    pyautogui_images = settings.BASE_DIR + "/static/pyautogui/images/x541s/"
 
 
 class EdsManager:
@@ -24,8 +25,10 @@ class EdsManager:
     def execute_sign_by_eds(self, type_) -> None:
         self.move_cursor_to_corner()
         self.click_choose_btn()
+        sleep(0.5)
         self.indicate_eds_path(type_)
         self.click_open_btn()
+        sleep(0.5)
         self.enter_eds_password()
         self.click_ok_btn()
 
@@ -54,7 +57,7 @@ class EdsManager:
                 sleep(0.1)
             else:
                 pyautogui.click(button)
-                logger.info(f"click {btn_path.split('/')[-1]}")
+                logger.info(f"click {btn_path}")
         if not button:
             logger.error(f"not found {btn_path.split('/')[-1]}")
 
@@ -67,7 +70,10 @@ class EdsManager:
             eds_path = self.eds_auth
         else:
             eds_path = self.eds_gos
-        pyautogui.write(eds_path)
+        # На некоторых средах write вставляет только по символьно
+        pyperclip.copy(eds_path) 
+        pyautogui.hotkey('ctrl', 'v')
+        # pyautogui.write(eds_path)
         logger.info("enter_eds_path")
 
     def click_open_btn(self) -> None:
@@ -75,7 +81,9 @@ class EdsManager:
         self.click_btn(open_btn_path)
 
     def enter_eds_password(self) -> None:
-        pyautogui.write(self.eds_pass)
+        # pyautogui.write(self.eds_pass)
+        pyperclip.copy(self.eds_pass) 
+        pyautogui.hotkey('ctrl', 'v')        
         logger.info("enter_eds_password")
 
     def click_ok_btn(self) -> None:

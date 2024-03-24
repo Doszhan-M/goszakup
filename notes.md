@@ -10,3 +10,7 @@ admin:aCiOnIQuArdE
 
 https://v3bl.goszakup.gov.kz/ru/application/create/11695620  
 https://v3bl.goszakup.gov.kz/ru/announce/index/11695620
+
+
+tail -n 100 -f /projects/goszakup/goszakup/nohup.out
+docker logs -f goszakup-dashboard-1
