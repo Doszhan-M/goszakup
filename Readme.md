@@ -22,7 +22,6 @@ vim 2_clone_project.sh
 sudo chmod +x 2_clone_project.sh
 sudo ./2_clone_project.sh
 ```
-
 4. Установить NCALayer
 ```
 Установить NCALayer из офф сайта.
@@ -73,7 +72,6 @@ cd /projects/goszakup/sh
 sudo reboot
 ```
 
-
 ## Порядок участия в тендере
 1. Доступные действия - Создать заявку 
 2. Юридический адрес -- 050061  
@@ -88,9 +86,8 @@ sudo reboot
 http://127.0.0.1:8000/goszakup/docs#/  
 http://127.0.0.1:8080/admin/  
 
-http://10.192.168.10:8080/goszakup/docs#/  
+http://10.192.168.10:8000/goszakup/docs#/  
 http://10.192.168.10:8080/admin/
 http://10.192.168.10:5554/flower_backend/tasks
 
-https://gz.doszhan.keenetic.pro/admin/
-http://gzworker.doszhan.keenetic.pro/goszakup/docs#/
+http://gz.maksat.keenetic.pro/admin/
