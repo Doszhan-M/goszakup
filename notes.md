@@ -14,3 +14,6 @@ https://v3bl.goszakup.gov.kz/ru/announce/index/11695620
 
 tail -n 100 -f /projects/goszakup/goszakup/nohup.out
 docker logs -f goszakup-dashboard-1
+
+ssh goszakup@10.192.168.10
+1075649643:goszakup_any_pass
