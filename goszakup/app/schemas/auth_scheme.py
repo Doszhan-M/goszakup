@@ -13,7 +13,7 @@ class AuthScheme(BaseModel):
         + "/static/eds/GOSTKNCA_a3623558da98644ba2a46a5dc4bc177181236eee.p12"
     )
     eds_pass: str = "Aa1234"
-    goszakup_pass: str = "ZAQwsxcde32"
+    goszakup_pass: str = "87014333488Aa"
 
 
 

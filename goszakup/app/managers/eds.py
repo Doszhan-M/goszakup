@@ -25,10 +25,10 @@ class EdsManager:
     def execute_sign_by_eds(self, type_) -> None:
         self.move_cursor_to_corner()
         self.click_choose_btn()
-        sleep(0.5)
+        self.find_eds_path_form()
         self.indicate_eds_path(type_)
         self.click_open_btn()
-        sleep(0.5)
+        self.find_pass_form()
         self.enter_eds_password()
         self.click_ok_btn()
 
@@ -52,12 +52,12 @@ class EdsManager:
         button = None
         while not button and time() - start_time < timeout:
             try:
-                button = pyautogui.locateOnScreen(btn_path, confidence=0.8)
+                button = pyautogui.locateOnScreen(btn_path, confidence=0.7)
             except pyautogui.ImageNotFoundException:
                 sleep(0.1)
             else:
                 pyautogui.click(button)
-                logger.info(f"click {btn_path}")
+                logger.info(f"click {btn_path.split('/')[-1]}")
         if not button:
             logger.error(f"not found {btn_path.split('/')[-1]}")
 
@@ -65,6 +65,14 @@ class EdsManager:
         choose_btn_path = pyautogui_images + "choose_btn.png"
         self.click_btn(choose_btn_path, 60)
 
+    def find_eds_path_form(self) -> None:
+        form_path = pyautogui_images + "eds_form.png"
+        self.click_btn(form_path, 2)
+        
+    def find_pass_form(self) -> None:
+        form_path = pyautogui_images + "pass_form.png"
+        self.click_btn(form_path, 2)
+        
     def indicate_eds_path(self, type_) -> None:
         if type_ == "auth_eds":
             eds_path = self.eds_auth
@@ -81,9 +89,9 @@ class EdsManager:
         self.click_btn(open_btn_path)
 
     def enter_eds_password(self) -> None:
-        # pyautogui.write(self.eds_pass)
         pyperclip.copy(self.eds_pass) 
         pyautogui.hotkey('ctrl', 'v')        
+        # pyautogui.write(self.eds_pass)
         logger.info("enter_eds_password")
 
     def click_ok_btn(self) -> None:
