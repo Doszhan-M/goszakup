@@ -8,7 +8,7 @@ class CustomLogger:
 
     color_formatter = ColoredFormatter(
         "%(yellow)s%(asctime)-8s%(reset)s - %(log_color)s%(levelname)-1s%(reset)s - %(cyan)s%(message)s (%(black)s%(filename)s:%(lineno)d)",
-        datefmt="%H:%M:%S",
+        datefmt="%Y-%m-%d %H:%M:%S",
         log_colors={
             "DEBUG": "white",
             "INFO": "green",
@@ -20,7 +20,7 @@ class CustomLogger:
 
     simple_formatter = logging.Formatter(
         "%(asctime)s - %(levelname)s -%(message)s (%(filename)s:%(lineno)d)",
-        datefmt="%H:%M:%S",
+        datefmt="%Y-%m-%d %H:%M:%S",
     )
     
     business_formatter = logging.Formatter(
