@@ -67,11 +67,11 @@ class EdsManager:
 
     def find_eds_path_form(self) -> None:
         form_path = pyautogui_images + "eds_form.png"
-        self.click_btn(form_path, 2)
+        self.click_btn(form_path, 30)
         
     def find_pass_form(self) -> None:
         form_path = pyautogui_images + "pass_form.png"
-        self.click_btn(form_path, 2)
+        self.click_btn(form_path, 30)
         
     def indicate_eds_path(self, type_) -> None:
         if type_ == "auth_eds":

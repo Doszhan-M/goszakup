@@ -31,7 +31,7 @@ class TenderManager:
             announce_number, auth_data, self.web_driver
         )
         self.announce_number: str = announce_number
-        self.result = {"success": True, "start_time": datetime.now()}
+        self.result = {"success": True}
         self.application_data: dict = auth_data.application_data.model_dump()
         self.announce_url = (
             f"https://v3bl.goszakup.gov.kz/ru/announce/index/{announce_number}"
@@ -60,6 +60,7 @@ class TenderManager:
     def start(self) -> dict:
         self.waiting_until_the_start()
         self.tender_start()
+        self.result["start_time"] = datetime.now()
         self.fill_and_submit_application()
         required_docs_urls = self.get_required_docs_links()
         for url in required_docs_urls:
