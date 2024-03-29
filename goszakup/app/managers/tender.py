@@ -13,7 +13,7 @@ from .eds import EdsManager
 from .auth import GoszakupAuthorization
 from .tender_cancel import TenderCancelManager
 from app.services import WebDriverManager
-from app.services.exception import TenderStartFailed
+from app.services.exception import TenderStartFailed, GenerateDocumentFailed
 
 
 logger = getLogger("fastapi")
@@ -31,6 +31,7 @@ class TenderManager:
             announce_number, auth_data, self.web_driver
         )
         self.announce_number: str = announce_number
+        self.max_attempts = 3
         self.result = {"success": True}
         self.application_data: dict = auth_data.application_data.model_dump()
         self.announce_url = (
@@ -40,17 +41,21 @@ class TenderManager:
             f"https://v3bl.goszakup.gov.kz/ru/application/create/{announce_number}"
         )
 
-    def start_with_retry(self, max_attempts=3):
-        for attempt in range(max_attempts):
+    def start_with_retry(self):
+        for attempt in range(self.max_attempts):
             try:
                 result = self.start()
                 return result
             except Exception as e:
-                print(e)
-                if attempt < max_attempts - 1:
-                    sleep(2)
+                logger.error(e)
+                logger.error(f"Attempt {attempt + 1} of {self.max_attempts} failed.")
+                if attempt < self.max_attempts - 1:
+                    delay = 2
+                    logger.error(f"Retrying in {delay} seconds...")
+                    sleep(delay)
                     self.cancel_manager.cancel()
                 else:
+                    logger.error("Task stopped with an error.")
                     self.session_manager.close_session()
                     self.result["success"] = False
                     self.result["finish_time"] = datetime.now()
@@ -142,6 +147,10 @@ class TenderManager:
 
         self.web_driver.get(url)
         submit_button = self.web_driver.find_element(By.CSS_SELECTOR, ".btn.btn-info")
+        submit_button_value = submit_button.get_attribute("value")
+        if submit_button_value != "Сформировать документ":
+            self.max_attempts = 1
+            raise GenerateDocumentFailed
         submit_button.click()
 
     def sign_document(self) -> None:

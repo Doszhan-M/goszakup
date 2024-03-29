@@ -19,7 +19,7 @@ def schedule_announce(
         and instance._suppress_schedule_announce
     ):
         return
-    if instance.status in ("checking", "error"):
+    if instance.status in ("checking",):
         announce_number = instance.announce_number
         participant_id = instance.participant.id
         scheduled_time = settings.ALMATY_TZ.localize(

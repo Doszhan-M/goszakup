@@ -29,3 +29,15 @@ class TenderStartFailed(HTTPException):
             "description": f"Тендер №{announce_number} не начался на сайте! Количество попыток исчерпано!",
         }
         super().__init__(status_code, detail)
+
+
+class GenerateDocumentFailed(HTTPException):
+    def __init__(self) -> None:
+        status_code = 200
+        error_code = "generate_document_not_found"
+        detail = {
+            "success": False,
+            "error_code": error_code,
+            "description": "Не удалось сформировать документ. Не соответствует шаблону.",
+        }
+        super().__init__(status_code, detail)

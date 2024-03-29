@@ -27,12 +27,16 @@ def start_tender(announce_number, data):
         task.status = "success"
     elif response.status_code == 500:
         task.status = "error"
-        task.error = "Статус ошибки 500"
+        task.error = "Статус код 500"
     elif response.status_code == 200 and not response.json()["success"]:
+        result = response.json()
+        print('result: ', result)
         task.status = "error"
-        task.error = response.json()["error_text"]
+        task.error = result["error_text"]["detail"]["description"]
+        task.start_time = make_aware(parse_datetime(result["start_time"]))
     else:
         task.status = "error"
         task.error = "Неизвестная ошибка"
+    task._suppress_schedule_announce = True
     task.save()
     return task.status
