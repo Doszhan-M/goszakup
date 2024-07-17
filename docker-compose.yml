@@ -1,10 +1,17 @@
 version: '3.9'
 
+volumes:
+  redis:
+    external: true
+    name: redis
+  rabbitmq:
+    external: true
+    name: rabbitmq
+
 services:
   dashboard:
-    build:
-      context: ./dashboard
-      dockerfile: ./dashboard.dockerfile
+    build: dashboard/.
+    entrypoint: ["sh", "./sh/app.sh"]      
     restart: always
     volumes:
       - ./dashboard/app:/dashboard/
@@ -13,9 +20,8 @@ services:
       - rabbitmq
       
   beat_dashboard:
-    build:
-      context: ./dashboard
-      dockerfile: ./beat.dockerfile
+    build: dashboard/.
+    entrypoint: ["sh", "./sh/beat.sh"]  
     restart: always
     volumes:
       - ./dashboard/app:/dashboard/
@@ -32,9 +38,17 @@ services:
       TZ: Asia/Almaty
       RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit consumer_timeout 2592000000
     volumes:
-      - "./rabbitmq:/var/lib/rabbitmq"      
+      - rabbitmq:/var/lib/rabbitmq      
     ports:
       - "5672:5672"
+
+  redis:
+    image: "redis:7.2.5"
+    restart: always
+    volumes:
+      - redis:/data     
+    ports:
+      - "6379:6379"
 
   flower:
     image: mher/flower:2.0

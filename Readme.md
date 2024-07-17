@@ -9,6 +9,20 @@ reboot
 
 sudo apt update && sudo apt upgrade -y  
 sudo apt -y install htop vim curl wget libnss3-tools unzip
+
+Чтобы рабочии стол стал активным после перезапуска, необходимо в настройках
+Multitasking-Workspaces установить фиксированное количество раб столов на 1,
+также необходимо настроить автологин в настройках
+
+Чтобы при закрытии крышки, ноут не уходил в сон, отредактировать:
+sudo vim /etc/systemd/logind.conf  
+Если HandleLidSwitch не установлен на ignore затем измените его:
+HandleLidSwitch=ignore
+
+Чтобы chrome не запрашивал keyring после перезагрузки, можно удалить:
+sudo apt remove gnome-keyring 
+
+Перезапустить систему
 ```
 2. Создать и выполнить скрипт 1_ssh_keygen.sh
 ```
@@ -25,8 +39,11 @@ sudo ./2_clone_project.sh
 4. Установить NCALayer
 ```
 Установить NCALayer из офф сайта.
-Скопировать NURSignBundle-4.3.1.jar в конфиг:
-cp NURSignBundle-4.3.1.jar /home/asus/.config/NCALayer/bundles
+Проверить модуль гос закупок на этих сайтах: https://mhelp.kz/ncalayer-skachat/#google_vignette, https://pki.gov.kz/docs/nl_ru/bundles/#_2
+Всегда надо использовать последнюю версию.
+Скопировать kz.ecc.NurSignBundle_5.1.1_2e62beae-e900-4c8c-9d8e-37286ace46ec.jar в конфиг:  
+cp kz.ecc.NurSignBundle_5.1.1_2e62beae-e900-4c8c-9d8e-37286ace46ec.jar /home/asus/.config/NCALayer/bundles  
+После перезапуска модуль должен исчезнуть из папку bundles  
 
 Настроить автозапуск либо через скрипт либо через окружение
 cd /projects/goszakup/sh/ncalayer
