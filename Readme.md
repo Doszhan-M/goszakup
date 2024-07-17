@@ -26,7 +26,7 @@ sudo ./2_clone_project.sh
 ```
 Установить NCALayer из офф сайта.
 Скопировать NURSignBundle-4.3.1.jar в конфиг:
-cp NURSignBundle-4.3.1.jar /home/debian/.config/NCALayer/bundles
+cp NURSignBundle-4.3.1.jar /home/asus/.config/NCALayer/bundles
 
 Настроить автозапуск либо через скрипт либо через окружение
 cd /projects/goszakup/sh/ncalayer
