@@ -1,8 +1,10 @@
+import grpc
 from uuid import uuid4
-from time import sleep
 from logging import getLogger
 from playwright.async_api import Page
 
+from app.pb2 import eds_pb2
+from app.pb2 import eds_pb2_grpc
 from app.services import PlaywrightDriver
 
 
@@ -27,12 +29,21 @@ class GoszakupAuth:
         self.page = await self.playwright_manager.browser.new_page()
         await self.page.goto(self.auth_url)
         nclayer_call_btn = await self.page.query_selector("#selectP12File")
-        print('nclayer_call_btn: ', nclayer_call_btn)
-        # if self.eds_manager.is_not_busy():
-        #     await nclayer_call_btn.click()
-        #     await self.eds_manager.execute_sign_by_eds("auth_eds")
-        #     await self.page.wait_for_timeout(1000)
-        # await self.enter_goszakup_password()
+        async with grpc.aio.insecure_channel("127.0.0.1:50051") as channel:
+            stub = eds_pb2_grpc.EdsServiceStub(channel)
+            eds_manager_status = stub.SendStatus(eds_pb2.EdsManagerStatusCheck())
+            async for status in eds_manager_status:
+                if status.busy.value:
+                    logger.info("Eds Service is busy. Waiting...")
+            await nclayer_call_btn.click()
+            eds_data = eds_pb2.SignByEdsStart(
+                eds_path=self.auth_data.eds_gos,
+                eds_pass=self.auth_data.eds_pass,
+            )
+            sign_by_eds = await stub.ExecuteSignByEds(eds_data)
+            if sign_by_eds.result:
+                await self.page.wait_for_timeout(1000)
+                await self.enter_goszakup_password()
         await self.store_auth_session()
         return self.page
 

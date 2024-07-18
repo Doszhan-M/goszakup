@@ -1,9 +1,3 @@
-from __future__ import print_function
-from uuid import uuid4
-from google.protobuf.wrappers_pb2 import BoolValue
-
-import logging
-
 import grpc
 from pb2 import eds_pb2
 from pb2 import eds_pb2_grpc

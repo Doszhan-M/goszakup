@@ -3,46 +3,39 @@ import pyperclip
 from time import sleep, time
 from logging import getLogger
 
-from app.core.config import settings
+from core.config import settings
 
 
-logger = getLogger("fastapi")
+logger = getLogger("grpc")
 eds_manager_busy = False
+
+
 if settings.ENVIRONMENT == "TUF17":
-    pyautogui_images = settings.BASE_DIR + "/static/pyautogui/images/tuf17/"
-elif settings.ENVIRONMENT == "vivobook":
-    pyautogui_images = settings.BASE_DIR + "/static/pyautogui/images/vivobook/"
+    pyautogui_images = settings.BASE_DIR + "/static/tuf17/"
+elif settings.ENVIRONMENT == "VIVOBOOK":
+    pyautogui_images = settings.BASE_DIR + "/static/vivobook/"
 
 
 class EdsManager:
+    def __init__(self, eds_data, *args, **kwargs) -> None:
+        self.eds_path = eds_data.eds_path
+        self.eds_pass = eds_data.eds_pass
 
-    def __init__(self, auth_data: AuthScheme, *args, **kwargs) -> None:
-        self.eds_gos = auth_data.eds_gos
-        self.eds_pass = auth_data.eds_pass
-
-    def execute_sign_by_eds(self, type_) -> None:
-        # self.move_cursor_to_corner()
+    def execute_sign_by_eds(self) -> None:
+        global eds_manager_busy
+        eds_manager_busy = True
         self.click_choose_btn()
-        # self.find_eds_path_form()
-        self.indicate_eds_path(type_)
+        self.indicate_eds_path()
         self.click_open_btn()
-        # self.find_pass_form()
         self.enter_eds_password()
         self.click_ok_btn()
 
-    def move_cursor_to_corner(self) -> None:
-        "Переместить курсор на край стола."
-
-        pyautogui.FAILSAFE = False
-        screen_width, screen_height = pyautogui.size()
-        pyautogui.moveTo(screen_width - 100, screen_height - 100)
-
-    def is_not_busy(self) -> bool:
+    @staticmethod
+    def is_not_busy() -> bool:
         global eds_manager_busy
         while eds_manager_busy:
-            logger.info("eds_manager_busy")
+            logger.info("eds manager busy")
             sleep(0.1)
-        eds_manager_busy = True
         return True
 
     def click_btn(self, btn_path: str, timeout=5) -> None:
@@ -63,19 +56,10 @@ class EdsManager:
         choose_btn_path = pyautogui_images + "choose_btn.png"
         self.click_btn(choose_btn_path, 60)
 
-    def find_eds_path_form(self) -> None:
-        form_path = pyautogui_images + "eds_form.png"
-        self.click_btn(form_path, 30)
-        
-    def find_pass_form(self) -> None:
-        form_path = pyautogui_images + "pass_form.png"
-        self.click_btn(form_path, 30)
-        
-    def indicate_eds_path(self, type_) -> None:
-        eds_path = self.eds_gos
+    def indicate_eds_path(self) -> None:
         # На некоторых средах write вставляет только по символьно
-        pyperclip.copy(eds_path) 
-        pyautogui.hotkey('ctrl', 'v')
+        pyperclip.copy(self.eds_path)
+        pyautogui.hotkey("ctrl", "v")
         # pyautogui.write(eds_path)
         logger.info("enter_eds_path")
 
@@ -84,8 +68,8 @@ class EdsManager:
         self.click_btn(open_btn_path)
 
     def enter_eds_password(self) -> None:
-        pyperclip.copy(self.eds_pass) 
-        pyautogui.hotkey('ctrl', 'v')        
+        pyperclip.copy(self.eds_pass)
+        pyautogui.hotkey("ctrl", "v")
         # pyautogui.write(self.eds_pass)
         logger.info("enter_eds_password")
 

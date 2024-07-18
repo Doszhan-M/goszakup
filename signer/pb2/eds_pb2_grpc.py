@@ -39,28 +39,28 @@ class EdsServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.ExecuteSignByEds = channel.unary_unary(
-                '/eds.EdsService/ExecuteSignByEds',
-                request_serializer=eds__pb2.SignByEdsStart.SerializeToString,
-                response_deserializer=eds__pb2.SignByEdsResult.FromString,
-                _registered_method=True)
         self.SendStatus = channel.unary_stream(
                 '/eds.EdsService/SendStatus',
                 request_serializer=eds__pb2.EdsManagerStatusCheck.SerializeToString,
                 response_deserializer=eds__pb2.EdsManagerStatus.FromString,
+                _registered_method=True)
+        self.ExecuteSignByEds = channel.unary_unary(
+                '/eds.EdsService/ExecuteSignByEds',
+                request_serializer=eds__pb2.SignByEdsStart.SerializeToString,
+                response_deserializer=eds__pb2.SignByEdsResult.FromString,
                 _registered_method=True)
 
 
 class EdsServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def ExecuteSignByEds(self, request, context):
+    def SendStatus(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SendStatus(self, request, context):
+    def ExecuteSignByEds(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -69,15 +69,15 @@ class EdsServiceServicer(object):
 
 def add_EdsServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'ExecuteSignByEds': grpc.unary_unary_rpc_method_handler(
-                    servicer.ExecuteSignByEds,
-                    request_deserializer=eds__pb2.SignByEdsStart.FromString,
-                    response_serializer=eds__pb2.SignByEdsResult.SerializeToString,
-            ),
             'SendStatus': grpc.unary_stream_rpc_method_handler(
                     servicer.SendStatus,
                     request_deserializer=eds__pb2.EdsManagerStatusCheck.FromString,
                     response_serializer=eds__pb2.EdsManagerStatus.SerializeToString,
+            ),
+            'ExecuteSignByEds': grpc.unary_unary_rpc_method_handler(
+                    servicer.ExecuteSignByEds,
+                    request_deserializer=eds__pb2.SignByEdsStart.FromString,
+                    response_serializer=eds__pb2.SignByEdsResult.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -89,33 +89,6 @@ def add_EdsServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class EdsService(object):
     """Missing associated documentation comment in .proto file."""
-
-    @staticmethod
-    def ExecuteSignByEds(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/eds.EdsService/ExecuteSignByEds',
-            eds__pb2.SignByEdsStart.SerializeToString,
-            eds__pb2.SignByEdsResult.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
 
     @staticmethod
     def SendStatus(request,
@@ -134,6 +107,33 @@ class EdsService(object):
             '/eds.EdsService/SendStatus',
             eds__pb2.EdsManagerStatusCheck.SerializeToString,
             eds__pb2.EdsManagerStatus.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ExecuteSignByEds(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/eds.EdsService/ExecuteSignByEds',
+            eds__pb2.SignByEdsStart.SerializeToString,
+            eds__pb2.SignByEdsResult.FromString,
             options,
             channel_credentials,
             insecure,

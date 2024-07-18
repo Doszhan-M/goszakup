@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package eds;
+
+import "google/protobuf/wrappers.proto";
+
+
+message EdsManagerStatusCheck {}
+
+message SignByEdsStart {
+  string eds_path = 1;
+  string eds_pass = 2;
+}
+
+
+service EdsService {
+  rpc SendStatus (EdsManagerStatusCheck) returns (stream EdsManagerStatus);
+  rpc ExecuteSignByEds (SignByEdsStart) returns (SignByEdsResult);
+}
+
+
+message EdsManagerStatus {
+  google.protobuf.BoolValue busy = 1;
+}
+
+message SignByEdsResult {
+  google.protobuf.BoolValue result = 1;
+}

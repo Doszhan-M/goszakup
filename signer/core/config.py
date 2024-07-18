@@ -9,7 +9,7 @@ load_dotenv(f"{path.dirname(__file__)}/../../../env/eds.env")
 class Settings(BaseSettings):
     DEPLOY: bool
     BASE_DIR: str = str(Path(__file__).resolve().parent.parent)
-    ENVIRONMENT: str = "vivobook"
+    ENVIRONMENT: str = "VIVOBOOK"
 
 
 settings = Settings()
