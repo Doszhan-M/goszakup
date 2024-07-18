@@ -17,3 +17,7 @@ docker logs -f goszakup-dashboard-1
 
 ssh goszakup@10.192.168.10
 1075649643:goszakup_any_pass
+
+
+
+old tender_check = 7.8-8.3 sec
