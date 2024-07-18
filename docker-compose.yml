@@ -13,9 +13,11 @@ services:
     build: dashboard/.
     entrypoint: ["sh", "./sh/app.sh"]      
     restart: always
+    network_mode: host
+    env_file:
+      - env/dashboard.env
     volumes:
       - ./dashboard/app:/dashboard/
-    network_mode: host
     depends_on:
       - rabbitmq
       
@@ -23,15 +25,19 @@ services:
     build: dashboard/.
     entrypoint: ["sh", "./sh/beat.sh"]  
     restart: always
+    network_mode: host
+    env_file:
+      - env/dashboard.env    
     volumes:
       - ./dashboard/app:/dashboard/
-    network_mode: host
     depends_on:
       - rabbitmq
 
   rabbitmq:
     image: "rabbitmq:3.12.13"
     restart: always
+    ports:
+      - "5672:5672"    
     environment:
       RABBITMQ_DEFAULT_USER: "rabbitmq_user"
       RABBITMQ_DEFAULT_PASS: "rabbitmq_pass"
@@ -39,29 +45,27 @@ services:
       RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit consumer_timeout 2592000000
     volumes:
       - rabbitmq:/var/lib/rabbitmq      
-    ports:
-      - "5672:5672"
 
   redis:
     image: "redis:7.2.5"
     restart: always
+    ports:
+      - "6379:6379"    
     volumes:
       - redis:/data     
-    ports:
-      - "6379:6379"
 
   flower:
     image: mher/flower:2.0
     command: [ "celery", "flower", "--url-prefix=flower_backend" ]
     restart: always
+    ports:
+      - 5554:5555    
     environment:
       - CELERY_ENABLE_UTC=True
       - CELERY_BROKER=amqp://rabbitmq_user:rabbitmq_pass@rabbitmq
       - FLOWER_BASIC_AUTH=pk_flower:flower_pass
     logging:
       driver: "none"
-    ports:
-      - 5554:5555
     depends_on:
       - rabbitmq
     mem_limit: 500M

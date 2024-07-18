@@ -1,19 +1,21 @@
 # goszakup
 beautifulsoup4==4.12.3
-colorlog == 6.7.0
-fastapi[all]==0.109.2
-opencv-python==4.9.0.80
-pillow==10.2.0
+colorlog == 6.8.2
+fastapi[all]==0.111.1
+opencv-python==4.10.0.84
+pillow==10.4.0
 PyAutoGUI==0.9.54
 python-xlib==0.33
-selenium==4.17.2
+selenium==4.22.0
 
 # dashboard
-celery==5.3.6
-Django==5.0.2
+celery==5.4.0
+colorlog == 6.8.2
+Django==5.0.7
 django-admin-menu==1.6
-gunicorn == 20.1.0
-pydantic-settings==2.2.1
+gunicorn == 22.0.0
+pydantic-settings==2.3.4
 pytz==2024.1
-requests==2.31.0
-whitenoise==6.2.0
+requests==2.32.3
+watchfiles==0.22.0
+whitenoise==6.7.0
