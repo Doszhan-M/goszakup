@@ -3,7 +3,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
-load_dotenv(f"{path.dirname(__file__)}/../../../env/eds.env")
+load_dotenv(f"{path.dirname(__file__)}/../../env/eds.env")
 
 
 class Settings(BaseSettings):

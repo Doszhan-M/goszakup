@@ -30,8 +30,8 @@ playwright install --with-deps
 python3 app/main.py
 
 python3 -m grpc_tools.protoc \
-    -I./eds_service/app/protos \
-    --python_out=./eds_service/app/pb2 \
-    --pyi_out=./eds_service/app/pb2 \
-    --grpc_python_out=./eds_service/app/pb2 \
+    -I./signer/protos \
+    --python_out=./signer/pb2 \
+    --pyi_out=./signer/pb2 \
+    --grpc_python_out=./signer/pb2 \
     eds.proto
