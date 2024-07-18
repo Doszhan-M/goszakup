@@ -7,6 +7,7 @@ pillow==10.4.0
 PyAutoGUI==0.9.54
 python-xlib==0.33
 selenium==4.22.0
+playwright==1.45.0
 
 # dashboard
 celery==5.4.0

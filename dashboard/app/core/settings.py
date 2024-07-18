@@ -143,5 +143,3 @@ ADMIN_STYLE = {
     "logo-width": "auto",
     "logo-height": "60px",
 }
-
-GOSZAKUP_URL = "http://127.0.0.1:8000"

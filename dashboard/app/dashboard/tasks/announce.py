@@ -8,8 +8,9 @@ from django.utils.timezone import make_aware
 from django.utils.dateparse import parse_datetime
 
 from core.celery import app
-from dashboard.models import Participant, Task
+from core.config import setup
 from .tender import start_tender
+from dashboard.models import Participant, Task
 
 
 logger = getLogger("django")
@@ -19,7 +20,9 @@ logger = getLogger("django")
 def check_and_schedule_task(announce_number, participant_id):
     """Запланировать задачу."""
 
-    url = f"{settings.GOSZAKUP_URL}/goszakup/tender_check/?announce_number={announce_number}"
+    url = (
+        f"{setup.GOSZAKUP_URL}/goszakup/tender_check/?announce_number={announce_number}"
+    )
     headers = {
         "accept": "application/json",
         "Content-Type": "application/json",

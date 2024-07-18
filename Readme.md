@@ -10,6 +10,8 @@ reboot
 sudo apt update && sudo apt upgrade -y  
 sudo apt -y install htop vim curl wget libnss3-tools unzip
 
+Переключиться на Xorg сервер!
+
 Чтобы рабочии стол стал активным после перезапуска, необходимо в настройках
 Multitasking-Workspaces установить фиксированное количество раб столов на 1,
 также необходимо настроить автологин в настройках

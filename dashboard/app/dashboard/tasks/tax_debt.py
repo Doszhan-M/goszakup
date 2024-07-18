@@ -2,9 +2,9 @@ import json
 import time
 import requests
 
-from django.conf import settings
 
 from core.celery import app
+from core.config import setup
 from dashboard.models import Participant
 
 
@@ -12,7 +12,7 @@ from dashboard.models import Participant
 def check_tax_debt():
     """Проверить налоговые долги участников."""
 
-    url = f"{settings.GOSZAKUP_URL}/goszakup/check_tax_debt/?delta=10"
+    url = f"{setup.GOSZAKUP_URL}/goszakup/check_tax_debt/?delta=10"
     headers = {
         "accept": "application/json",
         "Content-Type": "application/json",

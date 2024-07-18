@@ -1,10 +1,10 @@
 import requests
 
-from django.conf import settings
 from django.utils.timezone import make_aware
 from django.utils.dateparse import parse_datetime
 
 from core.celery import app
+from core.config import setup
 from dashboard.models import Task
 
 
@@ -12,7 +12,9 @@ from dashboard.models import Task
 def start_tender(announce_number, data):
     """Начать тендер."""
 
-    url = f"{settings.GOSZAKUP_URL}/goszakup/tender_start/?announce_number={announce_number}"
+    url = (
+        f"{setup.GOSZAKUP_URL}/goszakup/tender_start/?announce_number={announce_number}"
+    )
     headers = {
         "accept": "application/json",
         "Content-Type": "application/json",
@@ -30,7 +32,7 @@ def start_tender(announce_number, data):
         task.error = "Статус код 500"
     elif response.status_code == 200 and not response.json()["success"]:
         result = response.json()
-        print('result: ', result)
+        print("result: ", result)
         task.status = "error"
         task.error = result["error_text"]["detail"]["description"]
         task.start_time = make_aware(parse_datetime(result["start_time"]))

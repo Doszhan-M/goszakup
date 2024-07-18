@@ -18,6 +18,12 @@ docker logs -f goszakup-dashboard-1
 ssh goszakup@10.192.168.10
 1075649643:goszakup_any_pass
 
+find . -name __pycache__ -exec rm -rf {} \;
+
 
 
 old tender_check = 7.8-8.3 sec
+
+
+
+playwright install --with-deps

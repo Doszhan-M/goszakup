@@ -7,7 +7,7 @@
   "material-icon-theme.folders.associations": {
     "dashboard": "Content",
     "distributor": "App",
-    "egov": "Meta",
+    "eds_service": "Meta",
     "venv": "Python",
     "sh": "Scripts",
     "logger": "Log",
@@ -15,7 +15,7 @@
     "deploy": "Flow",
     "scrapers": "Quasar",
     "dals": "Quasar",
-    "shep_proxy": "Expo",
+    "tender_service": "Expo",
   },
   // - - - PythonPath settings- - - - - - - - - - - - - 
   "python.defaultInterpreterPath": "./venv/bin/python",
@@ -205,6 +205,7 @@
     "wsgi",
     "Xlib",
     "xmlsign",
+    "Xorg",
     "yzzqzz",
     "автологин",
     "азаматтар",
