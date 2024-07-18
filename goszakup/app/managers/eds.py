@@ -11,8 +11,8 @@ logger = getLogger("fastapi")
 eds_manager_busy = False
 if settings.ENVIRONMENT == "TUF17":
     pyautogui_images = settings.BASE_DIR + "/static/pyautogui/images/tuf17/"
-elif settings.ENVIRONMENT == "X541S":
-    pyautogui_images = settings.BASE_DIR + "/static/pyautogui/images/x541s/"
+elif settings.ENVIRONMENT == "vivobook":
+    pyautogui_images = settings.BASE_DIR + "/static/pyautogui/images/vivobook/"
 
 
 class EdsManager:
@@ -22,12 +22,12 @@ class EdsManager:
         self.eds_pass = auth_data.eds_pass
 
     def execute_sign_by_eds(self, type_) -> None:
-        self.move_cursor_to_corner()
+        # self.move_cursor_to_corner()
         self.click_choose_btn()
-        self.find_eds_path_form()
+        # self.find_eds_path_form()
         self.indicate_eds_path(type_)
         self.click_open_btn()
-        self.find_pass_form()
+        # self.find_pass_form()
         self.enter_eds_password()
         self.click_ok_btn()
 

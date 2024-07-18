@@ -1,5 +1,5 @@
 # Install and Start
-1. Настроить debian gnome:
+1. Настроить gnome:
 ```
 su -  
 apt update && apt upgrade -y  

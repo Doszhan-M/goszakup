@@ -8,9 +8,9 @@ load_dotenv(f"{Path(__file__).resolve().parent}/.env")
 
 
 class Settings(BaseSettings):
-    HEADLESS_DRIVER: bool = False
+    HEADLESS_DRIVER: bool = True
     BASE_DIR: str = str(Path(__file__).resolve().parent.parent)
-    ENVIRONMENT: str = "X541S"
+    ENVIRONMENT: str = "vivobook"
 
 
 settings = Settings()
