@@ -20,3 +20,7 @@ pytz==2024.1
 requests==2.32.3
 watchfiles==0.22.0
 whitenoise==6.7.0
+
+# eds_service
+grpcio==1.65.1
+grpcio-tools==1.65.1
