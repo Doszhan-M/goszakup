@@ -49,17 +49,17 @@ config = {
     },
     "loggers": {
         "django": {
-            "handlers": ["console"],  # "file"],
+            "handlers": ["console", "file"],  # "file"],
             "level": "INFO",
             "propagate": True,
         },
         "gunicorn": {
-            "handlers": ["console"],  # "file"],
+            "handlers": ["console", "file"],
             "level": "INFO",
             "propagate": True,
         },
         "celery": {
-            "handlers": ["console"],  # "celery.file"],
+            "handlers": ["console", "celery.file"],
             "level": "INFO",
             "propagate": True,
         },

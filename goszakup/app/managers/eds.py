@@ -18,7 +18,6 @@ elif settings.ENVIRONMENT == "X541S":
 class EdsManager:
 
     def __init__(self, auth_data: AuthScheme, *args, **kwargs) -> None:
-        self.eds_auth = auth_data.eds_auth
         self.eds_gos = auth_data.eds_gos
         self.eds_pass = auth_data.eds_pass
 
@@ -74,10 +73,7 @@ class EdsManager:
         self.click_btn(form_path, 30)
         
     def indicate_eds_path(self, type_) -> None:
-        if type_ == "auth_eds":
-            eds_path = self.eds_auth
-        else:
-            eds_path = self.eds_gos
+        eds_path = self.eds_gos
         # На некоторых средах write вставляет только по символьно
         pyperclip.copy(eds_path) 
         pyautogui.hotkey('ctrl', 'v')

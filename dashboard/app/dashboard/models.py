@@ -31,10 +31,7 @@ class Participant(Model):
         default="ТОО 'Сивер плюс'",
         verbose_name="Наименование участника",
     )
-    eds_auth = FileField(
-        upload_to=eds_directory_path, verbose_name="ЭЦП для авторизации"
-    )
-    eds_gos = FileField(upload_to=eds_directory_path, verbose_name="ЭЦП для подписания")
+    eds_gos = FileField(upload_to=eds_directory_path, verbose_name="ЭЦП файл")
     eds_pass = CharField(max_length=255, verbose_name="Пароль от ЭЦП")
     goszakup_pass = CharField(max_length=255, verbose_name="Пароль на сайте Госзакупа")
     subject_address = CharField(
@@ -64,11 +61,6 @@ class Participant(Model):
     def __str__(self):
         return self.name
 
-    @property
-    def eds_auth_path(self):
-        path_on_host = self.eds_auth.path.replace("/dashboard/media/", setup.MEDIA_PATH_ON_HOST)
-        return path_on_host
-    
     @property
     def eds_gos_path(self):
         path_on_host = self.eds_gos.path.replace("/dashboard/media/", setup.MEDIA_PATH_ON_HOST)
