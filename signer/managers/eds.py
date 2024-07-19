@@ -54,6 +54,7 @@ class EdsManager:
 
     def click_choose_btn(self) -> None:
         choose_btn_path = pyautogui_images + "choose_btn.png"
+        print('choose_btn_path: ', choose_btn_path)
         self.click_btn(choose_btn_path, 60)
 
     def indicate_eds_path(self) -> None:

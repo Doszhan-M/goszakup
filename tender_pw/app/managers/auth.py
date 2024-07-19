@@ -40,7 +40,9 @@ class GoszakupAuth:
                 eds_path=self.auth_data.eds_gos,
                 eds_pass=self.auth_data.eds_pass,
             )
+            print('eds_data: ', eds_data)
             sign_by_eds = await stub.ExecuteSignByEds(eds_data)
+            print('sign_by_eds: ', sign_by_eds)
             if sign_by_eds.result:
                 await self.page.wait_for_timeout(1000)
                 await self.enter_goszakup_password()
