@@ -1,12 +1,12 @@
 version: '3.9'
 
 volumes:
-  redis:
+  gz_redis:
     external: true
-    name: redis
-  rabbitmq:
+    name: gz_redis
+  gz_rabbitmq:
     external: true
-    name: rabbitmq
+    name: gz_rabbitmq
 
 services:
   dashboard:
@@ -44,7 +44,7 @@ services:
       TZ: Asia/Almaty
       RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit consumer_timeout 2592000000
     volumes:
-      - rabbitmq:/var/lib/rabbitmq      
+      - gz_rabbitmq:/var/lib/rabbitmq      
 
   redis:
     image: "redis:7.2.5"
@@ -52,7 +52,7 @@ services:
     ports:
       - "6379:6379"    
     volumes:
-      - redis:/data     
+      - gz_redis:/data     
 
   flower:
     image: mher/flower:2.0

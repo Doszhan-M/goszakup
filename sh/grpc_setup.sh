@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt install python3-tk python3-dev xvfb xclip
+sudo apt install python3-tk python3-dev xvfb xclip -y
 
 # Создаем переменную с путем до файла
 DESKTOP_FILE=~/.config/autostart/grpc.desktop

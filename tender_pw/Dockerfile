@@ -16,4 +16,4 @@ RUN pip install --no-cache-dir --upgrade pip && \
 COPY app/ ./app/
 
 
-ENTRYPOINT [ "./app/sh/run_app.sh" ]
+ENTRYPOINT [ "uvicorn app.core.main:app --host 0.0.0.0 --port 8000 --workers 1 --reload" ]

@@ -54,14 +54,26 @@ class EdsManager:
 
     def click_choose_btn(self) -> None:
         choose_btn_path = pyautogui_images + "choose_btn.png"
-        print('choose_btn_path: ', choose_btn_path)
-        self.click_btn(choose_btn_path, 60)
+        form_exist_path = pyautogui_images + "form_exist.png"
+        timeout = 10
+        start_time = time()
+        while time() - start_time < timeout:
+            try:
+                choose_btn_location = pyautogui.locateCenterOnScreen(choose_btn_path, confidence=0.8)
+                pyautogui.click(choose_btn_location)
+                return
+            except pyautogui.ImageNotFoundException:
+                pass
+            try:
+                pyautogui.locateCenterOnScreen(form_exist_path, confidence=0.8)
+                return
+            except pyautogui.ImageNotFoundException:
+                pass
+        raise Exception(f"Neither button found within {timeout} seconds.")
 
     def indicate_eds_path(self) -> None:
-        # На некоторых средах write вставляет только по символьно
         pyperclip.copy(self.eds_path)
         pyautogui.hotkey("ctrl", "v")
-        # pyautogui.write(eds_path)
         logger.info("enter_eds_path")
 
     def click_open_btn(self) -> None:
@@ -71,7 +83,6 @@ class EdsManager:
     def enter_eds_password(self) -> None:
         pyperclip.copy(self.eds_pass)
         pyautogui.hotkey("ctrl", "v")
-        # pyautogui.write(self.eds_pass)
         logger.info("enter_eds_password")
 
     def click_ok_btn(self) -> None:
