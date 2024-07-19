@@ -6,6 +6,7 @@ from playwright.async_api import Page
 from app.pb2 import eds_pb2
 from app.pb2 import eds_pb2_grpc
 from app.services import PlaywrightDriver
+from playwright._impl._errors import TimeoutError
 
 
 logger = getLogger("fastapi")
@@ -15,19 +16,17 @@ active_sessions = {}
 class GoszakupAuth:
     """Manager for getting cookie from goszakup.gov.kz."""
 
+    auth_url = "https://v3bl.goszakup.gov.kz/ru/user/"
+
     def __init__(self, auth_data, *args, **kwargs):
-        self.auth_url = "https://v3bl.goszakup.gov.kz/ru/user/"
-        self.zero_page = "https://v3bl.goszakup.gov.kz/ru/insurance"
-        self.goszakup_pass = auth_data.goszakup_pass
-        self.ssid = uuid4()
         self.playwright_manager = PlaywrightDriver()
         self.page: Page = None
         self.auth_data = auth_data
+        self.ssid = uuid4()
 
     async def get_auth_session(self) -> Page:
-        await self.playwright_manager.start()
-        self.page = await self.playwright_manager.browser.new_page()
-        await self.page.goto(self.auth_url)
+        self.page = await self.playwright_manager.start()
+        await self.page.goto(self.auth_url, wait_until="domcontentloaded")
         nclayer_call_btn = await self.page.query_selector("#selectP12File")
         async with grpc.aio.insecure_channel("127.0.0.1:50051") as channel:
             stub = eds_pb2_grpc.EdsServiceStub(channel)
@@ -48,14 +47,16 @@ class GoszakupAuth:
 
     async def enter_goszakup_password(self):
         password_field = await self.page.wait_for_selector(
-            "input[name='password']", timeout=5000
+            "input[name='password']", timeout=30000
         )
-        await password_field.fill(self.goszakup_pass)
+        await password_field.fill(self.auth_data.goszakup_pass)
         checkbox = await self.page.query_selector("#agreed_check")
-        if not await checkbox.is_checked():
-            await checkbox.click()
+        await checkbox.click()
         login_button = await self.page.query_selector(".btn-success")
-        await login_button.click()
+        try:
+            await login_button.click(timeout=1000)
+        except TimeoutError:
+            pass
 
     async def store_auth_session(self):
         global active_sessions
@@ -64,7 +65,6 @@ class GoszakupAuth:
 
     async def close_session(self):
         if self.ssid in active_sessions:
-            session = active_sessions[self.ssid]
-            await session["page"].close()
             del active_sessions[self.ssid]
+            await self.playwright_manager.stop()
             logger.info(f"Closed and removed session id: {self.ssid}")

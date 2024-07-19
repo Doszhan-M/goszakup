@@ -58,9 +58,8 @@ class TenderManager:
 
     async def check_announce(self) -> any:
         self.web_driver = await self.session_manager.get_auth_session()
-        
         result = {"success": True}
-        await self.web_driver.goto(self.announce_url)
+        await self.web_driver.goto(self.announce_url, wait_until="domcontentloaded")
         announce = await self.web_driver.content()
         announce_detail = self.gather_announce_data(announce)
         result.update(announce_detail)

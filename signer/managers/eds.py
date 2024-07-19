@@ -43,9 +43,9 @@ class EdsManager:
         button = None
         while not button and time() - start_time < timeout:
             try:
-                button = pyautogui.locateOnScreen(btn_path, confidence=0.7)
+                button = pyautogui.locateOnScreen(btn_path, confidence=0.8)
             except pyautogui.ImageNotFoundException:
-                sleep(0.1)
+                pass
             else:
                 pyautogui.click(button)
                 logger.info(f"click {btn_path.split('/')[-1]}")

@@ -8,7 +8,7 @@ load_dotenv(f"{Path(__file__).resolve().parent}/.env")
 
 
 class Settings(BaseSettings):
-    HEADLESS_DRIVER: bool = True
+    HEADLESS_DRIVER: bool = False
     BASE_DIR: str = str(Path(__file__).resolve().parent.parent)
     ENVIRONMENT: str = "TUF17"
 
