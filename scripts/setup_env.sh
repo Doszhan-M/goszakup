@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Папка, в которой находятся файлы .example
-DIRECTORY="/home/asus/github/goszakup/env"
+DIRECTORY="~/github/goszakup/env"
 
 # Перебираем все файлы с расширением .example в указанной папке
 for file in "$DIRECTORY"/*.example; do
