@@ -4,7 +4,7 @@
 *.log*
 media/*
 test.html
-celerybeat-schedule.db
+celerybeat-schedule
 installer/
 nohup.out
 
