@@ -63,7 +63,7 @@ class TenderManager:
                     return self.result
 
     def start(self) -> dict:
-        self.waiting_until_the_start()
+        # self.waiting_until_the_start()
         self.tender_start()
         self.result["start_time"] = datetime.now()
         self.fill_and_submit_application()
@@ -107,7 +107,7 @@ class TenderManager:
         if try_count == 0:
             raise TenderStartFailed(self.announce_number)
         elif tender_not_starting:
-            sleep(1)
+            sleep(0.1)
             try_count -= 1
             return self.tender_start(try_count)
 

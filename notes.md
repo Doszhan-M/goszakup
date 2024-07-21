@@ -35,3 +35,6 @@ python3 -m grpc_tools.protoc \
     --pyi_out=./signer/pb2 \
     --grpc_python_out=./signer/pb2 \
     eds.proto
+
+
+12728973
