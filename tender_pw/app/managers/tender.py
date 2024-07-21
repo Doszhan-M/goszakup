@@ -1,31 +1,33 @@
+import grpc
 import asyncio
-from time import sleep
 from logging import getLogger
 from bs4 import BeautifulSoup
 from datetime import datetime
-from playwright.async_api import async_playwright, Browser, Page
+from playwright.async_api import Page
 from playwright.async_api import TimeoutError as PlaywrightTimeoutError
 
 from .auth import GoszakupAuth
+
 # from .tender_cancel import TenderCancelManager
-from app.services import PlaywrightDriver
-from app.services.exception import TenderStartFailed, GenerateDocumentFailed
+from app.services.exceptions import TenderStartFailed, GenerateDocumentFailed
 from app.pb2 import eds_pb2
 from app.pb2 import eds_pb2_grpc
 
 logger = getLogger("fastapi")
 business_logger = getLogger("business")
 
+
 class TenderManager:
+
+    max_attempts = 3
+
     def __init__(self, announce_number, auth_data, *args, **kwargs) -> None:
-        self.session_manager = GoszakupAuth(auth_data)
-        self.web_driver: Page = None
-        self.webdriver_manager = PlaywrightDriver()
+        self.session = GoszakupAuth(auth_data)
+        self.page: Page = None
         # self.cancel_manager = TenderCancelManager(
-        #     announce_number, auth_data, self.web_driver
+        #     announce_number, auth_data, self.page
         # )
         self.announce_number: str = announce_number
-        self.max_attempts = 3
         self.result = {"success": True}
         self.application_data: dict = auth_data.application_data.model_dump()
         self.announce_url = (
@@ -38,36 +40,24 @@ class TenderManager:
     async def start_with_retry(self):
         for attempt in range(self.max_attempts):
             try:
-                result = await self.start()
-                return result
+                return await self.start()
             except Exception as e:
-                logger.error(e)
-                logger.error(f"Attempt {attempt + 1} of {self.max_attempts} failed.")
+                logger.exception(
+                    f"Attempt {attempt + 1} of {self.max_attempts} failed."
+                )
                 if attempt < self.max_attempts - 1:
-                    delay = 2
-                    logger.error(f"Retrying in {delay} seconds...")
-                    await asyncio.sleep(delay)
                     await self.cancel_manager.cancel()
                 else:
                     logger.error("Task stopped with an error.")
-                    await self.session_manager.close_session()
+                    await self.session.close_session()
                     self.result["success"] = False
                     self.result["finish_time"] = datetime.now()
                     self.result["error_text"] = e
                     return self.result
 
-    async def check_announce(self) -> any:
-        self.web_driver = await self.session_manager.get_auth_session()
-        result = {"success": True}
-        await self.web_driver.goto(self.announce_url, wait_until="domcontentloaded")
-        announce = await self.web_driver.content()
-        announce_detail = self.gather_announce_data(announce)
-        result.update(announce_detail)
-        await self.session_manager.close_session()
-        return result
-    
     async def start(self) -> dict:
-        await self.waiting_until_the_start()
+        self.page = await self.session.get_auth_session()
+        await self.wait_until_the_start()
         await self.tender_start()
         self.result["start_time"] = datetime.now()
         await self.fill_and_submit_application()
@@ -78,13 +68,13 @@ class TenderManager:
         await self.next_page()
         await self.apply_application()
         result = await self.check_application_result()
-        await self.session_manager.close_session()
+        await self.session.close_session()
         return result
 
-    async def waiting_until_the_start(self) -> None:
-        await self.web_driver.goto(self.announce_url)
-        announce = await self.web_driver.content()
-        announce_detail = self.gather_announce_data(announce)
+    async def wait_until_the_start(self) -> None:
+        await self.page.goto(self.announce_url, wait_until="domcontentloaded")
+        html = await self.page.content()
+        announce_detail = self.gather_announce_data(html)
         start_time_format = "%Y-%m-%d %H:%M:%S"
         start_time = datetime.strptime(announce_detail["start_time"], start_time_format)
         now = datetime.now()
@@ -97,8 +87,8 @@ class TenderManager:
         )
 
     async def tender_start(self, try_count=3600) -> None:
-        await self.web_driver.goto(self.application_url)
-        application = await self.web_driver.content()
+        await self.page.goto(self.application_url, wait_until="domcontentloaded")
+        application = await self.page.content()
         soup = BeautifulSoup(application, "html.parser")
         elements = soup.find_all(class_="content-block")
         tender_not_starting = any(
@@ -107,24 +97,27 @@ class TenderManager:
         if try_count == 0:
             raise TenderStartFailed(self.announce_number)
         elif tender_not_starting:
-            await asyncio.sleep(1)
+            # await asyncio.sleep(10)
+            await asyncio.sleep(0.1)
             try_count -= 1
             return await self.tender_start(try_count)
 
     async def fill_and_submit_application(self) -> None:
         for field_name, search_text in self.application_data.items():
-            select_element = await self.web_driver.query_selector(f"select[name='{field_name}']")
+            select_element = await self.page.query_selector(
+                f"select[name='{field_name}']"
+            )
             options = await select_element.query_selector_all("option")
             for option in options:
                 if search_text in await option.inner_text():
                     await select_element.select_option(label=await option.inner_text())
                     break
-        next_button = await self.web_driver.query_selector("#next-without-captcha")
+        next_button = await self.page.query_selector("#next-without-captcha")
         await next_button.click()
 
     async def get_required_docs_links(self) -> list:
-        await self.web_driver.wait_for_selector("#docs", timeout=120000)
-        html = await self.web_driver.content()
+        await self.page.wait_for_selector("#docs", timeout=120000)
+        html = await self.page.content()
         soup = BeautifulSoup(html, "html.parser")
         table = soup.find("table")
         rows = table.find_all("tr")
@@ -137,8 +130,8 @@ class TenderManager:
         return required_docs
 
     async def generate_document(self, url) -> None:
-        await self.web_driver.goto(url)
-        submit_button = await self.web_driver.query_selector(".btn.btn-info")
+        await self.page.goto(url)
+        submit_button = await self.page.query_selector(".btn.btn-info")
         submit_button_value = await submit_button.get_attribute("value")
         if submit_button_value != "Сформировать документ":
             self.max_attempts = 1
@@ -146,7 +139,9 @@ class TenderManager:
         await submit_button.click()
 
     async def sign_document(self) -> None:
-        nclayer_call_btn = await self.web_driver.wait_for_selector(".btn-add-signature", timeout=120000)
+        nclayer_call_btn = await self.page.wait_for_selector(
+            ".btn-add-signature", timeout=120000
+        )
         async with grpc.aio.insecure_channel("127.0.0.1:50051") as channel:
             stub = eds_pb2_grpc.EdsServiceStub(channel)
             eds_manager_status = stub.SendStatus(eds_pb2.EdsManagerStatusCheck())
@@ -160,31 +155,37 @@ class TenderManager:
             )
             sign_by_eds = await stub.ExecuteSignByEds(eds_data)
             if sign_by_eds.result:
-                await self.web_driver.wait_for_timeout(1000)
+                await self.page.wait_for_timeout(1000)
 
     async def next_page(self) -> None:
         while True:
             try:
-                footer = await self.web_driver.wait_for_selector(".panel-footer a", timeout=5000)
+                footer = await self.page.wait_for_selector(
+                    ".panel-footer a", timeout=5000
+                )
                 link = await footer.get_attribute("href")
-                await self.web_driver.goto(link)
+                await self.page.goto(link)
                 break
             except PlaywrightTimeoutError:
                 pass
-        next_button = await self.web_driver.wait_for_selector("#next", timeout=30000)
+        next_button = await self.page.wait_for_selector("#next", timeout=30000)
         await next_button.click()
 
     async def apply_application(self) -> None:
-        apply_button = await self.web_driver.wait_for_selector(
+        apply_button = await self.page.wait_for_selector(
             "//button[@id='next' and contains(text(), 'Подать заявку')]", timeout=120000
         )
         await apply_button.click()
-        yes_button = await self.web_driver.wait_for_selector("#btn_price_agree", timeout=120000)
+        yes_button = await self.page.wait_for_selector(
+            "#btn_price_agree", timeout=120000
+        )
         await yes_button.click()
 
     async def check_application_result(self) -> dict:
         try:
-            await self.web_driver.wait_for_selector("//a[contains(text(), 'Отозвать заявку')]", timeout=120000)
+            await self.page.wait_for_selector(
+                "//a[contains(text(), 'Отозвать заявку')]", timeout=120000
+            )
             self.result["finish_time"] = datetime.now()
             self.result["duration"] = (
                 self.result["finish_time"] - self.result["start_time"]
@@ -194,14 +195,21 @@ class TenderManager:
             )
             business_logger.info(msg)
         except PlaywrightTimeoutError:
-            error = await self.web_driver.query_selector("#errors")
+            error = await self.page.query_selector("#errors")
             self.result["success"] = False
             self.result["error_text"] = await error.inner_text()
             msg = f"Failed finish tender at {datetime.now()} for {self.announce_number}"
             business_logger.error(msg)
         return self.result
 
-
+    async def check_announce(self) -> any:
+        self.page = await self.session.get_auth_session()
+        await self.page.goto(self.announce_url, wait_until="domcontentloaded")
+        html = await self.page.content()
+        announce_detail = self.gather_announce_data(html)
+        self.result.update(announce_detail)
+        await self.session.close_session()
+        return self.result
 
     def gather_announce_data(self, raw_data) -> dict:
         announce_detail = {}

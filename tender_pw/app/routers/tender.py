@@ -20,15 +20,16 @@ async def tender_check(
     return {"result": result, "process_time": process_time}
 
 
-# @router.post("/tender_start/", tags=["tender"])
-# def tender_start(
-#     auth_data: TenderScheme,
-#     announce_number: str = Query(default=11695620),
-# ):
+@router.post("/tender_start/", tags=["tender"])
+async def tender_start(
+    auth_data: TenderScheme,
+    announce_number: str = Query(default=12728973),
+):
 
-#     tender = TenderManager(announce_number, auth_data)
-#     result = tender.start_with_retry()
-#     return result
+    tender = TenderManager(announce_number, auth_data)
+    result = await tender.start()
+    # result = await tender.start_with_retry()
+    return result
 
 
 # @router.post("/tender_cancel/", tags=["tender"])
