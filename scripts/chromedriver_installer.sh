@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Обновление списка пакетов
-sudo apt update && sudo apt install wget curl jq unzip gnome-screenshot -y
+sudo apt install jq -y
 
 # Скачивание и установка Google Chrome
 # wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb

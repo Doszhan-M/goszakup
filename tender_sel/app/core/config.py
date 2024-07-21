@@ -4,7 +4,7 @@ from functools import lru_cache
 from pydantic_settings import BaseSettings
 
 
-load_dotenv(f"{Path(__file__).resolve().parent}/.env")
+load_dotenv(f"{Path(__file__).resolve().parent}/../../env/tender.env")
 
 
 class Settings(BaseSettings):

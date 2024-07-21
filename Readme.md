@@ -1,86 +1,110 @@
-# Install and Start
-1. Настроить gnome:
+# Install and Start  
+## 1. Настроить ubuntu gnome:
+
+`•` Во время установки ubuntu создать пользователя с названием ```asus```
+
 ```
-su -  
-apt update && apt upgrade -y  
-apt install sudo  
-usermod -aG sudo linux  
-reboot  
-
 sudo apt update && sudo apt upgrade -y  
-sudo apt -y install htop vim curl wget libnss3-tools unzip
+sudo apt -y install htop vim curl wget libnss3-tools unzip git gnome-screenshot
+```
+`•` Переключиться на Xorg сервер на окне входа!
 
-Переключиться на Xorg сервер!
+`•` Чтобы рабочии стол стал активным после перезапуска, необходимо в настройках
+Multitasking -> Workspaces установить фиксированное количество раб столов на 1,
+необходимо настроить автологин в настройках и отключить блокировку когда гаснет экран:
+Privacy and Security -> Screen Lock.
+Настроить автозапуск gnome_workspace.sh:
+```
+sudo apt install xdotool  
+vim ~/.config/autostart/gnome_workspace.desktop
 
-Чтобы рабочии стол стал активным после перезапуска, необходимо в настройках
-Multitasking-Workspaces установить фиксированное количество раб столов на 1,
-также необходимо настроить автологин в настройках
+[Desktop Entry]
+Type=Application
+Name=Goszakup
+Exec=/home/asus/github/goszakup/scripts/gnome_workspace.sh
+Terminal=false
+```  
 
-Чтобы при закрытии крышки, ноут не уходил в сон, отредактировать:
-sudo vim /etc/systemd/logind.conf  
-Если HandleLidSwitch не установлен на ignore затем измените его:
+`•` Чтобы при закрытии крышки, ноут не уходил в сон, отредактировать:
+```
+sudo vim /etc/systemd/logind.conf
+```  
+Если HandleLidSwitch не установлен на ignore затем изменить его:
 HandleLidSwitch=ignore
 
-Чтобы chrome не запрашивал keyring после перезагрузки, можно удалить:
+`•` Чтобы chrome не запрашивал keyring после перезагрузки, можно удалить:
+```
 sudo apt remove gnome-keyring 
+```
 
-Перезапустить систему
-```
-2. Создать и выполнить скрипт 1_ssh_keygen.sh
-```
-vim 1_ssh_keygen.sh
-sudo chmod +x 1_ssh_keygen.sh
-sudo ./1_ssh_keygen.sh
-```
-3. Создать и выполнить скрипт 2_clone_project.sh
-```
-vim 2_clone_project.sh
-sudo chmod +x 2_clone_project.sh
-sudo ./2_clone_project.sh
-```
-4. Установить NCALayer
-```
-Установить NCALayer из офф сайта.
-Проверить модуль гос закупок на этих сайтах: https://mhelp.kz/ncalayer-skachat/#google_vignette, https://pki.gov.kz/docs/nl_ru/bundles/#_2
-Всегда надо использовать последнюю версию.
-Скопировать kz.ecc.NurSignBundle_5.1.1_2e62beae-e900-4c8c-9d8e-37286ace46ec.jar в конфиг:  
-cp kz.ecc.NurSignBundle_5.1.1_2e62beae-e900-4c8c-9d8e-37286ace46ec.jar /home/asus/.config/NCALayer/bundles  
-После перезапуска модуль должен исчезнуть из папку bundles  
+`•` Перезапустить систему
 
-Настроить автозапуск либо через скрипт либо через окружение
-cd /projects/goszakup/sh/ncalayer
-./4_ncalayer_config.sh
 
-Если есть ошибка на xdd, то установить
+## 2. Сделать все скрипты исполняемыми
+```
+find /home/asus/github/goszakup/scripts/ -type f -name "*.sh" -exec sudo chmod +x {} \; 
+```
+
+## 3. Сгенерировать ssh ключи и зарегистрировать и github
+```
+cd /home/asus/github/goszakup/scripts/
+sudo ./ssh_keygen.sh
+```
+
+## 4. Установить NCALayer
+
+
+`•` Скачать NCALayer из офф сайта и установить п папку Programs.  
+Если есть ошибка на xdd, то установить xdd:
+```
 sudo apt install xdd -y
 ```
-6. Установить Docker
+`•` Проверить модуль гос закупок на этих сайтах:  
+https://mhelp.kz/ncalayer-skachat/#google_vignette  
+https://pki.gov.kz/docs/nl_ru/bundles/#_2  
+Всегда надо использовать последнюю версию.  
+Скопировать разархивированный jar файл в папку bundles:  
 ```
-cd /projects/goszakup/sh
-./6_docker_install.sh
+cp kz.ecc.NurSignBundle_5.1.1_2e62beae-e900-4c8c-9d8e-37286ace46ec.jar /home/asus/.config/NCALayer/bundles 
+``` 
+После перезапуска модуль должен исчезнуть из папку bundles  
+
+`•` Настроить автозапуск через скрипт
+```
+cd /home/asus/github/goszakup/scripts/
+./ncalayer_config.sh
 ```
 
-7. Запустить сервисы из docker compose 
+## 5. Установить Docker
 ```
-cd /projects/goszakup/sh
-./7_compose_start.sh
+cd /home/asus/github/goszakup/scripts/
+./docker_install.sh
+```
 
+## 6. Запустить сервисы из docker compose 
 ```
-8. Установить webdriver
+cd /home/asus/github/goszakup/scripts/
+docker compose up --build -d
 ```
-cd /projects/goszakup/sh
-./8_chromedriver.sh
+
+## 7. Установить chromedriver если необходим 
 ```
-9. Настроить зависимости
+cd /home/asus/github/goszakup/scripts/
+./chromedriver_installer.sh
 ```
-cd /projects/goszakup/sh
-./9_setup_venv.sh
+
+## 8. Настроить зависимости
 ```
-10. Создать env для сервиса Goszakup
+cd /home/asus/github/goszakup/scripts/
+./setup_venv.sh
 ```
-cd /projects/goszakup/sh
-./10_goszakup_env.sh
+
+## 9. Создать env для сервисов на основе example
 ```
+cd /home/asus/github/goszakup/scripts/
+./setup_env.sh
+```
+
 11. Настроить автозапуск сервиса Goszakup
 ```
 cd /projects/goszakup/sh

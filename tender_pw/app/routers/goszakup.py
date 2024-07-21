@@ -8,7 +8,7 @@ router = APIRouter()
 @router.post("/goszakup_auth/", tags=["goszakup"])
 async def goszakup_auth(
     auth_data: AuthScheme,
-    close_session: bool = True,
+    close_session: bool = False,
 ):
     auth_manager = GoszakupAuth(auth_data)
     await auth_manager.get_auth_session()
