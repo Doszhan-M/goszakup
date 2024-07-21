@@ -9,7 +9,7 @@
 
 # Загрузка переменных из файла .env
 set -a
-source ~/github/goszakup/env/tender.env
+source $HOME/github/goszakup/env/tender.env
 set +a
 
 # Проверка наличия переменной WORKERS
@@ -18,8 +18,8 @@ if [ -z "$WORKERS" ]; then
   exit 1
 fi
 
-source ~/github/goszakup/venv/bin/activate
-cd ~/github/goszakup/goszakup/tender_pw
+source $HOME/github/goszakup/venv/bin/activate
+cd $HOME/github/goszakup/goszakup/tender_pw
 uvicorn app.core.main:app --host 0.0.0.0 --port 8000 --workers $WORKERS --reload
 # nohup uvicorn app.core.main:app --host 0.0.0.0 --port 8000 --workers $WORKERS --reload &
 
