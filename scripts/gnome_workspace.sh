@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sleep 10
+sleep 5
 xdotool set_desktop 0
 
 # Определить размеры экрана
