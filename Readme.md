@@ -105,15 +105,13 @@ cd /home/asus/github/goszakup/scripts/
 ./setup_env.sh
 ```
 
-11. Настроить автозапуск сервиса Goszakup
+## 10. Настроить автозапуск сервиса tender_pw
 ```
-cd /projects/goszakup/sh
+cd /home/asus/github/goszakup/scripts/
 ./13_setup_goszakup.sh
 ```
-12. Перезапустит систему
-```
-sudo reboot
-```
+
+
 
 ## Порядок участия в тендере
 1. Доступные действия - Создать заявку 
