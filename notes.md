@@ -21,11 +21,6 @@ ssh goszakup@10.192.168.10
 find . -name __pycache__ -exec rm -rf {} \;
 
 
-
-old tender_check = 7.8-8.3 sec
-
-
-
 playwright install --with-deps
 python3 app/main.py
 
@@ -37,6 +32,5 @@ python3 -m grpc_tools.protoc \
     eds.proto
 
 
-12728973
 071800
 sudo kill -9 $(sudo lsof -t -i:8000)

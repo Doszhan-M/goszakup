@@ -112,7 +112,6 @@ cd /home/asus/github/goszakup/scripts/
 ```
 
 
-
 ## Порядок участия в тендере
 1. Доступные действия - Создать заявку 
 2. Юридический адрес -- 050061  
@@ -132,3 +131,6 @@ http://10.192.168.10:8080/admin/
 http://10.192.168.10:5554/flower_backend/tasks
 
 http://gz.maksat.keenetic.pro/admin/
+
+
+## [Инструкции по установке Pritunl на сервер Debian 11](readme/pritunl.md)
