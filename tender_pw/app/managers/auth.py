@@ -7,6 +7,7 @@ from app.pb2 import eds_pb2
 from app.pb2 import eds_pb2_grpc
 from app.services import PlaywrightDriver
 from playwright._impl._errors import TimeoutError
+from app.core.config import settings
 
 
 logger = getLogger("fastapi")
@@ -28,7 +29,7 @@ class GoszakupAuth:
         self.page = await self.playwright_manager.start()
         await self.page.goto(self.auth_url, wait_until="domcontentloaded")
         nclayer_call_btn = await self.page.query_selector("#selectP12File")
-        async with grpc.aio.insecure_channel("127.0.0.1:50051") as channel:
+        async with grpc.aio.insecure_channel(settings.SIGNER_HOST) as channel:
             stub = eds_pb2_grpc.EdsServiceStub(channel)
             eds_manager_status = stub.SendStatus(eds_pb2.EdsManagerStatusCheck())
             async for status in eds_manager_status:
@@ -46,9 +47,7 @@ class GoszakupAuth:
         return self.page
 
     async def enter_goszakup_password(self):
-        password_field = await self.page.wait_for_selector(
-            "input[name='password']", timeout=30000
-        )
+        password_field = await self.page.wait_for_selector("input[name='password']")
         await password_field.fill(self.auth_data.goszakup_pass)
         checkbox = await self.page.query_selector("#agreed_check")
         await checkbox.click()

@@ -10,9 +10,9 @@ from playwright.async_api import TimeoutError as PlaywrightTimeoutError
 from app.pb2 import eds_pb2
 from app.pb2 import eds_pb2_grpc
 from .auth import GoszakupAuth
+from app.core.config import settings
 from .tender_cancel import TenderCancelManager
 from app.services.exceptions import TenderStartFailed, SignatureFound
-
 
 logger = getLogger("fastapi")
 business_logger = getLogger("business")
@@ -188,7 +188,7 @@ class TenderManager:
 
     async def sign_document(self) -> None:
         nclayer_call_btn = await self.page.wait_for_selector(".btn-add-signature")
-        async with grpc.aio.insecure_channel("127.0.0.1:50051") as channel:
+        async with grpc.aio.insecure_channel(settings.SIGNER_HOST) as channel:
             stub = eds_pb2_grpc.EdsServiceStub(channel)
             eds_manager_status = stub.SendStatus(eds_pb2.EdsManagerStatusCheck())
             async for status in eds_manager_status:

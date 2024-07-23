@@ -46,14 +46,6 @@ services:
     volumes:
       - gz_rabbitmq:/var/lib/rabbitmq      
 
-  redis:
-    image: "redis:7.2.5"
-    restart: always
-    ports:
-      - "6379:6379"    
-    volumes:
-      - gz_redis:/data     
-
   flower:
     image: mher/flower:2.0
     command: [ "celery", "flower", "--url-prefix=flower_backend" ]
@@ -71,3 +63,10 @@ services:
     mem_limit: 500M
     mem_reservation: 100m    
     
+  # redis:
+  #   image: "redis:7.2.5"
+  #   restart: always
+  #   ports:
+  #     - "6379:6379"    
+  #   volumes:
+  #     - gz_redis:/data         
