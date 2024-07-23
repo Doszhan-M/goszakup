@@ -19,7 +19,7 @@ if [ -z "$WORKERS" ]; then
 fi
 
 source $HOME/github/goszakup/venv/bin/activate
-cd $HOME/github/goszakup/goszakup/tender_pw
+cd $HOME/github/goszakup/tender_pw
 uvicorn app.core.main:app --host 0.0.0.0 --port 8000 --workers $WORKERS --reload
 # nohup uvicorn app.core.main:app --host 0.0.0.0 --port 8000 --workers $WORKERS --reload &
 
