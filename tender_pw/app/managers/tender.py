@@ -1,3 +1,4 @@
+import re
 import grpc
 import asyncio
 from logging import getLogger
@@ -9,7 +10,11 @@ from playwright.async_api import TimeoutError as PlaywrightTimeoutError
 from .auth import GoszakupAuth
 
 # from .tender_cancel import TenderCancelManager
-from app.services.exceptions import TenderStartFailed, GenerateDocumentFailed
+from app.services.exceptions import (
+    TenderStartFailed,
+    GenerateDocumentFailed,
+    SignatureFound,
+)
 from app.pb2 import eds_pb2
 from app.pb2 import eds_pb2_grpc
 
@@ -61,10 +66,14 @@ class TenderManager:
         await self.tender_start()
         self.result["start_time"] = datetime.now()
         await self.fill_and_submit_application()
+        await self.select_lots()
         required_docs_urls = await self.get_required_docs_links()
         for url in required_docs_urls:
-            await self.generate_document(url)
-            await self.sign_document()
+            try:
+                await self.generate_document(url)
+                await self.sign_document()
+            except SignatureFound:
+                continue
         await self.next_page()
         await self.apply_application()
         result = await self.check_application_result()
@@ -97,26 +106,49 @@ class TenderManager:
         if try_count == 0:
             raise TenderStartFailed(self.announce_number)
         elif tender_not_starting:
-            # await asyncio.sleep(10)
             await asyncio.sleep(0.1)
             try_count -= 1
             return await self.tender_start(try_count)
 
     async def fill_and_submit_application(self) -> None:
+        current_url = self.page.url
+        if "create" not in current_url:
+            return
         for field_name, search_text in self.application_data.items():
             select_element = await self.page.query_selector(
                 f"select[name='{field_name}']"
             )
             options = await select_element.query_selector_all("option")
             for option in options:
-                if search_text in await option.inner_text():
-                    await select_element.select_option(label=await option.inner_text())
+                option_text = await option.inner_text()
+                if search_text in option_text:
+                    option_value = await option.get_attribute("value")
+                    await select_element.select_option(value=option_value)
                     break
         next_button = await self.page.query_selector("#next-without-captcha")
         await next_button.click()
 
+    async def select_lots(self):
+        await self.page.wait_for_url(re.compile(r".*(lots|docs|preview).*"))
+        if "lots" not in self.page.url:
+            return
+        checkboxes = await self.page.query_selector_all(
+            "input[type='checkbox'][name='selectLots[]']"
+        )
+        for checkbox in checkboxes:
+            await checkbox.set_checked(True)
+        add_button = await self.page.query_selector("button#add_lots")
+        if add_button:
+            await add_button.click()
+        next_button = await self.page.wait_for_selector("button#next", timeout=30000)
+        if next_button:
+            await next_button.click()
+
     async def get_required_docs_links(self) -> list:
-        await self.page.wait_for_selector("#docs", timeout=120000)
+        await self.page.wait_for_url(re.compile(r".*(docs|preview).*"))
+        if "docs" not in self.page.url:
+            return []
+        await self.page.wait_for_selector("#docs", timeout=30000)
         html = await self.page.content()
         soup = BeautifulSoup(html, "html.parser")
         table = soup.find("table")
@@ -131,16 +163,38 @@ class TenderManager:
 
     async def generate_document(self, url) -> None:
         await self.page.goto(url)
-        submit_button = await self.page.query_selector(".btn.btn-info")
-        submit_button_value = await submit_button.get_attribute("value")
-        if submit_button_value != "Сформировать документ":
-            self.max_attempts = 1
-            raise GenerateDocumentFailed
-        await submit_button.click()
+        submit_button = await self.page.query_selector(
+            "input[type='submit'][value='Сформировать документ']"
+        )
+        if submit_button:
+            await submit_button.click()
+            return
+        save_button = await self.page.query_selector(
+            "input[type='submit'][value='Сохранить']"
+        )
+        if save_button:
+            select_element = await self.page.query_selector("select[name='user_id']")
+            if select_element:
+                await select_element.select_option(index=1)
+            await save_button.click()
+            submit_button = await self.page.query_selector(
+                "input[type='submit'][value='Сформировать документ']"
+            )
+            await submit_button.click()
+            return
+        signatures_table = await self.page.query_selector("table#show_doc_block1")
+        if signatures_table:
+            rows = await signatures_table.query_selector_all("tbody tr")
+            for row in rows:
+                cells = await row.query_selector_all("td")
+                for cell in cells:
+                    cell_text = await cell.inner_text()
+                    if "Подпись" in cell_text:
+                        raise SignatureFound("Signature found in the table")
 
     async def sign_document(self) -> None:
         nclayer_call_btn = await self.page.wait_for_selector(
-            ".btn-add-signature", timeout=120000
+            ".btn-add-signature", timeout=30000
         )
         async with grpc.aio.insecure_channel("127.0.0.1:50051") as channel:
             stub = eds_pb2_grpc.EdsServiceStub(channel)
@@ -150,8 +204,8 @@ class TenderManager:
                     logger.info("Eds Service is busy. Waiting...")
             await nclayer_call_btn.click()
             eds_data = eds_pb2.SignByEdsStart(
-                eds_path=self.eds_manager.auth_data.eds_gos,
-                eds_pass=self.eds_manager.auth_data.eds_pass,
+                eds_path=self.session.auth_data.eds_gos,
+                eds_pass=self.session.auth_data.eds_pass,
             )
             sign_by_eds = await stub.ExecuteSignByEds(eds_data)
             if sign_by_eds.result:
@@ -173,18 +227,18 @@ class TenderManager:
 
     async def apply_application(self) -> None:
         apply_button = await self.page.wait_for_selector(
-            "//button[@id='next' and contains(text(), 'Подать заявку')]", timeout=120000
+            "//button[@id='next' and contains(text(), 'Подать заявку')]", timeout=30000
         )
         await apply_button.click()
         yes_button = await self.page.wait_for_selector(
-            "#btn_price_agree", timeout=120000
+            "#modal_agree_price .btn.btn-info#btn_price_agree_no_captcha", timeout=30000
         )
         await yes_button.click()
 
     async def check_application_result(self) -> dict:
         try:
             await self.page.wait_for_selector(
-                "//a[contains(text(), 'Отозвать заявку')]", timeout=120000
+                "//a[contains(text(), 'Отозвать заявку')]", timeout=30000
             )
             self.result["finish_time"] = datetime.now()
             self.result["duration"] = (

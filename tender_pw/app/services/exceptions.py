@@ -41,3 +41,9 @@ class GenerateDocumentFailed(HTTPException):
             "description": "Не удалось сформировать документ. Не соответствует шаблону.",
         }
         super().__init__(status_code, detail)
+
+
+class SignatureFound(Exception):
+    """Exception raised when a signature is found in the document table."""
+
+    pass
