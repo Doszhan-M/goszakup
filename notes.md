@@ -39,3 +39,4 @@ python3 -m grpc_tools.protoc \
 
 12728973
 071800
+sudo kill -9 $(sudo lsof -t -i:8000)

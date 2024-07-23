@@ -7,16 +7,12 @@ from datetime import datetime
 from playwright.async_api import Page
 from playwright.async_api import TimeoutError as PlaywrightTimeoutError
 
-from .auth import GoszakupAuth
-
-# from .tender_cancel import TenderCancelManager
-from app.services.exceptions import (
-    TenderStartFailed,
-    GenerateDocumentFailed,
-    SignatureFound,
-)
 from app.pb2 import eds_pb2
 from app.pb2 import eds_pb2_grpc
+from .auth import GoszakupAuth
+from .tender_cancel import TenderCancelManager
+from app.services.exceptions import TenderStartFailed, SignatureFound
+
 
 logger = getLogger("fastapi")
 business_logger = getLogger("business")
@@ -26,12 +22,10 @@ class TenderManager:
 
     max_attempts = 3
 
-    def __init__(self, announce_number, auth_data, *args, **kwargs) -> None:
+    def __init__(self, announce_number, auth_data) -> None:
         self.session = GoszakupAuth(auth_data)
         self.page: Page = None
-        # self.cancel_manager = TenderCancelManager(
-        #     announce_number, auth_data, self.page
-        # )
+        self.cancel_manager = TenderCancelManager(announce_number, auth_data, self.page)
         self.announce_number: str = announce_number
         self.result = {"success": True}
         self.application_data: dict = auth_data.application_data.model_dump()
@@ -53,12 +47,13 @@ class TenderManager:
                 if attempt < self.max_attempts - 1:
                     await self.cancel_manager.cancel()
                 else:
-                    logger.error("Task stopped with an error.")
+                    logger.exception("Task stopped with an error.")
                     await self.session.close_session()
                     self.result["success"] = False
                     self.result["finish_time"] = datetime.now()
                     self.result["error_text"] = e
                     return self.result
+        await self.session.close_session()
 
     async def start(self) -> dict:
         self.page = await self.session.get_auth_session()
@@ -77,7 +72,6 @@ class TenderManager:
         await self.next_page()
         await self.apply_application()
         result = await self.check_application_result()
-        await self.session.close_session()
         return result
 
     async def wait_until_the_start(self) -> None:
