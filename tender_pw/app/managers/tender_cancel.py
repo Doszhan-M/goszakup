@@ -23,18 +23,14 @@ class TenderCancelManager:
         return {"success": True, "message": "Tender canceled successfully"}
 
     async def click_cancel_and_confirm_btn(self) -> None:
-        link = await self.page.wait_for_selector(
-            f"a[href*='{self.announce_number}']", timeout=30000
-        )
+        link = await self.page.wait_for_selector(f"a[href*='{self.announce_number}']")
         row = await link.evaluate_handle('element => element.closest("tr")')
         delete_button = await row.query_selector("a[onclick*='doDel']")
         await delete_button.click()
-        modal_visible = await self.page.wait_for_selector(
-            ".modal.fade.in", timeout=30000
-        )
+        modal_visible = await self.page.wait_for_selector(".modal.fade.in")
         if modal_visible:
             delete_button_in_modal = await modal_visible.wait_for_selector(
-                "button[type='submit']", timeout=30000
+                "button[type='submit']"
             )
             await delete_button_in_modal.click()
 

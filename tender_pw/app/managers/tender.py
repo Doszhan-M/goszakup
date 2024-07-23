@@ -134,7 +134,7 @@ class TenderManager:
         add_button = await self.page.query_selector("button#add_lots")
         if add_button:
             await add_button.click()
-        next_button = await self.page.wait_for_selector("button#next", timeout=30000)
+        next_button = await self.page.wait_for_selector("button#next")
         if next_button:
             await next_button.click()
 
@@ -142,7 +142,7 @@ class TenderManager:
         await self.page.wait_for_url(re.compile(r".*(docs|preview).*"))
         if "docs" not in self.page.url:
             return []
-        await self.page.wait_for_selector("#docs", timeout=30000)
+        await self.page.wait_for_selector("#docs")
         html = await self.page.content()
         soup = BeautifulSoup(html, "html.parser")
         table = soup.find("table")
@@ -187,9 +187,7 @@ class TenderManager:
                         raise SignatureFound("Signature found in the table")
 
     async def sign_document(self) -> None:
-        nclayer_call_btn = await self.page.wait_for_selector(
-            ".btn-add-signature", timeout=30000
-        )
+        nclayer_call_btn = await self.page.wait_for_selector(".btn-add-signature")
         async with grpc.aio.insecure_channel("127.0.0.1:50051") as channel:
             stub = eds_pb2_grpc.EdsServiceStub(channel)
             eds_manager_status = stub.SendStatus(eds_pb2.EdsManagerStatusCheck())
@@ -216,23 +214,23 @@ class TenderManager:
                 break
             except PlaywrightTimeoutError:
                 pass
-        next_button = await self.page.wait_for_selector("#next", timeout=30000)
+        next_button = await self.page.wait_for_selector("#next")
         await next_button.click()
 
     async def apply_application(self) -> None:
         apply_button = await self.page.wait_for_selector(
-            "//button[@id='next' and contains(text(), 'Подать заявку')]", timeout=30000
+            "//button[@id='next' and contains(text(), 'Подать заявку')]"
         )
         await apply_button.click()
         yes_button = await self.page.wait_for_selector(
-            "#modal_agree_price .btn.btn-info#btn_price_agree_no_captcha", timeout=30000
+            "#modal_agree_price .btn.btn-info#btn_price_agree_no_captcha"
         )
         await yes_button.click()
 
     async def check_application_result(self) -> dict:
         try:
             await self.page.wait_for_selector(
-                "//a[contains(text(), 'Отозвать заявку')]", timeout=30000
+                "//a[contains(text(), 'Отозвать заявку')]"
             )
             self.result["finish_time"] = datetime.now()
             self.result["duration"] = (

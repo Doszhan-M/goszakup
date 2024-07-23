@@ -16,6 +16,7 @@ class PlaywrightDriver:
             headless=settings.HEADLESS_DRIVER
         )
         self.page = await self.browser.new_page()
+        self.page.set_default_timeout(10000)
         return self.page
 
     async def stop(self) -> None:
