@@ -91,7 +91,7 @@ docker compose up --build -d
 ## 7. Установить chromedriver если необходим 
 ```
 cd $HOME/github/goszakup/scripts/
-./chromedriver_installer.sh
+./chromedriver.sh
 ```
 
 ## 8. Настроить зависимости
