@@ -3,11 +3,12 @@ import pyperclip
 from time import sleep, time
 from logging import getLogger
 
+from services import get_redis
 from core.config import settings
 
 
 logger = getLogger("grpc")
-eds_manager_busy = False
+redis = get_redis()
 
 
 if settings.ENVIRONMENT == "TUF17":
@@ -17,13 +18,12 @@ elif settings.ENVIRONMENT == "VIVOBOOK":
 
 
 class EdsManager:
-    def __init__(self, eds_data, *args, **kwargs) -> None:
+    def __init__(self, eds_data) -> None:
         self.eds_path = eds_data.eds_path
         self.eds_pass = eds_data.eds_pass
 
     def execute_sign_by_eds(self) -> None:
-        global eds_manager_busy
-        eds_manager_busy = True
+        redis.set("eds_manager_busy", 1, ex=10)
         self.click_choose_btn()
         self.indicate_eds_path()
         self.click_open_btn()
@@ -32,8 +32,7 @@ class EdsManager:
 
     @staticmethod
     def is_not_busy() -> bool:
-        global eds_manager_busy
-        while eds_manager_busy:
+        while redis.get("eds_manager_busy"):
             logger.info("eds manager busy")
             sleep(0.1)
         return True
@@ -59,7 +58,9 @@ class EdsManager:
         start_time = time()
         while time() - start_time < timeout:
             try:
-                choose_btn_location = pyautogui.locateCenterOnScreen(choose_btn_path, confidence=0.8)
+                choose_btn_location = pyautogui.locateCenterOnScreen(
+                    choose_btn_path, confidence=0.8
+                )
                 pyautogui.click(choose_btn_location)
                 return
             except pyautogui.ImageNotFoundException:
@@ -88,5 +89,4 @@ class EdsManager:
     def click_ok_btn(self) -> None:
         open_btn_path = pyautogui_images + "ok_btn.png"
         self.click_btn(open_btn_path)
-        global eds_manager_busy
-        eds_manager_busy = False
+        redis.delete("eds_manager_busy")
