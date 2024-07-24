@@ -1,6 +1,6 @@
 # Install and Start  
 
-## 1. Настроить ubuntu gnome:
+## 1. Настроить Ubuntu Gnome:
 
 `•` Во время установки ubuntu создать пользователя с названием ```asus```
 
@@ -76,35 +76,30 @@ cd $HOME/github/goszakup/scripts/
 ./ncalayer_config.sh
 ```
 
-## 5. Установить Docker
-```
-cd $HOME/github/goszakup/scripts/
-./docker_install.sh
-```
-
-## 6. Запустить сервисы из docker compose 
-```
-cd $HOME/github/goszakup/scripts/
-docker compose up --build -d
-```
-
-## 7. Установить chromedriver если необходим 
-```
-cd $HOME/github/goszakup/scripts/
-./chromedriver.sh
-```
-
-## 8. Настроить зависимости
+## 5. Настроить зависимости
 ```
 cd $HOME/github/goszakup/scripts/
 ./setup_venv.sh
 ```
 
-## 9. Создать env для сервисов на основе example
+## 6. Создать env для сервисов на основе example
 ```
 cd $HOME/github/goszakup/scripts/
 ./setup_env.sh
 ```
+
+## 7. Установить Docker
+```
+cd $HOME/github/goszakup/scripts/
+./docker_install.sh
+```
+
+## 8. Запустить сервисы из docker compose 
+```
+cd $HOME/github/goszakup/scripts/
+docker compose up --build -d
+```
+
 
 ## 10. Настроить автозапуск сервиса tender_pw
 ```

@@ -2,3 +2,4 @@ DEBUG=TRUE
 CELERY_BROKER_URL=amqp://rabbitmq_user:rabbitmq_pass@localhost:5672/
 MEDIA_PATH_ON_HOST=/home/asus/github/goszakup/dashboard/app/media/
 GOSZAKUP_URL=http://127.0.0.1:8000
+WORKERS=2
