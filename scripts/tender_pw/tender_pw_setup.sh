@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 SCRIPT_PATH="/home/asus/github/goszakup/scripts/tender_pw/tender_pw_start.sh"
 SERVICE_FILE="/etc/systemd/system/tender_pw.service"
 
@@ -8,6 +9,9 @@ if [ "$(id -u)" -ne 0 ]; then
     echo "This script must be run as root."
     exit 1
 fi
+
+source /home/asus/github/goszakup/venv/bin/activate
+playwright install --with-deps
 
 # Создание файла службы
 cat <<EOF > $SERVICE_FILE
