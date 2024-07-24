@@ -14,7 +14,7 @@ fi
 echo "[Desktop Entry]
 Type=Application
 Name=Goszakup
-Exec=/home/asus/github/goszakup/sh/grps.sh
+Exec=$HOME/github/goszakup/sh/grps.sh
 Terminal=false" > $DESKTOP_FILE
 
 echo "Файл $DESKTOP_FILE успешно создан и настроен для автозагрузки."

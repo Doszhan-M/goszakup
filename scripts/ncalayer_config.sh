@@ -23,7 +23,7 @@ Icon=ncalayer
 Type=Application
 Terminal=false
 Categories=Network;RemoteAccess
-Exec="/home/asus/Programs/NCALayer/ncalayer.sh" --run
+Exec="$HOME/Programs/NCALayer/ncalayer.sh" --run
 EOF
 
 echo "Файл $DESKTOP_FILE успешно создан."
