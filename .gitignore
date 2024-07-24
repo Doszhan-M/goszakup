@@ -3,11 +3,9 @@
 **/__pycache__/
 *.log*
 *.env*
-media/*
-test.html
 celerybeat-schedule
-installer/
 nohup.out
 
+test.html
 test1.py
 test2.py
