@@ -23,6 +23,7 @@ class EdsManager:
         self.eds_pass = eds_data.eds_pass
 
     def execute_sign_by_eds(self) -> None:
+        self.move_cursor_to_bottom_left()
         redis.set("eds_manager_busy", 1, ex=10)
         self.click_choose_btn()
         self.indicate_eds_path()
@@ -90,3 +91,11 @@ class EdsManager:
         open_btn_path = pyautogui_images + "ok_btn.png"
         self.click_btn(open_btn_path)
         redis.delete("eds_manager_busy")
+
+    def move_cursor_to_bottom_left(self):
+        """Если экран выключен, pyautogui не работает, поэтому
+        необходимо разбудить экран переместив мышку из одного места в другое."""
+
+        screen_width, screen_height = pyautogui.size()
+        safe_margin = 400
+        pyautogui.moveTo(safe_margin, screen_height - safe_margin) 

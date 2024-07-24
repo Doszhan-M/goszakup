@@ -5,7 +5,7 @@ sudo systemctl restart tender_pw
 sudo systemctl stop tender_pw
 systemctl disable tender_pw
 systemctl status tender_pw
-journalctl -u tender_pw
+journalctl -u tender_pw -f
 ```
 
 ## Управление signer:
@@ -15,5 +15,5 @@ sudo systemctl restart signer
 sudo systemctl stop signer
 systemctl disable signer
 systemctl status signer
-journalctl -u signer
+journalctl -u signer -f
 ```
