@@ -25,15 +25,12 @@ class EdsManager:
     def execute_sign_by_eds(self) -> None:
         try:
             self.move_cursor_to_bottom_left()
-            import time
-            time.sleep(5)
-            raise Exception
-            # redis.set("eds_manager_busy", 1, ex=10)
-            # self.click_choose_btn()
-            # self.indicate_eds_path()
-            # self.click_open_btn()
-            # self.enter_eds_password()
-            # self.click_ok_btn()
+            redis.set("eds_manager_busy", 1, ex=10)
+            self.click_choose_btn()
+            self.indicate_eds_path()
+            self.click_open_btn()
+            self.enter_eds_password()
+            self.click_ok_btn()
         except Exception:
             logger.exception("Error while execute_sign_by_eds")
             self.close_ncalayer()
@@ -107,9 +104,10 @@ class EdsManager:
         safe_margin = 400
         pyautogui.moveTo(safe_margin, screen_height - safe_margin)
 
-    def close_ncalayer(self) -> None:
+    @staticmethod
+    def close_ncalayer() -> None:
         close_btn_path = pyautogui_images + "close_btn.png"
-        print('close_btn_path: ', close_btn_path)
+        print("close_btn_path: ", close_btn_path)
         timeout = 10
         start_time = time()
         while time() - start_time < timeout:
@@ -117,7 +115,7 @@ class EdsManager:
                 close_btn_location = pyautogui.locateCenterOnScreen(
                     close_btn_path, confidence=0.8
                 )
-                print('close_btn_location: ', close_btn_location)
+                print("close_btn_location: ", close_btn_location)
                 pyautogui.click(close_btn_location)
                 logger.info("close_ncalayer")
                 return
