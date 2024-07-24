@@ -69,5 +69,5 @@ services:
     ports:
       - "6379:6379"    
     volumes:
-      - gz_redis:/data         
-      
+      - gz_redis:/data      
+    
