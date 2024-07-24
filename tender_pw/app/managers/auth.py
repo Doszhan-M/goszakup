@@ -1,3 +1,4 @@
+import os
 import grpc
 from uuid import uuid4
 from logging import getLogger
@@ -24,6 +25,7 @@ class GoszakupAuth:
         self.page: Page = None
         self.auth_data = auth_data
         self.ssid = uuid4()
+        os.system("xdotool mousemove 60 1080")
 
     async def get_auth_session(self) -> Page:
         try:

@@ -24,7 +24,6 @@ class EdsManager:
 
     def execute_sign_by_eds(self) -> None:
         try:
-            self.move_cursor_to_bottom_left()
             redis.set("eds_manager_busy", 1, ex=10)
             self.click_choose_btn()
             self.indicate_eds_path()
