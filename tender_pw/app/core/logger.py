@@ -43,7 +43,7 @@ class CustomLogger:
             backupCount=2,
         )
         file_handler.setLevel(logging.INFO)
-        file_handler.setFormatter(cls.color_formatter)
+        file_handler.setFormatter(cls.simple_formatter)
         return file_handler
 
     @classmethod
@@ -54,7 +54,7 @@ class CustomLogger:
             backupCount=2,
         )
         file_handler.setLevel(logging.ERROR)
-        file_handler.setFormatter(cls.color_formatter)
+        file_handler.setFormatter(cls.simple_formatter)
         return file_handler
 
     @classmethod

@@ -32,5 +32,5 @@ python3 -m grpc_tools.protoc \
     eds.proto
 
 
-071800
-sudo kill -9 $(sudo lsof -t -i:8000)
+sudo systemctl restart tender_pw
+sudo systemctl restart signer
