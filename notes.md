@@ -19,7 +19,7 @@ ssh goszakup@10.192.168.10
 1075649643:goszakup_any_pass
 
 find . -name __pycache__ -exec rm -rf {} \;
-
+sudo chmod -R +x scripts/
 
 playwright install --with-deps
 python3 app/main.py
