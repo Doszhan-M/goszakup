@@ -9,9 +9,8 @@ admin:aCiOnIQuArdE
 120540009382
 
 docker logs -f goszakup-dashboard-1
-
-ssh goszakup@10.192.168.10
-1075649643:goszakup_any_pass
+docker logs -f goszakup-beat_dashboard-1
+docker exec -it goszakup-dashboard-1 bash
 
 find . -name __pycache__ -exec rm -rf {} \;
 sudo chmod -R +x scripts/
@@ -23,4 +22,3 @@ python3 -m grpc_tools.protoc \
     --grpc_python_out=./signer/pb2 \
     eds.proto
     
-12751519
