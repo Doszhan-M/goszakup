@@ -1,4 +1,3 @@
-import os
 import grpc
 from uuid import uuid4
 from logging import getLogger
@@ -25,7 +24,7 @@ class GoszakupAuth:
         self.page: Page = None
         self.auth_data = auth_data
         self.ssid = uuid4()
-        os.system("xdotool mousemove 60 1080")
+        self.wake_up_screen()
 
     async def get_auth_session(self) -> Page:
         try:
@@ -48,10 +47,10 @@ class GoszakupAuth:
                     await self.enter_goszakup_password()
             await self.store_auth_session()
             return self.page
-        except Exception as e:
+        except Exception:
             await self.playwright_manager.stop()
             logger.error("Error while get_auth_session")
-            raise e
+            raise
 
     async def enter_goszakup_password(self):
         password_field = await self.page.wait_for_selector("input[name='password']")
@@ -74,3 +73,5 @@ class GoszakupAuth:
             del active_sessions[self.ssid]
             await self.playwright_manager.stop()
             logger.info(f"Closed and removed session id: {self.ssid}")
+
+

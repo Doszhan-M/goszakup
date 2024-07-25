@@ -16,12 +16,16 @@ class TenderCancelManager:
             self.session = GoszakupAuth(auth_data)
 
     async def cancel(self) -> dict:
-        if not self.page:
-            self.page = await self.session.get_auth_session()
-        await self.page.goto(self.applications_url, wait_until="domcontentloaded")
-        await self.click_cancel_and_confirm_btn()
-        return {"success": True, "message": "Tender canceled successfully"}
-
+        try:
+            if not self.page:
+                self.page = await self.session.get_auth_session()
+            await self.page.goto(self.applications_url, wait_until="domcontentloaded")
+            await self.click_cancel_and_confirm_btn()
+            return {"success": True, "message": "Tender canceled successfully"}
+        finally:
+            if self.session:
+                await self.session.close_session()
+            
     async def click_cancel_and_confirm_btn(self) -> None:
         link = await self.page.wait_for_selector(f"a[href*='{self.announce_number}']")
         row = await link.evaluate_handle('element => element.closest("tr")')
@@ -33,6 +37,3 @@ class TenderCancelManager:
                 "button[type='submit']"
             )
             await delete_button_in_modal.click()
-
-    async def close_session(self) -> None:
-        await self.session.close_session()

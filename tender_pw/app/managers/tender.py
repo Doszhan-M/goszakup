@@ -46,6 +46,7 @@ class TenderManager:
                 )
                 if attempt < self.max_attempts - 1:
                     await self.cancel_manager.cancel()
+                    await self.session.close_session()
                 else:
                     logger.exception("Task stopped with an error.")
                     await self.session.close_session()

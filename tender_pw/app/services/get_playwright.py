@@ -1,3 +1,5 @@
+import os
+import asyncio
 from playwright.async_api import async_playwright, Browser, Page
 from playwright.async_api._generated import Playwright as AsyncPlaywright
 
@@ -17,8 +19,16 @@ class PlaywrightDriver:
         )
         self.page = await self.browser.new_page()
         self.page.set_default_timeout(10000)
+        await self.wake_up_screen()
         return self.page
 
     async def stop(self) -> None:
         await self.browser.close()
         await self.playwright.stop()
+
+    @staticmethod
+    async def wake_up_screen():
+        """Необходимо чтобы при выполнении операций, экран был включен.
+        Если экран погас из-за бездействия, можно включить его эмуляцией движения мышки.
+        """
+        await asyncio.to_thread(os.system, "xdotool mousemove 60 60")

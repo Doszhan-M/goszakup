@@ -20,15 +20,17 @@ class TaxDebtManager:
         self.result = {"success": True, "start_time": datetime.now()}
 
     async def start(self) -> dict:
-        self.page = await self.session.get_auth_session()
-        await self.page.goto(self.tax_debt_url, wait_until="domcontentloaded")
-        date_received = await self.get_last_received_date()
-        if datetime.now() - date_received > timedelta(days=self.time_delta):
-            await self.request_to_kgd()
-            date_received = datetime.now()
-        await self.session.close_session()
-        await self.set_result(date_received)
-        return self.result
+        try:
+            self.page = await self.session.get_auth_session()
+            await self.page.goto(self.tax_debt_url, wait_until="domcontentloaded")
+            date_received = await self.get_last_received_date()
+            if datetime.now() - date_received > timedelta(days=self.time_delta):
+                await self.request_to_kgd()
+                date_received = datetime.now()
+            await self.set_result(date_received)
+            return self.result
+        finally:
+            await self.session.close_session()
 
     async def get_last_received_date(self) -> datetime:
         tax_debt_html = await self.page.content()
@@ -41,8 +43,8 @@ class TaxDebtManager:
         return date_received
 
     async def request_to_kgd(self) -> None:
-        button = await self.page.wait_for_selector("input[name='send_request']") 
-        print('button: ', button)
+        button = await self.page.wait_for_selector("input[name='send_request']")
+        print("button: ", button)
         # await button.click()
         await self.page.wait_for_timeout(5000)
 
