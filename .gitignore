@@ -6,7 +6,7 @@
 celerybeat-schedule
 nohup.out
 db.sqlite3
-/media/eds/**
+**/media/eds/**
 
 test.html
 test1.py
