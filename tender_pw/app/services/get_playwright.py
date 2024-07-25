@@ -31,4 +31,4 @@ class PlaywrightDriver:
         """Необходимо чтобы при выполнении операций, экран был включен.
         Если экран погас из-за бездействия, можно включить его эмуляцией движения мышки.
         """
-        await asyncio.to_thread(os.system, "xdotool mousemove 60 60")
+        await asyncio.to_thread(os.system, "xdotool mousemove 70 70")
