@@ -24,7 +24,6 @@ class GoszakupAuth:
         self.page: Page = None
         self.auth_data = auth_data
         self.ssid = uuid4()
-        self.wake_up_screen()
 
     async def get_auth_session(self) -> Page:
         try:
