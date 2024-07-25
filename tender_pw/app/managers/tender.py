@@ -25,7 +25,7 @@ class TenderManager:
     def __init__(self, announce_number, auth_data) -> None:
         self.session = GoszakupAuth(auth_data)
         self.page: Page = None
-        self.cancel_manager = TenderCancelManager(announce_number, auth_data, self.page)
+        self.cancel_manager = TenderCancelManager(announce_number, auth_data)
         self.announce_number: str = announce_number
         self.result = {"success": True}
         self.application_data: dict = auth_data.application_data.model_dump()
@@ -39,15 +39,24 @@ class TenderManager:
     async def start_with_retry(self):
         for attempt in range(self.max_attempts):
             try:
-                return await self.start()
+                await self.start()
+                break
             except Exception as e:
                 logger.exception(
                     f"Attempt {attempt + 1} of {self.max_attempts} failed."
                 )
                 if attempt == 0:
-                    return await self.start()
+                    try:
+                        await self.start()
+                        break
+                    except Exception as e:
+                        logger.exception("Retry of attempt 2 failed.")
+                        continue
+                elif attempt == 1:
+                    await self.cancel_manager.cancel(self.page)
+                    continue
                 elif attempt < self.max_attempts - 1:
-                    await self.cancel_manager.cancel()
+                    await self.cancel_manager.cancel(self.page)
                     await self.session.close_session()
                 else:
                     logger.exception("Task stopped with an error.")
@@ -55,11 +64,12 @@ class TenderManager:
                     self.result["success"] = False
                     self.result["finish_time"] = datetime.now()
                     self.result["error_text"] = e
-                    return self.result
         await self.session.close_session()
+        return self.result
 
     async def start(self) -> dict:
-        self.page = await self.session.get_auth_session()
+        if not self.page:
+            self.page = await self.session.get_auth_session()
         await self.wait_until_the_start()
         await self.tender_start()
         self.result["start_time"] = datetime.now()
@@ -74,8 +84,8 @@ class TenderManager:
                 continue
         await self.next_page()
         await self.apply_application()
-        result = await self.check_application_result()
-        return result
+        await self.check_application_result()
+        return self.result
 
     async def wait_until_the_start(self) -> None:
         await self.page.goto(self.announce_url, wait_until="domcontentloaded")
@@ -235,7 +245,7 @@ class TenderManager:
         )
         await yes_button.click()
 
-    async def check_application_result(self) -> dict:
+    async def check_application_result(self) -> None:
         self.result["finish_time"] = datetime.now()
         self.result["duration"] = self.result["finish_time"] - self.result["start_time"]
         try:
@@ -250,7 +260,6 @@ class TenderManager:
             self.result["error_text"] = await error.inner_text()
             msg = f"Failed tender {self.announce_number} at {datetime.now()}"
             business_logger.error(msg)
-        return self.result
 
     async def check_announce(self) -> any:
         self.page = await self.session.get_auth_session()

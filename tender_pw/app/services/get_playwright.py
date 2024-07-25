@@ -18,7 +18,7 @@ class PlaywrightDriver:
             headless=settings.HEADLESS_DRIVER
         )
         self.page = await self.browser.new_page()
-        self.page.set_default_timeout(10000)
+        self.page.set_default_timeout(5000)
         await self.wake_up_screen()
         return self.page
 

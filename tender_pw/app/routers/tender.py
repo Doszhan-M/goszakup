@@ -29,8 +29,7 @@ async def tender_start(
 ):
 
     tender = TenderManager(announce_number, auth_data)
-    result = await tender.start()
-    # result = await tender.start_with_retry()
+    result = await tender.start_with_retry()
     return result
 
 
