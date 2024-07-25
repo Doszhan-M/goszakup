@@ -36,6 +36,12 @@ HandleLidSwitch=ignore
 sudo apt remove gnome-keyring 
 ```
 
+`•` Установка таймаута для выключения экрана на 5 часов
+```
+gsettings set org.gnome.desktop.session idle-delay 18000
+gsettings get org.gnome.desktop.session idle-delay
+```
+
 `•` Перезапустить систему
 
 

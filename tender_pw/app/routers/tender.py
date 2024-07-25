@@ -29,8 +29,8 @@ async def tender_start(
 ):
 
     tender = TenderManager(announce_number, auth_data)
-    # result = await tender.start()
-    result = await tender.start_with_retry()
+    result = await tender.start()
+    # result = await tender.start_with_retry()
     return result
 
 
@@ -41,5 +41,5 @@ async def tender_cancel(
 ):
     cancel_manager = TenderCancelManager(announce_number, auth_data)
     result = await cancel_manager.cancel()
-    await cancel_manager.close_session()
+    await cancel_manager.session.close_session()
     return result

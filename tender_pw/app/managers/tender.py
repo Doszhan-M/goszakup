@@ -20,7 +20,7 @@ business_logger = getLogger("business")
 
 class TenderManager:
 
-    max_attempts = 3
+    max_attempts = 10
 
     def __init__(self, announce_number, auth_data) -> None:
         self.session = GoszakupAuth(auth_data)
@@ -44,7 +44,9 @@ class TenderManager:
                 logger.exception(
                     f"Attempt {attempt + 1} of {self.max_attempts} failed."
                 )
-                if attempt < self.max_attempts - 1:
+                if attempt == 0:
+                    return await self.start()
+                elif attempt < self.max_attempts - 1:
                     await self.cancel_manager.cancel()
                     await self.session.close_session()
                 else:
@@ -172,9 +174,14 @@ class TenderManager:
             if select_element:
                 await select_element.select_option(index=1)
             await save_button.click()
-            submit_button = await self.page.query_selector(
-                "input[type='submit'][value='Сформировать документ']"
-            )
+            submit_button = None
+            for _ in range(3):
+                submit_button = await self.page.query_selector(
+                    "input[type='submit'][value='Сформировать документ']"
+                )
+                if submit_button:
+                    break
+                await asyncio.sleep(0.5)  # Задержка на 500 мс
             await submit_button.click()
             return
         signatures_table = await self.page.query_selector("table#show_doc_block1")
@@ -229,23 +236,19 @@ class TenderManager:
         await yes_button.click()
 
     async def check_application_result(self) -> dict:
+        self.result["finish_time"] = datetime.now()
+        self.result["duration"] = self.result["finish_time"] - self.result["start_time"]
         try:
             await self.page.wait_for_selector(
                 "//a[contains(text(), 'Отозвать заявку')]"
             )
-            self.result["finish_time"] = datetime.now()
-            self.result["duration"] = (
-                self.result["finish_time"] - self.result["start_time"]
-            )
-            msg = (
-                f"Success finish tender at {datetime.now()} for {self.announce_number}"
-            )
+            msg = f"Success finish {self.announce_number} at {datetime.now()}"
             business_logger.info(msg)
         except PlaywrightTimeoutError:
             error = await self.page.query_selector("#errors")
             self.result["success"] = False
             self.result["error_text"] = await error.inner_text()
-            msg = f"Failed finish tender at {datetime.now()} for {self.announce_number}"
+            msg = f"Failed tender {self.announce_number} at {datetime.now()}"
             business_logger.error(msg)
         return self.result
 
