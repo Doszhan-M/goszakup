@@ -19,7 +19,7 @@ class GoszakupAuth:
 
     auth_url = "https://v3bl.goszakup.gov.kz/ru/user/"
     max_attempts = 10
-    
+
     def __init__(self, auth_data, *args, **kwargs):
         self.playwright_manager = PlaywrightDriver()
         self.page: Page = None
@@ -34,7 +34,9 @@ class GoszakupAuth:
                     await self.page.goto(self.auth_url, wait_until="domcontentloaded")
                     nclayer_call_btn = await self.page.query_selector("#selectP12File")
                     stub = eds_pb2_grpc.EdsServiceStub(channel)
-                    eds_manager_status = stub.SendStatus(eds_pb2.EdsManagerStatusCheck())
+                    eds_manager_status = stub.SendStatus(
+                        eds_pb2.EdsManagerStatusCheck()
+                    )
                     async for status in eds_manager_status:
                         if status.busy.value:
                             logger.info("Eds Service is busy. Waiting...")
@@ -78,5 +80,3 @@ class GoszakupAuth:
             del active_sessions[self.ssid]
             await self.playwright_manager.stop()
             logger.info(f"Closed and removed session id: {self.ssid}")
-
-
