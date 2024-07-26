@@ -41,10 +41,8 @@ class EdsManager:
             logger.exception("Failed wile execute_sign_by_eds.")
             self.restart_ncalayer()
 
-    # @staticmethod
-    @classmethod
-    def is_not_busy(self) -> bool:
-        self.restart_ncalayer()
+    @staticmethod
+    def is_not_busy() -> bool:
         while redis.get("eds_manager_busy"):
             logger.info("eds manager busy")
             sleep(0.1)
@@ -132,8 +130,7 @@ class EdsManager:
     def restart_ncalayer(cls) -> None:
         try:
             redis.set("eds_manager_busy", 1, ex=cls.busy_timeout)
-            home_dir = os.path.expanduser("~")
-            script_path = os.path.join(home_dir, "Programs", "NCALayer", "ncalayer.sh")
+            script_path = os.path.expanduser(settings.NCALAYER_PATH)
             subprocess.run([script_path, "--restart"], check=True)
         except subprocess.CalledProcessError:
             logger.error("NCALayer перезапущен.")
@@ -142,7 +139,6 @@ class EdsManager:
 
     @classmethod
     def healthcheck_ncalayer(cls) -> None:
-
         try:
             uri = "wss://127.0.0.1:13579/"
             ssl_context = ssl.create_default_context()

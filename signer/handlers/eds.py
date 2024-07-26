@@ -22,3 +22,7 @@ class EdsServicer(eds_pb2_grpc.EdsServiceServicer):
         eds_manager = EdsManager(request)
         eds_manager.execute_sign_by_eds()
         return eds_pb2.SignByEdsResult(result=BoolValue(value=True))
+    
+    def RestartNCALayer(self, request, context):
+        EdsManager.restart_ncalayer()
+        return eds_pb2.RestartResult(result=BoolValue(value=True))

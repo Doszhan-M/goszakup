@@ -17,6 +17,10 @@ class SignByEdsStart(_message.Message):
     eds_pass: str
     def __init__(self, eds_path: _Optional[str] = ..., eds_pass: _Optional[str] = ...) -> None: ...
 
+class RestartParams(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
 class EdsManagerStatus(_message.Message):
     __slots__ = ("busy",)
     BUSY_FIELD_NUMBER: _ClassVar[int]
@@ -24,6 +28,12 @@ class EdsManagerStatus(_message.Message):
     def __init__(self, busy: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...) -> None: ...
 
 class SignByEdsResult(_message.Message):
+    __slots__ = ("result",)
+    RESULT_FIELD_NUMBER: _ClassVar[int]
+    result: _wrappers_pb2.BoolValue
+    def __init__(self, result: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...) -> None: ...
+
+class RestartResult(_message.Message):
     __slots__ = ("result",)
     RESULT_FIELD_NUMBER: _ClassVar[int]
     result: _wrappers_pb2.BoolValue

@@ -12,11 +12,12 @@ message SignByEdsStart {
   string eds_pass = 2;
 }
 
+message RestartParams {}
 
 service EdsService {
   rpc SendStatus (EdsManagerStatusCheck) returns (stream EdsManagerStatus);
   rpc ExecuteSignByEds (SignByEdsStart) returns (SignByEdsResult);
-  rpc RestartNCALayer () returns (RestartResult);
+  rpc RestartNCALayer (RestartParams) returns (RestartResult);
 }
 
 
