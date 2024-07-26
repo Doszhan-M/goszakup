@@ -1,5 +1,9 @@
+import os
+import ssl
 import pyautogui
 import pyperclip
+import subprocess
+from websocket import create_connection
 from time import sleep, time
 from logging import getLogger
 
@@ -18,24 +22,29 @@ elif settings.ENVIRONMENT == "VIVOBOOK":
 
 
 class EdsManager:
+
+    busy_timeout = 15
+
     def __init__(self, eds_data) -> None:
         self.eds_path = eds_data.eds_path
         self.eds_pass = eds_data.eds_pass
 
     def execute_sign_by_eds(self) -> None:
         try:
-            redis.set("eds_manager_busy", 1, ex=10)
+            redis.set("eds_manager_busy", 1, ex=self.busy_timeout)
             self.click_choose_btn()
             self.indicate_eds_path()
             self.click_open_btn()
             self.enter_eds_password()
             self.click_ok_btn()
         except Exception:
-            logger.exception("Error while execute_sign_by_eds")
-            self.close_ncalayer()
+            logger.exception("Failed wile execute_sign_by_eds.")
+            self.restart_ncalayer()
 
-    @staticmethod
-    def is_not_busy() -> bool:
+    # @staticmethod
+    @classmethod
+    def is_not_busy(self) -> bool:
+        self.restart_ncalayer()
         while redis.get("eds_manager_busy"):
             logger.info("eds manager busy")
             sleep(0.1)
@@ -58,7 +67,7 @@ class EdsManager:
     def click_choose_btn(self) -> None:
         choose_btn_path = pyautogui_images + "choose_btn.png"
         form_exist_path = pyautogui_images + "form_exist.png"
-        timeout = 10
+        timeout = 5
         start_time = time()
         while time() - start_time < timeout:
             try:
@@ -104,19 +113,48 @@ class EdsManager:
         pyautogui.moveTo(safe_margin, screen_height - safe_margin)
 
     @staticmethod
-    def close_ncalayer() -> None:
+    def close_ncalayer_by_x() -> None:
         close_btn_path = pyautogui_images + "close_btn.png"
-        print("close_btn_path: ", close_btn_path)
-        timeout = 10
+        timeout = 5
         start_time = time()
         while time() - start_time < timeout:
             try:
                 close_btn_location = pyautogui.locateCenterOnScreen(
                     close_btn_path, confidence=0.8
                 )
-                print("close_btn_location: ", close_btn_location)
                 pyautogui.click(close_btn_location)
                 logger.info("close_ncalayer")
                 return
             except pyautogui.ImageNotFoundException:
                 pass
+
+    @classmethod
+    def restart_ncalayer(cls) -> None:
+        try:
+            redis.set("eds_manager_busy", 1, ex=cls.busy_timeout)
+            home_dir = os.path.expanduser("~")
+            script_path = os.path.join(home_dir, "Programs", "NCALayer", "ncalayer.sh")
+            subprocess.run([script_path, "--restart"], check=True)
+        except subprocess.CalledProcessError:
+            logger.error("NCALayer перезапущен.")
+            cls.healthcheck_ncalayer()
+            redis.delete("eds_manager_busy")
+
+    @classmethod
+    def healthcheck_ncalayer(cls) -> None:
+
+        try:
+            uri = "wss://127.0.0.1:13579/"
+            ssl_context = ssl.create_default_context()
+            ssl_context.check_hostname = False
+            ssl_context.verify_mode = ssl.CERT_NONE
+
+            websocket = create_connection(uri, sslopt={"cert_reqs": ssl.CERT_NONE})
+            websocket.send("HealthCheck!")
+            response = websocket.recv()
+            if "result" in response:
+                logger.info(f"NCALayer work properly!")
+            websocket.close()
+        except ConnectionRefusedError:
+            logger.error("NCALayer dont work, waiting....")
+            return cls.healthcheck_ncalayer()

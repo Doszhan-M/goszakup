@@ -21,4 +21,5 @@ python3 -m grpc_tools.protoc \
     --pyi_out=./signer/pb2 \
     --grpc_python_out=./signer/pb2 \
     eds.proto
-    
+
+sudo kill -9 $(sudo lsof -t -i :13579)

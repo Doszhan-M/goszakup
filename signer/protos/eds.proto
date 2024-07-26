@@ -16,6 +16,7 @@ message SignByEdsStart {
 service EdsService {
   rpc SendStatus (EdsManagerStatusCheck) returns (stream EdsManagerStatus);
   rpc ExecuteSignByEds (SignByEdsStart) returns (SignByEdsResult);
+  rpc RestartNCALayer () returns (RestartResult);
 }
 
 
@@ -24,5 +25,9 @@ message EdsManagerStatus {
 }
 
 message SignByEdsResult {
+  google.protobuf.BoolValue result = 1;
+}
+
+message RestartResult {
   google.protobuf.BoolValue result = 1;
 }
