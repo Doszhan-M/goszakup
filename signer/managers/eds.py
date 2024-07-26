@@ -153,5 +153,5 @@ class EdsManager:
             websocket.close()
         except ConnectionRefusedError:
             logger.error("NCALayer dont work, waiting....")
-            sleep(0.3)
+            sleep(0.2)
             return cls.healthcheck_ncalayer()
