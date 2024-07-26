@@ -74,7 +74,7 @@ cp kz.ecc.NurSignBundle_5.1.1_2e62beae-e900-4c8c-9d8e-37286ace46ec.jar $HOME/.co
 ``` 
 После перезапуска модуль должен исчезнуть из папку bundles  
 
-`•` Настроить автозапуск через скрипт
+`•` Служба signer сам выполняет автозапуск NCALayer, при необходимости можно настроить автозапуск через скрипт
 ```
 cd $HOME/github/goszakup/scripts/
 ./ncalayer_config.sh
