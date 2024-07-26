@@ -30,7 +30,6 @@ class GoszakupAuth:
         for attempt in range(self.max_attempts):
             async with grpc.aio.insecure_channel(settings.SIGNER_HOST) as channel:
                 try:
-                    raise Exception
                     self.page = await self.playwright_manager.start()
                     await self.page.goto(self.auth_url, wait_until="domcontentloaded")
                     nclayer_call_btn = await self.page.query_selector("#selectP12File")
