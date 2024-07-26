@@ -60,7 +60,7 @@ class GoszakupAuth:
                     await self.playwright_manager.stop()
 
     async def enter_goszakup_password(self):
-        password_field = await self.page.wait_for_selector("input[name='password2']")
+        password_field = await self.page.wait_for_selector("input[name='password']")
         await password_field.fill(self.auth_data.goszakup_pass)
         checkbox = await self.page.query_selector("#agreed_check")
         await checkbox.click()

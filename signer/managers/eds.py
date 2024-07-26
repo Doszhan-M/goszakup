@@ -110,22 +110,6 @@ class EdsManager:
         safe_margin = 400
         pyautogui.moveTo(safe_margin, screen_height - safe_margin)
 
-    @staticmethod
-    def close_ncalayer_by_x() -> None:
-        close_btn_path = pyautogui_images + "close_btn.png"
-        timeout = 5
-        start_time = time()
-        while time() - start_time < timeout:
-            try:
-                close_btn_location = pyautogui.locateCenterOnScreen(
-                    close_btn_path, confidence=0.8
-                )
-                pyautogui.click(close_btn_location)
-                logger.info("close_ncalayer")
-                return
-            except pyautogui.ImageNotFoundException:
-                pass
-
     @classmethod
     def restart_ncalayer(cls) -> None:
         try:
@@ -149,7 +133,7 @@ class EdsManager:
             websocket.send("HealthCheck!")
             response = websocket.recv()
             if "result" in response:
-                logger.info(f"NCALayer work properly!")
+                logger.info("NCALayer work properly!")
             websocket.close()
         except ConnectionRefusedError:
             logger.error("NCALayer dont work, waiting....")
