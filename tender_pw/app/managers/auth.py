@@ -18,7 +18,7 @@ class GoszakupAuth:
     """Manager for getting cookie from goszakup.gov.kz."""
 
     auth_url = "https://v3bl.goszakup.gov.kz/ru/user/"
-    max_attempts = 1
+    max_attempts = 10
 
     def __init__(self, auth_data, *args, **kwargs):
         self.playwright_manager = PlaywrightDriver()
