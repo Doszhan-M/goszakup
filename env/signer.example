@@ -1,3 +1,4 @@
 DISPLAY=:0
 NCALAYER_PATH=/home/asus/Programs/NCALayer/ncalayer.sh
+RESTART_NCALAYER=True
 ENVIRONMENT=VIVOBOOK

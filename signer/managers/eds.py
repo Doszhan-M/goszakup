@@ -65,7 +65,7 @@ class EdsManager:
     def click_choose_btn(self) -> None:
         choose_btn_path = pyautogui_images + "choose_btn.png"
         form_exist_path = pyautogui_images + "form_exist.png"
-        timeout = 15
+        timeout = 5
         start_time = time()
         while time() - start_time < timeout:
             try:

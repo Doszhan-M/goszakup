@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     REDIS_DB: int = 1
     NCALAYER_PATH: str
     ENVIRONMENT: str = "VIVOBOOK"
+    RESTART_NCALAYER: bool = True
 
 
 settings = Settings()
