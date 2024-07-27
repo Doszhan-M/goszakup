@@ -23,3 +23,4 @@ python3 -m grpc_tools.protoc \
     eds.proto
 
 sudo kill -9 $(sudo lsof -t -i :13579)
+http://tender.goszakup.keenetic.pro/admin/
