@@ -34,7 +34,7 @@ def start_tender(announce_number, data):
         result = response.json()
         print("result: ", result)
         task.status = "error"
-        task.error = result["error_text"]["detail"]["description"]
+        task.error = result["error_text"]["description"]
         task.start_time = make_aware(parse_datetime(result["start_time"]))
     else:
         task.status = "error"

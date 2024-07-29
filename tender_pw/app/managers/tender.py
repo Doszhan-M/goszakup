@@ -20,7 +20,7 @@ business_logger = getLogger("business")
 
 class TenderManager:
 
-    max_attempts = 10
+    max_attempts = 15
 
     def __init__(self, announce_number, auth_data) -> None:
         self.session = GoszakupAuth(auth_data)
@@ -102,7 +102,8 @@ class TenderManager:
             f"Starting tender at {datetime.now()} for {self.announce_number}"
         )
 
-    async def tender_start(self, try_count=3600) -> None:
+    async def tender_start(self, try_count=72000) -> None:
+        raise TenderStartFailed(self.announce_number)
         await self.page.goto(self.application_url, wait_until="domcontentloaded")
         application = await self.page.content()
         soup = BeautifulSoup(application, "html.parser")
