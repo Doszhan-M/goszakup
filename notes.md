@@ -24,5 +24,3 @@ python3 -m grpc_tools.protoc \
 
 sudo kill -9 $(sudo lsof -t -i :13579)
 http://tender.goszakup.keenetic.pro/admin/
-
-тиргер на save

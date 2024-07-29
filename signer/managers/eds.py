@@ -23,7 +23,7 @@ elif settings.ENVIRONMENT == "VIVOBOOK":
 
 class EdsManager:
 
-    busy_timeout = 15
+    busy_timeout = 8
 
     def __init__(self, eds_data) -> None:
         self.eds_path = eds_data.eds_path

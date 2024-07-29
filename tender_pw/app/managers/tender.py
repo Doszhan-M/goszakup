@@ -41,10 +41,14 @@ class TenderManager:
             try:
                 await self.start()
                 break
+            except TenderStartFailed as e:
+                business_logger.error(f"Tender {self.announce_number} dont start.")
+                raise e 
             except Exception as e:
                 logger.exception(
                     f"Attempt {attempt + 1} of {self.max_attempts} failed."
                 )
+                await self.session.restart_nclayer()
                 if attempt == 0:
                     try:
                         await self.start()
@@ -103,7 +107,6 @@ class TenderManager:
         )
 
     async def tender_start(self, try_count=72000) -> None:
-        raise TenderStartFailed(self.announce_number)
         await self.page.goto(self.application_url, wait_until="domcontentloaded")
         application = await self.page.content()
         soup = BeautifulSoup(application, "html.parser")

@@ -21,21 +21,26 @@ def start_tender(announce_number, data):
     }
     response = requests.post(url, headers=headers, data=data, timeout=9600)
     task = Task.objects.get(announce_number=announce_number)
-    if response.status_code == 200 and response.json()["success"]:
-        result = response.json()
+    status_code = response.status_code
+    result: dict = response.json()
+    print("result: ", result)
+    if status_code == 200 and result.get("success"):
         task.start_time = make_aware(parse_datetime(result["start_time"]))
         task.finish_time = make_aware(parse_datetime(result["finish_time"]))
         task.duration = result["duration"]
         task.status = "success"
-    elif response.status_code == 500:
-        task.status = "error"
-        task.error = "Статус код 500"
-    elif response.status_code == 200 and not response.json()["success"]:
-        result = response.json()
-        print("result: ", result)
-        task.status = "error"
-        task.error = result["error_text"]["description"]
+    elif status_code == 200 and not result.get("success"):
         task.start_time = make_aware(parse_datetime(result["start_time"]))
+        task.finish_time = make_aware(parse_datetime(result["finish_time"]))
+        task.duration = result["duration"]        
+        task.error = result["error_text"]
+        task.status = "error"
+    elif status_code == 500 and result.get("detail"):
+        task.status = "error"
+        task.error = result["detail"]["description"]
+    elif status_code == 500:
+        task.status = "error"
+        task.error = str(result)
     else:
         task.status = "error"
         task.error = "Неизвестная ошибка"

@@ -28,11 +28,11 @@ class GoszakupAuth:
 
     async def get_auth_session(self) -> Page:
         for attempt in range(self.max_attempts):
-            async with grpc.aio.insecure_channel(settings.SIGNER_HOST) as channel:
-                try:
-                    self.page = await self.playwright_manager.start()
-                    await self.page.goto(self.auth_url, wait_until="domcontentloaded")
-                    nclayer_call_btn = await self.page.query_selector("#selectP12File")
+            try:
+                self.page = await self.playwright_manager.start()
+                await self.page.goto(self.auth_url, wait_until="domcontentloaded")
+                nclayer_call_btn = await self.page.query_selector("#selectP12File")
+                async with grpc.aio.insecure_channel(settings.SIGNER_HOST) as channel:
                     stub = eds_pb2_grpc.EdsServiceStub(channel)
                     eds_manager_status = stub.SendStatus(
                         eds_pb2.EdsManagerStatusCheck()
@@ -48,16 +48,21 @@ class GoszakupAuth:
                     sign_by_eds = await stub.ExecuteSignByEds(eds_data)
                     if sign_by_eds.result:
                         await self.enter_goszakup_password()
-                    await self.store_auth_session()
-                    return self.page
-                except Exception:
-                    stub = eds_pb2_grpc.EdsServiceStub(channel)
-                    restart = await stub.RestartNCALayer(eds_pb2.RestartParams())
-                    if restart.result:
-                        logger.exception(
-                            f"GoszakupAuth {attempt + 1} of {self.max_attempts} failed."
-                        )
-                    await self.playwright_manager.stop()
+                await self.store_auth_session()
+                return self.page
+            except Exception:
+                restart = await self.restart_nclayer()
+                if restart.result:
+                    logger.exception(
+                        f"GoszakupAuth {attempt + 1} of {self.max_attempts} failed."
+                    )
+                await self.playwright_manager.stop()
+
+    async def restart_nclayer(self):
+        async with grpc.aio.insecure_channel(settings.SIGNER_HOST) as channel:
+            stub = eds_pb2_grpc.EdsServiceStub(channel)
+            restart = await stub.RestartNCALayer(eds_pb2.RestartParams())
+            return restart
 
     async def enter_goszakup_password(self):
         password_field = await self.page.wait_for_selector("input[name='password']")
