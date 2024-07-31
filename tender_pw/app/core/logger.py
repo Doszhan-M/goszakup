@@ -7,7 +7,7 @@ from logging.handlers import TimedRotatingFileHandler
 class CustomLogger:
 
     color_formatter = ColoredFormatter(
-        "%(yellow)s%(asctime)-8s%(reset)s - %(log_color)s%(levelname)-1s%(reset)s - %(cyan)s%(message)s (%(black)s%(filename)s:%(lineno)d)",
+        "%(asctime)s - %(log_color)s%(levelname)-1s%(reset)s - %(cyan)s%(message)s (%(black)s%(filename)s:%(lineno)d)",
         datefmt="%Y-%m-%d %H:%M:%S",
         log_colors={
             "DEBUG": "white",

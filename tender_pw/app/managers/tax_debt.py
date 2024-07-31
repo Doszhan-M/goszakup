@@ -44,8 +44,7 @@ class TaxDebtManager:
 
     async def request_to_kgd(self) -> None:
         button = await self.page.wait_for_selector("input[name='send_request']")
-        print("button: ", button)
-        # await button.click()
+        await button.click()
         await self.page.wait_for_timeout(5000)
 
     async def set_result(self, date_received) -> None:
