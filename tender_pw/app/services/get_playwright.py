@@ -12,11 +12,14 @@ class PlaywrightDriver:
         self.browser: Browser | None = None
         self.page: Page | None = None
 
-    async def start(self) -> Page:
+    async def start(self, head_driver=None) -> Page:
         self.playwright = await async_playwright().start()
-        self.browser = await self.playwright.chromium.launch(
-            headless=settings.HEADLESS_DRIVER
-        )
+        if head_driver:
+            self.browser = await self.playwright.chromium.launch(headless=False)
+        else:
+            self.browser = await self.playwright.chromium.launch(
+                headless=settings.HEADLESS_DRIVER
+            )
         self.page = await self.browser.new_page()
         self.page.set_default_timeout(5000)
         await self.wake_up_screen()

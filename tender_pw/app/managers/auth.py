@@ -26,10 +26,13 @@ class GoszakupAuth:
         self.auth_data = auth_data
         self.ssid = uuid4()
 
-    async def get_auth_session(self) -> Page:
+    async def get_auth_session(self, head_driver=None) -> Page:
         for attempt in range(self.max_attempts):
             try:
-                self.page = await self.playwright_manager.start()
+                if head_driver:
+                    self.page = await self.playwright_manager.start(head_driver)
+                else:
+                    self.page = await self.playwright_manager.start()
                 await self.page.goto(self.auth_url, wait_until="domcontentloaded")
                 nclayer_call_btn = await self.page.query_selector("#selectP12File")
                 async with grpc.aio.insecure_channel(settings.SIGNER_HOST) as channel:

@@ -11,7 +11,7 @@ async def goszakup_auth(
     close_session: bool = False,
 ):
     auth_manager = GoszakupAuth(auth_data)
-    await auth_manager.get_auth_session()
+    await auth_manager.get_auth_session(head_driver=True)
     if close_session:
         await auth_manager.close_session()
     return {"success": True}
