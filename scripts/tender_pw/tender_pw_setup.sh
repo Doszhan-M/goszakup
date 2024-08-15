@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-SCRIPT_PATH="/home/asus/github/goszakup/scripts/tender_pw/tender_pw_start.sh"
+SCRIPT_PATH="/home/debian/github/goszakup/scripts/tender_pw/tender_pw_start.sh"
 SERVICE_FILE="/etc/systemd/system/tender_pw.service"
 
 # Проверка прав на создание файла в /etc/systemd/system
@@ -10,7 +10,7 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
-source /home/asus/github/goszakup/venv/bin/activate
+source /home/debian/github/goszakup/venv/bin/activate
 playwright install --with-deps
 
 # Создание файла службы
@@ -21,7 +21,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=asus
+User=debian
 Environment=DISPLAY=:0
 ExecStart=${SCRIPT_PATH}
 Restart=on-failure

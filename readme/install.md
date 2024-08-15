@@ -100,7 +100,9 @@ cd $HOME/github/goszakup/scripts/
 
 ## 8. Запустить сервисы из docker compose 
 ```
-cd $HOME/github/goszakup/scripts/
+cd $HOME/github/goszakup/
+docker volume create gz_redis
+docker volume create gz_rabbitmq
 docker compose up --build -d
 ```
 
@@ -119,3 +121,5 @@ cd $HOME/github/goszakup/scripts/tender_pw
 cd $HOME/github/goszakup/scripts/signer
 ./signer_setup.sh
 ```
+
+
