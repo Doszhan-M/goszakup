@@ -20,7 +20,7 @@ business_logger = getLogger("business")
 
 class TenderManager:
 
-    max_attempts = 15
+    max_attempts = 4
 
     def __init__(self, announce_number, auth_data) -> None:
         self.session = GoszakupAuth(auth_data)
@@ -43,30 +43,28 @@ class TenderManager:
                 break
             except TenderStartFailed as e:
                 business_logger.error(f"Tender {self.announce_number} dont start.")
-                raise e 
+                raise e
             except Exception as e:
                 logger.exception(
                     f"Attempt {attempt + 1} of {self.max_attempts} failed."
                 )
                 await self.session.restart_nclayer()
-                if attempt == 0:
+                if attempt < 2:
                     try:
                         await self.start()
                         break
                     except Exception as e:
-                        logger.exception("Retry of attempt 2 failed.")
+                        logger.exception("Retry of without cancel.")
                         continue
-                elif attempt == 1:
-                    await self.cancel_manager.cancel(self.page)
-                    continue
                 elif attempt < self.max_attempts - 1:
                     await self.cancel_manager.cancel(self.page)
-                    await self.session.close_session()
                 else:
                     logger.exception("Task stopped with an error.")
-                    await self.session.close_session()
                     self.result["success"] = False
                     self.result["finish_time"] = datetime.now()
+                    self.result["duration"] = (
+                        self.result["finish_time"] - self.result["start_time"]
+                    )
                     self.result["error_text"] = e
         await self.session.close_session()
         return self.result
