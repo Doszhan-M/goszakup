@@ -20,7 +20,7 @@ business_logger = getLogger("business")
 
 class TenderManager:
 
-    max_attempts = 4
+    max_attempts = 15
 
     def __init__(self, announce_number, auth_data) -> None:
         self.session = GoszakupAuth(auth_data)
