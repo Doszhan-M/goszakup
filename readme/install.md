@@ -12,17 +12,7 @@ sudo apt -y install htop vim curl wget libnss3-tools unzip git gnome-screenshot
 Multitasking -> Workspaces установить фиксированное количество раб столов на 1,
 необходимо настроить автологин в настройках и отключить блокировку когда гаснет экран:
 Privacy and Security -> Screen Lock.
-Настроить автозапуск gnome_workspace.sh:
-```
-sudo apt install xdotool -y  
-vim ~/.config/autostart/gnome_workspace.desktop
 
-[Desktop Entry]
-Type=Application
-Name=Goszakup
-Exec=/home/asus/github/goszakup/scripts/gnome_workspace.sh
-Terminal=false
-```  
 
 `•` Чтобы при закрытии крышки, ноут не уходил в сон, отредактировать:
 ```
@@ -50,10 +40,12 @@ gsettings get org.gnome.desktop.session idle-delay
 find $HOME/github/goszakup/scripts/ -type f -name "*.sh" -exec sudo chmod +x {} \; 
 ```
 
-## 3. Сгенерировать ssh ключи и зарегистрировать и github
+## 3. Настроить автозапуск gnome_workspace.sh:
 ```
 cd $HOME/github/goszakup/scripts/
-sudo ./ssh_keygen.sh
+sudo ./gnome_workspace_setup.sh
+После перезапуска можно проверить логи:
+cat /tmp/workspace_selection.log 
 ```
 
 ## 4. Установить NCALayer
