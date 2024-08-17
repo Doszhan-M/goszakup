@@ -1,6 +1,7 @@
 #!/bin/bash
 
-SCRIPT_PATH="/home/debian/github/goszakup/scripts/signer/signer_start.sh"
+USER="asus"
+SCRIPT_PATH="/home/$USER/github/goszakup/scripts/signer/signer_start.sh"
 SERVICE_FILE="/etc/systemd/system/signer.service"
 
 # Проверка прав на создание файла в /etc/systemd/system
@@ -17,7 +18,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=debian
+User=$USER
 Environment=DISPLAY=:0
 ExecStart=${SCRIPT_PATH}
 Restart=on-failure

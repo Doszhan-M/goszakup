@@ -14,7 +14,7 @@ Multitasking -> Workspaces установить фиксированное ко�
 Privacy and Security -> Screen Lock.
 Настроить автозапуск gnome_workspace.sh:
 ```
-sudo apt install xdotool  
+sudo apt install xdotool -y  
 vim ~/.config/autostart/gnome_workspace.desktop
 
 [Desktop Entry]

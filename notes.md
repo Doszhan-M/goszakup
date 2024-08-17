@@ -28,3 +28,4 @@ http://tender.goszakup.keenetic.pro/admin/
 
 DEmOuSiGhAwtHENteThfORMATeInEynTEnT
 Doszhan89!
+sudo apt-get install python3-tk python3-dev
