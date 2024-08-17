@@ -10,7 +10,7 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
-sudo apt-get install python3-tk python3-dev -y
+sudo apt-get install python3-tk python3-dev xclip -y
 
 # Создание файла службы
 cat <<EOF > $SERVICE_FILE
