@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Обновление списка пакетов и установка пакета python3-venv
-sudo apt update && sudo apt install python3-venv python3-pip -y
+sudo apt update && sudo apt install python3-venv python3-pip python3-xyz -y
 
 # Создание виртуального окружения в текущей директории в папке venv
 cd $HOME/github/goszakup/
