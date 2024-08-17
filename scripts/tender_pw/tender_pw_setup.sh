@@ -12,7 +12,7 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 source /home/$USER/github/goszakup/venv/bin/activate
-playwright install
+playwright install --with-deps
 
 # Создание файла службы
 cat <<EOF > $SERVICE_FILE
@@ -46,3 +46,4 @@ echo "sudo systemctl disable tender_pw"
 echo "sudo systemctl stop tender_pw"
 echo "sudo systemctl restart tender_pw"
 echo "sudo systemctl status tender_pw"
+echo "journalctl -u tender_pw -f"

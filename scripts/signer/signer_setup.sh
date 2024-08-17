@@ -10,6 +10,8 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
+sudo apt-get install python3-tk python3-dev -y
+
 # Создание файла службы
 cat <<EOF > $SERVICE_FILE
 [Unit]
@@ -42,3 +44,4 @@ echo "sudo systemctl disable signer"
 echo "sudo systemctl stop signer"
 echo "sudo systemctl restart signer"
 echo "sudo systemctl status signer"
+echo "journalctl -u signer -f"

@@ -70,6 +70,7 @@ https://pki.gov.kz/docs/nl_ru/bundles/#_2
 Всегда надо использовать последнюю версию.  
 Скопировать разархивированный jar файл в папку bundles:  
 ```
+cd $HOME/github/goszakup/scripts/files/
 cp kz.ecc.NurSignBundle_5.1.1_2e62beae-e900-4c8c-9d8e-37286ace46ec.jar $HOME/.config/NCALayer/bundles 
 ``` 
 После перезапуска модуль должен исчезнуть из папку bundles  
@@ -119,7 +120,7 @@ sudo ./tender_pw_setup.sh
 скрипт запускается от root, поэтому домашний каталог и юзер должен быть другой 
 ```
 cd $HOME/github/goszakup/scripts/signer
-./signer_setup.sh
+sudo ./signer_setup.sh
 ```
 
 
