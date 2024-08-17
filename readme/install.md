@@ -20,7 +20,7 @@ vim ~/.config/autostart/gnome_workspace.desktop
 [Desktop Entry]
 Type=Application
 Name=Goszakup
-Exec=$HOME/github/goszakup/scripts/gnome_workspace.sh
+Exec=/home/asus/github/goszakup/scripts/gnome_workspace.sh
 Terminal=false
 ```  
 
