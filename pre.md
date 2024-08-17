@@ -27,3 +27,9 @@ sudo dpkg - i no
 Установить chrome:
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg - i go
+
+Установить gnome-software:
+sudo apt install gnome-software
+
+Отключить системные звуки:
+gsettings set org.gnome.desktop.sound event-sounds false
