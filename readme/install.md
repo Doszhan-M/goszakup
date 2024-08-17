@@ -8,29 +8,32 @@ sudo apt -y install htop vim curl wget libnss3-tools unzip git gnome-screenshot
 ```
 `•` Переключиться на Xorg сервер на окне входа!
 
-`•` Чтобы рабочии стол стал активным после перезапуска, необходимо в настройках
-Multitasking -> Workspaces установить фиксированное количество раб столов на 1,
-необходимо настроить автологин в настройках и отключить блокировку когда гаснет экран:
-Privacy and Security -> Screen Lock.
+`•` Чтобы рабочии стол стал активным после перезапуска:
+Multitasking -> Workspaces установить фиксированное количество раб столов на 1.  
 
+`•` Необходимо настроить автологин в настройках и отключить блокировку когда гаснет экран:  
+Privacy and Security -> Screen Lock. 
 
-`•` Чтобы при закрытии крышки, ноут не уходил в сон, отредактировать:
-```
-sudo vim /etc/systemd/logind.conf
-```  
-Если HandleLidSwitch не установлен на ignore затем изменить его:
-HandleLidSwitch=ignore
+`•` Надо включить автологин:
+System -> User ->  Automatic login
 
 `•` Чтобы chrome не запрашивал keyring после перезагрузки, можно удалить:
 ```
 sudo apt remove gnome-keyring 
 ```
 
-`•` Установка таймаута для выключения экрана на 5 часов
+`•` Если это ноутбук:  
+Установка таймаута для выключения экрана на 5 часов  
 ```
 gsettings set org.gnome.desktop.session idle-delay 18000
 gsettings get org.gnome.desktop.session idle-delay
 ```
+Чтобы при закрытии крышки, ноут не уходил в сон, отредактировать:
+```
+sudo vim /etc/systemd/logind.conf
+```  
+Если HandleLidSwitch не установлен на ignore затем изменить его:
+HandleLidSwitch=ignore
 
 `•` Перезапустить систему
 
@@ -49,8 +52,6 @@ cat /tmp/workspace_selection.log
 ```
 
 ## 4. Установить NCALayer
-
-
 `•` Скачать NCALayer из офф сайта и установить п папку Programs.  
 Если есть ошибка на xdd, то установить xdd:
 ```
@@ -107,12 +108,10 @@ cd $HOME/github/goszakup/scripts/tender_pw
 sudo ./tender_pw_setup.sh
 ```
 
-## 9. Настроить автозапуск сервиса signer
+## 10. Настроить автозапуск сервиса signer
 При необходимости отредактировать User и SCRIPT_PATH, потому что   
 скрипт запускается от root, поэтому домашний каталог и юзер должен быть другой 
 ```
 cd $HOME/github/goszakup/scripts/signer
 sudo ./signer_setup.sh
 ```
-
-

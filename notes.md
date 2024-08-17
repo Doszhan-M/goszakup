@@ -1,3 +1,5 @@
+docker exec -it goszakup-dashboard-1 bash
+
 python manage.py createsuperuser  
 python manage.py makemigrations  
 python manage.py migrate  
@@ -10,10 +12,8 @@ admin:aCiOnIQuArdE
 
 docker logs -f goszakup-dashboard-1
 docker logs -f goszakup-beat_dashboard-1
-docker exec -it goszakup-dashboard-1 bash
 
 find . -name __pycache__ -exec rm -rf {} \;
-sudo chmod -R +x scripts/
 
 python3 -m grpc_tools.protoc \
     -I./signer/protos \
@@ -23,8 +23,6 @@ python3 -m grpc_tools.protoc \
     eds.proto
 
 sudo kill -9 $(sudo lsof -t -i :13579)
-http://tender.goszakup.keenetic.pro/admin/
-
 
 DEmOuSiGhAwtHENteThfORMATeInEynTEnT
 Doszhan89!
