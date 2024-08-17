@@ -83,7 +83,7 @@ cd $HOME/github/goszakup/scripts/
 ## 5. Настроить зависимости
 ```
 cd $HOME/github/goszakup/scripts/
-./setup_venv.sh
+./setup_req.sh
 ```
 
 ## 6. Создать env для сервисов на основе example
