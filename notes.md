@@ -26,3 +26,5 @@ sudo kill -9 $(sudo lsof -t -i :13579)
 
 DEmOuSiGhAwtHENteThfORMATeInEynTEnT
 Doszhan89!
+
+Перевод за сервер 15 августа
