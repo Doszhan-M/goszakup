@@ -12,7 +12,7 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 source /home/$USER/github/goszakup/venv/bin/activate
-playwright install --with-deps
+playwright install
 
 # Создание файла службы
 cat <<EOF > $SERVICE_FILE

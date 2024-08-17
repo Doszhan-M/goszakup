@@ -111,7 +111,7 @@ docker compose up --build -d
 скрипт запускается от root, поэтому домашний каталог и юзер должен быть другой 
 ```
 cd $HOME/github/goszakup/scripts/tender_pw
-./tender_pw_setup.sh
+sudo ./tender_pw_setup.sh
 ```
 
 ## 9. Настроить автозапуск сервиса signer
