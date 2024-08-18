@@ -27,12 +27,12 @@ tmux attach -t gz
 `•` Установить noMachine:
 ```
 wget https://download.nomachine.com/download/8.13/Linux/nomachine_8.13.1_1_amd64.deb
-sudo dpkg - i no
+sudo dpkg -i no
 ```
 `•` Установить chrome:
 ```
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo dpkg - i go
+sudo dpkg -i go
 ```
 `•` Установить gnome-software:
 ```
