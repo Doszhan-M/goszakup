@@ -9,6 +9,7 @@ from logging import getLogger
 
 from services import get_redis
 from core.config import settings
+from services.exceptions import ProjectError
 
 
 logger = getLogger("grpc")
@@ -37,9 +38,10 @@ class EdsManager:
             self.click_choose_btn()
             self.indicate_eds_path()
             self.click_open_btn()
+            self.click_password_form()
             self.enter_eds_password()
             self.click_ok_btn()
-        except Exception:
+        except (Exception, ProjectError):
             logger.exception("Failed wile execute_sign_by_eds.")
             self.restart_ncalayer()
 
@@ -50,7 +52,7 @@ class EdsManager:
             sleep(0.1)
         return True
 
-    def click_btn(self, btn_path: str, timeout=5) -> None:
+    def click_obj(self, btn_path: str, timeout=5) -> None:
         start_time = time()
         button = None
         while not button and time() - start_time < timeout:
@@ -65,25 +67,19 @@ class EdsManager:
             logger.error(f"not found {btn_path.split('/')[-1]}")
 
     def click_choose_btn(self) -> None:
-        choose_btn_path = pyautogui_images + "choose_btn.png"
-        form_exist_path = pyautogui_images + "form_exist.png"
         timeout = 5
         start_time = time()
         while time() - start_time < timeout:
             try:
-                choose_btn_location = pyautogui.locateCenterOnScreen(
-                    choose_btn_path, confidence=0.8
-                )
-                pyautogui.click(choose_btn_location)
+                file_system_btn_path = pyautogui_images + "file_system_btn.png"
+                self.click_obj(file_system_btn_path, timeout=1)
                 return
             except pyautogui.ImageNotFoundException:
                 pass
-            try:
-                pyautogui.locateCenterOnScreen(form_exist_path, confidence=0.8)
-                return
-            except pyautogui.ImageNotFoundException:
-                pass
-        raise Exception(f"Neither button found within {timeout} seconds.")
+            form_exist_path = pyautogui_images + "form_exist.png"
+            self.click_obj(form_exist_path)
+            return
+        raise ProjectError(f"Neither button found within {timeout} seconds.")
 
     def indicate_eds_path(self) -> None:
         pyperclip.copy(self.eds_path)
@@ -92,7 +88,11 @@ class EdsManager:
 
     def click_open_btn(self) -> None:
         open_btn_path = pyautogui_images + "open_btn.png"
-        self.click_btn(open_btn_path)
+        self.click_obj(open_btn_path)
+
+    def click_password_form(self) -> None:
+        password_form = pyautogui_images + "password_form.png"
+        self.click_obj(password_form)
 
     def enter_eds_password(self) -> None:
         pyperclip.copy(self.eds_pass)
@@ -101,7 +101,7 @@ class EdsManager:
 
     def click_ok_btn(self) -> None:
         open_btn_path = pyautogui_images + "ok_btn.png"
-        self.click_btn(open_btn_path)
+        self.click_obj(open_btn_path)
         redis.delete("eds_manager_busy")
 
     def move_cursor_to_bottom_left(self):
