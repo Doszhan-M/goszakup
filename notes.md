@@ -24,6 +24,7 @@ python3 -m grpc_tools.protoc \
 
 sudo kill -9 $(sudo lsof -t -i :13579)
 
+ssh asus@91.147.93.228
 DEmOuSiGhAwtHENteThfORMATeInEynTEnT
 Doszhan89!
 
