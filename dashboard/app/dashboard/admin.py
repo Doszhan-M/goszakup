@@ -33,6 +33,12 @@ class TaskDash(BaseAdmin):
         "announce_name",
     )
 
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        if not obj:
+            form.base_fields["user"].initial = request.user
+        return form
+
 
 class ParticipantDash(BaseAdmin):
     list_display = ("name", "iin_bin")
