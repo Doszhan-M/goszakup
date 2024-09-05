@@ -79,7 +79,6 @@ class Task(Model):
     announce_number = CharField(
         max_length=256,
         verbose_name="Номер объявления",
-        unique=True,
     )
     announce_name = TextField(
         blank=True,
