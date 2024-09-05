@@ -9,18 +9,18 @@ from dashboard.models import Task
 
 
 @app.task(acks_late=True, queue="beat_tasks")
-def start_tender(announce_number, data):
+def start_tender(announce_id, data):
     """Начать тендер."""
 
+    task = Task.objects.get(id=announce_id)
     url = (
-        f"{setup.GOSZAKUP_URL}/goszakup/tender_start/?announce_number={announce_number}"
+        f"{setup.GOSZAKUP_URL}/goszakup/tender_start/?announce_number={task.announce_number}"
     )
     headers = {
         "accept": "application/json",
         "Content-Type": "application/json",
     }
     response = requests.post(url, headers=headers, data=data, timeout=9600)
-    task = Task.objects.get(announce_number=announce_number)
     status_code = response.status_code
     result: dict = response.json()
     print("result: ", result)

@@ -17,11 +17,12 @@ logger = getLogger("django")
 
 
 @app.task(acks_late=True, queue="beat_tasks")
-def check_and_schedule_task(announce_number, participant_id):
+def check_and_schedule_task(announce_id, participant_id):
     """Запланировать задачу."""
 
+    task = Task.objects.get(id=announce_id)
     url = (
-        f"{setup.GOSZAKUP_URL}/goszakup/tender_check/?announce_number={announce_number}"
+        f"{setup.GOSZAKUP_URL}/goszakup/tender_check/?announce_number={task.announce_number}"
     )
     headers = {
         "accept": "application/json",
@@ -40,7 +41,6 @@ def check_and_schedule_task(announce_number, participant_id):
             },
         }
     )
-    task = Task.objects.get(announce_number=announce_number)
     task._suppress_schedule_announce = True
     max_attempts = 3
     attempts = 0
@@ -74,13 +74,13 @@ def check_and_schedule_task(announce_number, participant_id):
             datetime.now() + timedelta(seconds=1)
         )
         start_tender.apply_async(
-            args=(announce_number, data),
+            args=(announce_id, data),
             eta=scheduled_time,
         )
     elif start_time > datetime.now():
         task.status = "pending"
         start_tender.apply_async(
-            args=(announce_number, data),
+            args=(announce_id, data),
             eta=task.scheduled_time,
         )
     task.save()

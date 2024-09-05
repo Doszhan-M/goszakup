@@ -20,12 +20,12 @@ def schedule_announce(
     ):
         return
     if instance.status in ("checking",):
-        announce_number = instance.announce_number
+        announce_id= instance.id
         participant_id = instance.participant.id
         scheduled_time = settings.ALMATY_TZ.localize(
             datetime.now() + timedelta(seconds=2)
         )
         announce.check_and_schedule_task.apply_async(
-            args=(announce_number, participant_id),
+            args=(announce_id, participant_id),
             eta=scheduled_time,
         )
