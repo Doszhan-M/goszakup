@@ -20,8 +20,13 @@ class PlaywrightDriver:
             self.browser = await self.playwright.chromium.launch(
                 headless=settings.HEADLESS_DRIVER
             )
-        self.page = await self.browser.new_page()
-        self.page.set_default_timeout(4000)
+        # self.page = await self.browser.new_page()
+        # self.page.set_default_timeout(4000)
+        
+        context = await self.browser.new_context()
+        context.set_default_timeout(4000)  # Глобальный таймаут для контекста
+        self.page = await context.new_page()
+                
         await self.wake_up_screen()
         return self.page
 
