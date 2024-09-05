@@ -138,7 +138,7 @@ class TenderManager:
         await next_button.click()
 
     async def select_lots(self):
-        await self.page.wait_for_url(re.compile(r".*(lots|docs|preview).*"))
+        await self.page.wait_for_url(re.compile(r".*(lots|docs|preview).*"), timeout=4000)
         if "lots" not in self.page.url:
             return
         checkboxes = await self.page.query_selector_all(
@@ -154,7 +154,7 @@ class TenderManager:
             await next_button.click()
 
     async def get_required_docs_links(self) -> list:
-        await self.page.wait_for_url(re.compile(r".*(docs|preview).*"))
+        await self.page.wait_for_url(re.compile(r".*(docs|preview).*"), timeout=4000)
         if "docs" not in self.page.url:
             return []
         await self.page.wait_for_selector("#docs")
