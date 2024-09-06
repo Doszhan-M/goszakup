@@ -70,24 +70,27 @@ class TenderManager:
         return self.result
 
     async def start(self) -> dict:
-        if not self.page:
-            self.page = await self.session.get_auth_session()
-        await self.wait_until_the_start()
-        await self.tender_start()
-        self.result["start_time"] = datetime.now()
-        await self.fill_and_submit_application()
-        await self.select_lots()
-        required_docs_urls = await self.get_required_docs_links()
-        for url in required_docs_urls:
-            try:
-                await self.generate_document(url)
-                await self.sign_document()
-            except SignatureFound:
-                continue
-        await self.next_page()
-        await self.apply_application()
-        await self.check_application_result()
-        return self.result
+        try:
+            if not self.page:
+                self.page = await self.session.get_auth_session()
+            await self.wait_until_the_start()
+            await self.tender_start()
+            self.result["start_time"] = datetime.now()
+            await self.fill_and_submit_application()
+            await self.select_lots()
+            required_docs_urls = await self.get_required_docs_links()
+            for url in required_docs_urls:
+                try:
+                    await self.generate_document(url)
+                    await self.sign_document()
+                except SignatureFound:
+                    continue
+            await self.next_page()
+            await self.apply_application()
+            await self.check_application_result()
+            return self.result
+        except PlaywrightTimeoutError as e:
+            await self.handle_timeout()
 
     async def wait_until_the_start(self) -> None:
         await self.page.goto(self.announce_url, wait_until="domcontentloaded")
@@ -138,7 +141,9 @@ class TenderManager:
         await next_button.click()
 
     async def select_lots(self):
-        await self.page.wait_for_url(re.compile(r".*(lots|docs|preview).*"), timeout=4000)
+        await self.page.wait_for_url(
+            re.compile(r".*(lots|docs|preview).*"), timeout=4000
+        )
         if "lots" not in self.page.url:
             return
         checkboxes = await self.page.query_selector_all(
@@ -289,3 +294,9 @@ class TenderManager:
                     input_value = next_input.get("value")
                     announce_detail[key] = input_value
         return announce_detail
+
+    async def handle_timeout(self, e: PlaywrightTimeoutError) -> None:
+        logger.error("Timeout while trying to execute.")
+        html = await self.page.content()
+        logger.error(f"Page content during timeout in: {html}")
+        raise e
