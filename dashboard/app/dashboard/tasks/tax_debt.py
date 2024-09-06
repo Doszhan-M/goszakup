@@ -18,7 +18,9 @@ def check_tax_debt():
         "Content-Type": "application/json",
     }
     all_participants = Participant.objects.all()
+    print('all_participants: ', all_participants)
     for participant in all_participants:
+        print('participant: ', participant)
         data = json.dumps(
             {
                 "eds_gos": participant.eds_gos_path,
