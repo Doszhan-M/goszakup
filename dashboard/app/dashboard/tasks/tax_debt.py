@@ -18,7 +18,7 @@ def check_tax_debt():
         "Content-Type": "application/json",
     }
     all_participants = Participant.objects.all()
-    print('all_participants: ', all_participants)
+    result = {}
     for participant in all_participants:
         print('participant: ', participant)
         data = json.dumps(
@@ -40,4 +40,5 @@ def check_tax_debt():
                 time.sleep(3)
         if not success:
             print(f"Failed to check tax debt for participant: {participant}")
-        return {"success": success}
+        result.update({participant.name : success})
+    return result
