@@ -14,8 +14,8 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     "check_tax_debt": {
         "task": "dashboard.tasks.tax_debt.check_tax_debt",
-        # "schedule": crontab(hour=8, minute=0),
+        "schedule": crontab(hour=8, minute=0),
         "options": {"queue": "beat_tasks"},
-        'schedule': 60.0,
+        # 'schedule': 60.0,
     },
 }
