@@ -239,7 +239,7 @@ class TenderManager:
 
     async def apply_application(self) -> None:
         apply_button = await self.page.wait_for_selector(
-            "//button[@id='next' and contains(text(), 'Подать заявку')]"
+            "//button[@id='next' and contains(text(), 'Подать заявку')]", timeout=10000
         )
         await apply_button.click()
         yes_button = await self.page.wait_for_selector(
