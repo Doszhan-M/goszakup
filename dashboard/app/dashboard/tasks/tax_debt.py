@@ -20,7 +20,6 @@ def check_tax_debt():
     all_participants = Participant.objects.all()
     result = {}
     for participant in all_participants:
-        print('participant: ', participant)
         data = json.dumps(
             {
                 "eds_gos": participant.eds_gos_path,
