@@ -16,8 +16,8 @@ class TaskDash(BaseAdmin):
         "status",
         "scheduled_time",
         "start_time",
-        "finish_time",
         "duration",
+        "participant.name",
     )
     search_fields = ("announce_number",)
     list_filter = ("status",)
