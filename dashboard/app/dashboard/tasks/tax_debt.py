@@ -12,7 +12,7 @@ from dashboard.models import Participant
 def check_tax_debt():
     """Проверить налоговые долги участников."""
 
-    url = f"{setup.GOSZAKUP_URL}/goszakup/check_tax_debt/?delta=10"
+    url = f"{setup.GOSZAKUP_URL}/goszakup/check_tax_debt/?delta=5"
     headers = {
         "accept": "application/json",
         "Content-Type": "application/json",
