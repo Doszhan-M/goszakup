@@ -21,7 +21,7 @@ class TaskDash(BaseAdmin):
     )
     search_fields = ("announce_number",)
     list_filter = ("status",)
-    ordering = ("-create_time",)
+    ordering = ("-scheduled_time",)
     readonly_fields = (
         "scheduled_time",
         "start_time",
