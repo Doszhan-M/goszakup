@@ -61,7 +61,6 @@ class EdsManager:
         with redis_lock("eds_manager_busy", lock_timeout=self.busy_timeout):
             try:
                 self.click_choose_btn()
-                sleep(5)
                 self.indicate_eds_path()
                 self.click_open_btn()
                 self.click_password_form()
@@ -78,7 +77,6 @@ class EdsManager:
         Возвращает True, если не занята, иначе False.
         """
         is_locked = redis.exists("eds_manager_busy")
-        logger.info(f"is_not_busy called. Locked: {is_locked}")
         return not is_locked
 
     def click_obj(self, btn_path: str, timeout=5) -> None:

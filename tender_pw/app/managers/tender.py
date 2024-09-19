@@ -218,7 +218,9 @@ class TenderManager:
             eds_manager_status = stub.SendStatus(eds_pb2.EdsManagerStatusCheck())
             async for status in eds_manager_status:
                 if status.busy.value:
-                    logger.info("Eds Service is busy. Waiting...")
+                    logger.info("Signer service is busy. Waiting...")
+                else:
+                    break            
             await nclayer_call_btn.click()
             eds_data = eds_pb2.SignByEdsStart(
                 eds_path=self.session.auth_data.eds_gos,

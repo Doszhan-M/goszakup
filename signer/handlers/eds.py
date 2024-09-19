@@ -21,11 +21,10 @@ class EdsServicer(eds_pb2_grpc.EdsServiceServicer):
     def SendStatus(self, request, context):
         while True:
             if EdsManager.is_not_busy():
-                print("1111111111111111111111")
                 yield eds_pb2.EdsManagerStatus(busy=BoolValue(value=False))
                 break
             else:
-                print("22222222222222222222222")
+                logger.info("EdsManager is busy. Waiting...")
                 yield eds_pb2.EdsManagerStatus(busy=BoolValue(value=True))
                 sleep(0.2)
 

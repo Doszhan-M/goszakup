@@ -43,7 +43,7 @@ class GoszakupAuth:
                     )
                     async for status in eds_manager_status:
                         if status.busy.value:
-                            logger.info("Eds Service is busy. Waiting...")
+                            logger.info("Signer service is busy. Waiting...")
                         else:
                             break
                     await nclayer_call_btn.click()
@@ -70,7 +70,7 @@ class GoszakupAuth:
             eds_manager_status = stub.SendStatus(eds_pb2.EdsManagerStatusCheck())
             async for status in eds_manager_status:
                 if status.busy.value:
-                    logger.info("Eds Service is busy. Waiting...")
+                    logger.info("Signer service is busy. Waiting...")
                 else:
                     break            
             stub = eds_pb2_grpc.EdsServiceStub(channel)
