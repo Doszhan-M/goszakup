@@ -64,7 +64,6 @@ class EdsManager:
         try:
             self.click_choose_btn()
             self.indicate_eds_path()
-            sleep(10)
             self.click_open_btn()
             self.click_password_form()
             self.enter_eds_password()
@@ -79,6 +78,7 @@ class EdsManager:
         """
         Контекстный менеджер, который захватывает блокировку перед выполнением критической секции.
         """
+        logger.info("is_not_busy.")
         with redis_lock("eds_manager_busy", lock_timeout=cls.busy_timeout):
             yield
 
@@ -143,7 +143,9 @@ class EdsManager:
         pyautogui.moveTo(safe_margin, screen_height - safe_margin)
 
     @classmethod
+    @contextmanager
     def restart_ncalayer(cls) -> None:
+        logger.info("restart_ncalayer.")
         with redis_lock("eds_manager_busy", lock_timeout=cls.busy_timeout):
             try:
                 script_path = os.path.expanduser(settings.NCALAYER_PATH)
