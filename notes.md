@@ -28,4 +28,13 @@ ssh asus@91.147.93.228
 DEmOuSiGhAwtHENteThfORMATeInEynTEnT
 Doszhan89!
 
-Перевод за сервер 15 августа
+Перевод за сервер 15 ноября
+
+
+
+
+/usr/bin/Xvfb :99 -screen 0 1920x1080x24
+sudo apt-get install x11vnc 
+x11vnc -storepasswd
+Doszhan89!
+x11vnc -display :99 -forever -shared -rfbauth ~/.vnc/passwd -noxdamage
