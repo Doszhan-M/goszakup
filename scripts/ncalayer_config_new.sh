@@ -6,6 +6,8 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
+apt update && apt install dbus-x11
+
 # Укажите пользователя, от имени которого будет запускаться сервис
 SERVICE_USER="asus"
 
@@ -26,7 +28,8 @@ User=$SERVICE_USER
 Group=$SERVICE_USER
 Environment=DISPLAY=:0
 Environment=HOME=$USER_HOME
-ExecStart=$USER_HOME/Programs/NCALayer/ncalayer.sh --restart
+ExecStart=/home/asus/Programs/NCALayer/ncalayer.sh --run
+ExecStop=/home/asus/Programs/NCALayer/ncalayer.sh --stop
 Restart=on-failure
 
 [Install]
