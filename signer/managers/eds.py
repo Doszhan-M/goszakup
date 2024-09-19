@@ -49,7 +49,7 @@ class EdsManager:
     def is_not_busy() -> bool:
         while redis.get("eds_manager_busy"):
             logger.info("eds manager busy")
-            sleep(0.1)
+            sleep(3)
         return True
 
     def click_obj(self, btn_path: str, timeout=5) -> None:
