@@ -6,6 +6,7 @@ import subprocess
 from websocket import create_connection
 from time import sleep, time
 from logging import getLogger
+from contextlib import contextmanager
 
 from services import get_redis
 from core.config import settings
@@ -24,6 +25,33 @@ elif settings.ENVIRONMENT == "SERVER_GNOME":
     pyautogui_images = settings.BASE_DIR + "/static/server_gnome_2/"
 
 
+@contextmanager
+def redis_lock(lock_key, lock_timeout=15, sleep_time=0.1, max_retries=50):
+    """
+    Контекстный менеджер для управления блокировками Redis.
+    """
+    lock = redis.lock(
+        lock_key,
+        timeout=lock_timeout,
+        sleep=sleep_time,
+        blocking_timeout=max_retries * sleep_time
+    )
+    acquired = lock.acquire(blocking=True)
+    if acquired:
+        logger.info(f"Блокировка захвачена: {lock_key}")
+    else:
+        logger.info(f"Не удалось захватить блокировку: {lock_key}")
+    try:
+        if acquired:
+            yield
+        else:
+            raise Exception("Не удалось получить блокировку.")
+    finally:
+        if acquired:
+            lock.release()
+            logger.debug(f"Блокировка освобождена: {lock_key}")
+            
+
 class EdsManager:
 
     busy_timeout = 15
@@ -34,7 +62,6 @@ class EdsManager:
 
     def execute_sign_by_eds(self) -> None:
         try:
-            redis.set("eds_manager_busy", 1, ex=self.busy_timeout)
             self.click_choose_btn()
             self.indicate_eds_path()
             self.click_open_btn()
@@ -45,12 +72,14 @@ class EdsManager:
             logger.exception("Failed wile execute_sign_by_eds.")
             self.restart_ncalayer()
 
-    @staticmethod
-    def is_not_busy() -> bool:
-        while redis.get("eds_manager_busy"):
-            logger.info("eds manager busy")
-            sleep(3)
-        return True
+    @classmethod
+    @contextmanager
+    def is_not_busy(cls):
+        """
+        Контекстный менеджер, который захватывает блокировку перед выполнением критической секции.
+        """
+        with redis_lock("eds_manager_busy", lock_timeout=cls.busy_timeout):
+            yield
 
     def click_obj(self, btn_path: str, timeout=5) -> None:
         start_time = time()
@@ -103,7 +132,6 @@ class EdsManager:
     def click_ok_btn(self) -> None:
         open_btn_path = pyautogui_images + "ok_btn.png"
         self.click_obj(open_btn_path)
-        redis.delete("eds_manager_busy")
 
     def move_cursor_to_bottom_left(self):
         """Если экран выключен, pyautogui не работает, поэтому
@@ -115,14 +143,13 @@ class EdsManager:
 
     @classmethod
     def restart_ncalayer(cls) -> None:
-        try:
-            redis.set("eds_manager_busy", 1, ex=cls.busy_timeout)
-            script_path = os.path.expanduser(settings.NCALAYER_PATH)
-            subprocess.run([script_path, "--restart"], check=True)
-        except subprocess.CalledProcessError:
-            logger.error("NCALayer перезапущен.")
-            cls.healthcheck_ncalayer()
-            redis.delete("eds_manager_busy")
+        with redis_lock("eds_manager_busy", lock_timeout=cls.busy_timeout):
+            try:
+                script_path = os.path.expanduser(settings.NCALAYER_PATH)
+                subprocess.run([script_path, "--restart"], check=True)
+            except subprocess.CalledProcessError:
+                logger.error("NCALayer перезапущен.")
+                cls.healthcheck_ncalayer()
 
     @classmethod
     def healthcheck_ncalayer(cls) -> None:
