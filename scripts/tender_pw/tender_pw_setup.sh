@@ -3,49 +3,69 @@
 
 USER="asus"
 SCRIPT_PATH="/home/$USER/github/goszakup/scripts/tender_pw/tender_pw_start.sh"
-SERVICE_FILE="/etc/systemd/system/tender_pw.service"
+VENV_PATH="/home/$USER/github/goszakup/venv"
+SERVICE_NAME="tender_pw.service"
 
-# Проверка прав на создание файла в /etc/systemd/system
+# Проверка прав на выполнение скрипта (должен быть запущен как root)
 if [ "$(id -u)" -ne 0 ]; then
     echo "This script must be run as root."
     exit 1
 fi
 
-source /home/$USER/github/goszakup/venv/bin/activate
-playwright install --with-deps
+# Проверка существования виртуального окружения
+if [ ! -d "$VENV_PATH" ]; then
+    echo "Виртуальное окружение не найдено по пути $VENV_PATH."
+fi
 
-# Создание файла службы
-cat <<EOF > $SERVICE_FILE
+echo "Активиация виртуальное окружение и устанавка зависимости Playwright..."
+sudo -u $USER bash <<EOF
+source "$VENV_PATH/bin/activate"
+playwright install --with-deps
+EOF
+
+
+echo "Создать пользовательский systemd сервисный файл для пользователя '$USER'"
+sudo -u $USER bash <<EOF
+mkdir -p /home/$USER/.config/systemd/user
+
+SERVICE_FILE="/home/$USER/.config/systemd/user/$SERVICE_NAME"
+
+cat <<EOT > \$SERVICE_FILE
 [Unit]
 Description=tender_pw Service
 After=graphical.target
 
 [Service]
 Type=simple
-User=$USER
+ExecStart=$SCRIPT_PATH
 Environment=DISPLAY=:0
-Environment=XAUTHORITY=/home/asus/.Xauthority
-ExecStart=${SCRIPT_PATH}
+Environment=XAUTHORITY=/home/$USER/.Xauthority
+Environment=HOME=/home/$USER
+Environment=PATH=/usr/bin:/usr/local/bin:$VENV_PATH/bin
 Restart=on-failure
-Environment=PATH=/usr/bin:/usr/local/bin
+RestartSec=5
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
+EOT
+
+chmod 644 \$SERVICE_FILE
+
+# Перезагрузка конфигурации systemd для пользователя
+systemctl --user daemon-reload
+
+# Включение сервиса для автозапуска при входе в систему
+systemctl --user enable "$SERVICE_NAME"
+
+# Запуск сервиса немедленно
+systemctl --user start "$SERVICE_NAME"
 EOF
 
-# Установка прав и перезагрузка systemd
-chmod 644 $SERVICE_FILE
-systemctl daemon-reload
-systemctl start tender_pw
-systemctl enable tender_pw
-
-
-echo "Systemd service file created at ${SERVICE_FILE}"
-echo "You can now start and enable the service with:"
-echo "sudo systemctl start tender_pw"
-echo "sudo systemctl enable tender_pw"
-echo "sudo systemctl disable tender_pw"
-echo "sudo systemctl stop tender_pw"
-echo "sudo systemctl restart tender_pw"
-echo "sudo systemctl status tender_pw"
-echo "journalctl -u tender_pw -f"
+echo "Пользовательский systemd сервис создан по пути /home/$USER/.config/systemd/user/$SERVICE_NAME"
+echo "Сервис был запущен и настроен на автозапуск при входе в систему."
+echo "Вы можете управлять сервисом с помощью следующих команд (от имени пользователя '$USER'):"
+echo "systemctl --user start $SERVICE_NAME"
+echo "systemctl --user stop $SERVICE_NAME"
+echo "systemctl --user restart $SERVICE_NAME"
+echo "systemctl --user status $SERVICE_NAME"
+echo "journalctl --user -u $SERVICE_NAME -f"

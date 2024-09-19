@@ -1,20 +1,19 @@
 ## Управление tender_pw:
 ```
-sudo systemctl restart tender_pw
-sudo systemctl start tender_pw
-sudo systemctl stop tender_pw
-systemctl disable tender_pw
-systemctl status tender_pw
-journalctl -u tender_pw -f  
+systemctl --user restart tender_pw
+systemctl --user start tender_pw
+systemctl --user stop tender_pw
+systemctl --user enable tender_pw
+systemctl --user status tender_pw
+journalctl --user -u tender_pw -f 
 ```
 
 ## Управление signer:
 ```
-sudo systemctl restart signer
-sudo systemctl start signer
-sudo systemctl stop signer
-systemctl disable signer
-systemctl status signer
-sudo systemctl daemon-reload 
-journalctl -u signer -f
+systemctl --user restart signer
+systemctl --user start signer
+systemctl --user stop signer
+systemctl --user enable signer
+systemctl --user status signer
+journalctl --user -u signer -f
 ```
