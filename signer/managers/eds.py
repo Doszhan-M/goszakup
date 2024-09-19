@@ -65,6 +65,7 @@ class EdsManager:
                 logger.info(f"click {btn_path.split('/')[-1]}")
         if not button:
             logger.error(f"not found {btn_path.split('/')[-1]}")
+            raise pyautogui.ImageNotFoundException
 
     def click_choose_btn(self) -> None:
         timeout = 5
