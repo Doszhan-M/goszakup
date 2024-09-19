@@ -21,7 +21,7 @@ if settings.ENVIRONMENT == "TUF17":
 elif settings.ENVIRONMENT == "VIVOBOOK":
     pyautogui_images = settings.BASE_DIR + "/static/vivobook/"
 elif settings.ENVIRONMENT == "SERVER_GNOME":
-    pyautogui_images = settings.BASE_DIR + "/static/server_gnome/"
+    pyautogui_images = settings.BASE_DIR + "/static/server_gnome_2/"
 
 
 class EdsManager:
