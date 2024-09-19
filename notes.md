@@ -38,3 +38,7 @@ sudo apt-get install x11vnc
 x11vnc -storepasswd
 Doszhan89!
 x11vnc -display :99 -forever -shared -rfbauth ~/.vnc/passwd -noxdamage
+
+sudo vim /etc/environment
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+DISPLAY=:0
