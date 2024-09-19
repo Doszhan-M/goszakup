@@ -64,6 +64,7 @@ class EdsManager:
         try:
             self.click_choose_btn()
             self.indicate_eds_path()
+            sleep(10)
             self.click_open_btn()
             self.click_password_form()
             self.enter_eds_password()
