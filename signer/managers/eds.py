@@ -26,7 +26,7 @@ elif settings.ENVIRONMENT == "SERVER_GNOME":
 
 class EdsManager:
 
-    busy_timeout = 8
+    busy_timeout = 15
 
     def __init__(self, eds_data) -> None:
         self.eds_path = eds_data.eds_path
