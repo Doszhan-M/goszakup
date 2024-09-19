@@ -21,16 +21,19 @@ cat > "$SERVICE_FILE" <<EOF
 [Unit]
 Description=NCALayer Service
 After=graphical.target
+Requires=graphical.target
 
 [Service]
 Type=simple
-User=$SERVICE_USER
-Group=$SERVICE_USER
+User=asus
+Group=asus
 Environment=DISPLAY=:0
-Environment=HOME=$USER_HOME
+Environment=XAUTHORITY=/home/asus/.Xauthority
+Environment=HOME=/home/asus
 ExecStart=/home/asus/Programs/NCALayer/ncalayer.sh --run
 ExecStop=/home/asus/Programs/NCALayer/ncalayer.sh --stop
 Restart=on-failure
+RestartSec=5
 
 [Install]
 WantedBy=graphical.target

@@ -119,7 +119,7 @@ class EdsManager:
             redis.set("eds_manager_busy", 1, ex=cls.busy_timeout)
             script_path = os.path.expanduser(settings.NCALAYER_PATH)
             subprocess.run([script_path, "--stop"], check=True)
-            subprocess.run([script_path, "--run"], check=True)
+            subprocess.run([script_path, "--restart"], check=True)
         except subprocess.CalledProcessError:
             logger.error("NCALayer перезапущен.")
             cls.healthcheck_ncalayer()
