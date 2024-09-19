@@ -15,19 +15,23 @@ sudo apt-get install python3-tk python3-dev xclip -y
 
 # Создание файла службы
 cat <<EOF > $SERVICE_FILE
+
 [Unit]
-Description=signer Service
-After=network.target
+Description=Signer Service
+After=graphical.target
 
 [Service]
 Type=simple
 User=$USER
 Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/asus/.Xauthority
 ExecStart=${SCRIPT_PATH}
 Restart=on-failure
+Environment=PATH=/usr/bin:/usr/local/bin
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=graphical.target
+
 EOF
 
 # Установка прав и перезагрузка systemd

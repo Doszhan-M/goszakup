@@ -15,5 +15,6 @@ sudo systemctl start signer
 sudo systemctl stop signer
 systemctl disable signer
 systemctl status signer
+sudo systemctl daemon-reload 
 journalctl -u signer -f
 ```

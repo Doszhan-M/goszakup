@@ -18,14 +18,16 @@ playwright install --with-deps
 cat <<EOF > $SERVICE_FILE
 [Unit]
 Description=tender_pw Service
-After=network.target
+After=graphical.target
 
 [Service]
 Type=simple
 User=$USER
 Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/asus/.Xauthority
 ExecStart=${SCRIPT_PATH}
 Restart=on-failure
+Environment=PATH=/usr/bin:/usr/local/bin
 
 [Install]
 WantedBy=multi-user.target
