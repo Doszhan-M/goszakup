@@ -49,7 +49,7 @@ def redis_lock(lock_key, lock_timeout=15, sleep_time=0.1, max_retries=50):
     finally:
         if acquired:
             lock.release()
-            logger.debug(f"Блокировка освобождена: {lock_key}")
+            logger.info(f"Блокировка освобождена: {lock_key}")
             
 
 class EdsManager:
