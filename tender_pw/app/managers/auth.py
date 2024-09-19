@@ -40,7 +40,9 @@ class GoszakupAuth:
                     eds_manager_status = stub.SendStatus(
                         eds_pb2.EdsManagerStatusCheck()
                     )
+                    print('eds_manager_status: ', eds_manager_status)
                     async for status in eds_manager_status:
+                        print('status: ', status)
                         if status.busy.value:
                             logger.info("Eds Service is busy. Waiting...")
                     await nclayer_call_btn.click()

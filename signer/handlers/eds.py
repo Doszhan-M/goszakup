@@ -20,8 +20,10 @@ class EdsServicer(eds_pb2_grpc.EdsServiceServicer):
 
     def SendStatus(self, request, context):
         if EdsManager.is_not_busy():
+            print(1111111111111111111111)
             yield eds_pb2.EdsManagerStatus(busy=BoolValue(value=False))
         else:
+            print(22222222222222222222222)
             yield eds_pb2.EdsManagerStatus(busy=BoolValue(value=True))
 
     def ExecuteSignByEds(self, request, context):
