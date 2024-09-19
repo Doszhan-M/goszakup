@@ -1,26 +1,28 @@
 #!/bin/bash
 
 
-# Проверка прав на создание файла в /etc/systemd/system
-if [ "$(id -u)" -ne 0 ]; then
-    echo "This script must be run as root."
-    exit 1
-fi
 
-SERVICE_FILE="/etc/systemd/system/ncalayer.service"
+# Определяем путь к директории systemd user services
+SYSTEMD_USER_DIR="$HOME/.config/systemd/user"
 
+# Создаем директорию, если она не существует
+mkdir -p "$SYSTEMD_USER_DIR"
+
+# Определяем путь к файлу сервиса
+SERVICE_FILE="$SYSTEMD_USER_DIR/ncalayer.service"
 
 # Создаем сервисный файл с заданным содержимым
 cat > "$SERVICE_FILE" <<EOF
-
 [Unit]
 Description=NCALayer Service
 After=graphical.target
 
 [Service]
-Environment=DISPLAY=:0
-ExecStart=$HOME/Programs/NCALayer/ncalayer.sh --restart
+Type=simple
+ExecStart=/home/asus/Programs/NCALayer/ncalayer.sh --run
 Restart=on-failure
+Environment=DISPLAY=:0
+Environment=HOME=/home/asus
 
 [Install]
 WantedBy=default.target
