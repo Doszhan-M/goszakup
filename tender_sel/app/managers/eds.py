@@ -42,7 +42,7 @@ class EdsManager:
         global eds_manager_busy
         while eds_manager_busy:
             logger.info("eds_manager_busy")
-            sleep(0.1)
+            sleep(3)
         eds_manager_busy = True
         return True
 
