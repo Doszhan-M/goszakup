@@ -1,4 +1,5 @@
 import grpc
+import asyncio
 from uuid import uuid4
 from logging import getLogger
 from playwright.async_api import Page
@@ -40,11 +41,11 @@ class GoszakupAuth:
                     eds_manager_status = stub.SendStatus(
                         eds_pb2.EdsManagerStatusCheck()
                     )
-                    print('eds_manager_status: ', eds_manager_status)
                     async for status in eds_manager_status:
-                        print('status: ', status)
                         if status.busy.value:
                             logger.info("Eds Service is busy. Waiting...")
+                        else:
+                            break
                     await nclayer_call_btn.click()
                     eds_data = eds_pb2.SignByEdsStart(
                         eds_path=self.auth_data.eds_gos,
@@ -65,6 +66,13 @@ class GoszakupAuth:
 
     async def restart_nclayer(self):
         async with grpc.aio.insecure_channel(settings.SIGNER_HOST) as channel:
+            stub = eds_pb2_grpc.EdsServiceStub(channel)
+            eds_manager_status = stub.SendStatus(eds_pb2.EdsManagerStatusCheck())
+            async for status in eds_manager_status:
+                if status.busy.value:
+                    logger.info("Eds Service is busy. Waiting...")
+                else:
+                    break            
             stub = eds_pb2_grpc.EdsServiceStub(channel)
             restart = await stub.RestartNCALayer(eds_pb2.RestartParams())
             return restart

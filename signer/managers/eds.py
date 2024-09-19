@@ -37,15 +37,12 @@ def redis_lock(lock_key, lock_timeout=15, sleep_time=0.1, max_retries=50):
         blocking_timeout=max_retries * sleep_time
     )
     acquired = lock.acquire(blocking=True)
-    if acquired:
-        logger.info(f"Блокировка захвачена: {lock_key}")
-    else:
-        logger.info(f"Не удалось захватить блокировку: {lock_key}")
     try:
         if acquired:
+            logger.info(f"Блокировка захвачена: {lock_key}")
             yield
         else:
-            raise Exception("Не удалось получить блокировку.")
+            logger.info(f"Не удалось захватить блокировку: {lock_key}")
     finally:
         if acquired:
             lock.release()
@@ -61,26 +58,28 @@ class EdsManager:
         self.eds_pass = eds_data.eds_pass
 
     def execute_sign_by_eds(self) -> None:
-        try:
-            self.click_choose_btn()
-            self.indicate_eds_path()
-            self.click_open_btn()
-            self.click_password_form()
-            self.enter_eds_password()
-            self.click_ok_btn()
-        except (Exception, ProjectError):
-            logger.exception("Failed wile execute_sign_by_eds.")
-            self.restart_ncalayer()
+        with redis_lock("eds_manager_busy", lock_timeout=self.busy_timeout):
+            try:
+                self.click_choose_btn()
+                sleep(5)
+                self.indicate_eds_path()
+                self.click_open_btn()
+                self.click_password_form()
+                self.enter_eds_password()
+                self.click_ok_btn()
+            except (Exception, ProjectError):
+                logger.exception("Failed wile execute_sign_by_eds.")
+                self.restart_ncalayer(with_lock=False)
 
     @classmethod
-    @contextmanager
-    def is_not_busy(cls):
+    def is_not_busy(cls) -> bool:
         """
-        Контекстный менеджер, который захватывает блокировку перед выполнением критической секции.
+        Проверяет, занята ли система (т.е. установлена ли блокировка).
+        Возвращает True, если не занята, иначе False.
         """
-        logger.info("is_not_busy.")
-        with redis_lock("eds_manager_busy", lock_timeout=cls.busy_timeout):
-            yield
+        is_locked = redis.exists("eds_manager_busy")
+        logger.info(f"is_not_busy called. Locked: {is_locked}")
+        return not is_locked
 
     def click_obj(self, btn_path: str, timeout=5) -> None:
         start_time = time()
@@ -143,16 +142,22 @@ class EdsManager:
         pyautogui.moveTo(safe_margin, screen_height - safe_margin)
 
     @classmethod
-    @contextmanager
-    def restart_ncalayer(cls) -> None:
+    def restart_ncalayer(cls, with_lock=True) -> None:
+        if with_lock:
+            with redis_lock("eds_manager_busy", lock_timeout=cls.busy_timeout):
+                cls._restart_ncalayer()
+        else:
+            cls._restart_ncalayer()
+            
+    @classmethod
+    def _restart_ncalayer(cls) -> None:
         logger.info("restart_ncalayer.")
-        with redis_lock("eds_manager_busy", lock_timeout=cls.busy_timeout):
-            try:
-                script_path = os.path.expanduser(settings.NCALAYER_PATH)
-                subprocess.run([script_path, "--restart"], check=True)
-            except subprocess.CalledProcessError:
-                logger.error("NCALayer перезапущен.")
-                cls.healthcheck_ncalayer()
+        try:
+            script_path = os.path.expanduser(settings.NCALAYER_PATH)
+            subprocess.run([script_path, "--restart"], check=True)
+        except subprocess.CalledProcessError:
+            logger.error("NCALayer перезапущен.")
+            cls.healthcheck_ncalayer()
 
     @classmethod
     def healthcheck_ncalayer(cls) -> None:
@@ -167,6 +172,7 @@ class EdsManager:
             response = websocket.recv()
             if "result" in response:
                 logger.info("NCALayer work properly!")
+                sleep(1)
             websocket.close()
         except ConnectionRefusedError:
             logger.error("NCALayer dont work, waiting....")

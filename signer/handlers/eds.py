@@ -19,12 +19,15 @@ class EdsServicer(eds_pb2_grpc.EdsServiceServicer):
             EdsManager.restart_ncalayer()
 
     def SendStatus(self, request, context):
-        if EdsManager.is_not_busy():
-            print(1111111111111111111111)
-            yield eds_pb2.EdsManagerStatus(busy=BoolValue(value=False))
-        else:
-            print(22222222222222222222222)
-            yield eds_pb2.EdsManagerStatus(busy=BoolValue(value=True))
+        while True:
+            if EdsManager.is_not_busy():
+                print("1111111111111111111111")
+                yield eds_pb2.EdsManagerStatus(busy=BoolValue(value=False))
+                break
+            else:
+                print("22222222222222222222222")
+                yield eds_pb2.EdsManagerStatus(busy=BoolValue(value=True))
+                sleep(0.2)
 
     def ExecuteSignByEds(self, request, context):
         eds_manager = EdsManager(request)
