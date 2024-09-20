@@ -155,6 +155,7 @@ class EdsManager:
             env = os.environ.copy()
             env['DISPLAY'] = ':99'
             subprocess.run([script_path, "--restart"], check=True, env=env)
+            # subprocess.run(["gnome-screenshot", "-a"], check=True, env=env)
         except subprocess.CalledProcessError:
             logger.error("NCALayer перезапущен.")
             cls.healthcheck_ncalayer()
