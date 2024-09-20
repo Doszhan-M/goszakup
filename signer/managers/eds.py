@@ -87,12 +87,13 @@ class EdsManager:
                 self.click_obj(form_exist_path)
                 return
             except pyautogui.ImageNotFoundException:
-                if pyautogui_images == xvfb_1:
-                    pyautogui_images = xvfb_2
-                    logger.warning("Switched pyautogui_images to xvfb_2")
-                else:
-                    pyautogui_images = xvfb_1
-                    logger.warning("Switched pyautogui_images to xvfb_1")     
+                if settings.ENVIRONMENT == "SERVER_GNOME":
+                    if pyautogui_images == xvfb_1:
+                        pyautogui_images = xvfb_2
+                        logger.warning("Switched pyautogui_images to xvfb_2")
+                    else:
+                        pyautogui_images = xvfb_1
+                        logger.warning("Switched pyautogui_images to xvfb_1")     
 
         raise ProjectError(f"Neither button found within {timeout} seconds.")
 
