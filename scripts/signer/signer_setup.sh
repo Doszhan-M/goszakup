@@ -21,15 +21,13 @@ mkdir -p /home/$USER/.config/systemd/user
 cat <<EOT > \$SERVICE_FILE
 [Unit]
 Description=Signer Service
-After=graphical.target
+After=graphical.target xvfb.service
+Requires=xvfb.service
 
 [Service]
 Type=simple
-ExecStart=$SCRIPT_PATH
-Environment=DISPLAY=:0
-Environment=XAUTHORITY=/home/$USER/.Xauthority
-Environment=HOME=/home/$USER
-Environment=PATH=/usr/bin:/usr/local/bin
+ExecStart=/home/asus/github/goszakup/scripts/signer/signer_start.sh
+Environment=DISPLAY=:99
 Restart=on-failure
 RestartSec=5
 
@@ -58,24 +56,3 @@ echo "systemctl --user stop signer.service"
 echo "systemctl --user restart signer.service"
 echo "systemctl --user status signer.service"
 echo "journalctl --user -u signer.service -f"
-
-
-
-
-[Unit]
-Description=Signer Service
-After=graphical.target xvfb.service
-Requires=xvfb.service
-
-[Service]
-Type=simple
-ExecStart=/home/asus/github/goszakup/scripts/signer/signer_start.sh
-Environment=DISPLAY=:99
-# Environment=XAUTHORITY=/home/asus/.Xauthority
-Environment=HOME=/home/asus
-Environment=PATH=/usr/bin:/usr/local/bin
-Restart=on-failure
-RestartSec=5
-
-[Install]
-WantedBy=default.target
