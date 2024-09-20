@@ -1,4 +1,5 @@
 from time import sleep
+from contextlib import contextmanager
 from redis import ConnectionPool, Redis
 from redis.exceptions import ConnectionError
 
@@ -33,3 +34,31 @@ def get_redis() -> Redis:
             )
             sleep(retry_delay)
     raise ConnectionError(f"Could not connect to Redis after {max_retries} attempts")
+
+
+redis = get_redis()
+
+
+@contextmanager
+def redis_lock(lock_key, lock_timeout=15, sleep_time=0.1, max_retries=50):
+    """
+    Контекстный менеджер для управления блокировками Redis.
+    """
+    lock = redis.lock(
+        lock_key,
+        timeout=lock_timeout,
+        sleep=sleep_time,
+        blocking_timeout=max_retries * sleep_time
+    )
+    acquired = lock.acquire(blocking=True)
+    try:
+        if acquired:
+            logger.info(f"Блокировка захвачена: {lock_key}")
+            yield
+        else:
+            logger.info(f"Не удалось захватить блокировку: {lock_key}")
+    finally:
+        if acquired:
+            lock.release()
+            logger.info(f"Блокировка освобождена: {lock_key}")
+            

@@ -6,9 +6,8 @@ import subprocess
 from websocket import create_connection
 from time import sleep, time
 from logging import getLogger
-from contextlib import contextmanager
 
-from services import get_redis
+from services import redis_lock, get_redis
 from core.config import settings
 from services.exceptions import ProjectError
 
@@ -22,32 +21,10 @@ if settings.ENVIRONMENT == "TUF17":
 elif settings.ENVIRONMENT == "VIVOBOOK":
     pyautogui_images = settings.BASE_DIR + "/static/vivobook/"
 elif settings.ENVIRONMENT == "SERVER_GNOME":
-    pyautogui_images = settings.BASE_DIR + "/static/server_gnome_3/"
+    xvfb_1 = settings.BASE_DIR + "/static/server_gnome/"
+    xvfb_2 = settings.BASE_DIR + "/static/server_gnome_3/"
+    pyautogui_images = xvfb_1
 
-
-@contextmanager
-def redis_lock(lock_key, lock_timeout=15, sleep_time=0.1, max_retries=50):
-    """
-    Контекстный менеджер для управления блокировками Redis.
-    """
-    lock = redis.lock(
-        lock_key,
-        timeout=lock_timeout,
-        sleep=sleep_time,
-        blocking_timeout=max_retries * sleep_time
-    )
-    acquired = lock.acquire(blocking=True)
-    try:
-        if acquired:
-            logger.info(f"Блокировка захвачена: {lock_key}")
-            yield
-        else:
-            logger.info(f"Не удалось захватить блокировку: {lock_key}")
-    finally:
-        if acquired:
-            lock.release()
-            logger.info(f"Блокировка освобождена: {lock_key}")
-            
 
 class EdsManager:
 
@@ -95,6 +72,7 @@ class EdsManager:
             raise pyautogui.ImageNotFoundException
 
     def click_choose_btn(self) -> None:
+        global pyautogui_images, xvfb_1, xvfb_2
         timeout = 5
         start_time = time()
         while time() - start_time < timeout:
@@ -104,9 +82,18 @@ class EdsManager:
                 return
             except pyautogui.ImageNotFoundException:
                 pass
-            form_exist_path = pyautogui_images + "form_exist.png"
-            self.click_obj(form_exist_path)
-            return
+            try:
+                form_exist_path = pyautogui_images + "form_exist.png"
+                self.click_obj(form_exist_path)
+                return
+            except pyautogui.ImageNotFoundException:
+                if pyautogui_images == xvfb_1:
+                    pyautogui_images = xvfb_2
+                    logger.warning("Switched pyautogui_images to xvfb_2")
+                else:
+                    pyautogui_images = xvfb_1
+                    logger.warning("Switched pyautogui_images to xvfb_1")     
+
         raise ProjectError(f"Neither button found within {timeout} seconds.")
 
     def indicate_eds_path(self) -> None:
@@ -115,10 +102,12 @@ class EdsManager:
         logger.info("enter_eds_path")
 
     def click_open_btn(self) -> None:
+        global pyautogui_images
         open_btn_path = pyautogui_images + "open_btn.png"
         self.click_obj(open_btn_path)
 
     def click_password_form(self) -> None:
+        global pyautogui_images
         password_form = pyautogui_images + "password_form.png"
         self.click_obj(password_form)
 
@@ -128,6 +117,7 @@ class EdsManager:
         logger.info("enter_eds_password")
 
     def click_ok_btn(self) -> None:
+        global pyautogui_images
         open_btn_path = pyautogui_images + "ok_btn.png"
         self.click_obj(open_btn_path)
 

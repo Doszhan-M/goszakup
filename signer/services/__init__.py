@@ -1,1 +1,1 @@
-from .redis import get_redis
+from .redis import get_redis, redis_lock
