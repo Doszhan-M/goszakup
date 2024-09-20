@@ -152,7 +152,9 @@ class EdsManager:
         logger.info("restart_ncalayer.")
         try:
             script_path = os.path.expanduser(settings.NCALAYER_PATH)
-            subprocess.run([script_path, "--restart"], check=True)
+            env = os.environ.copy()
+            env['DISPLAY'] = ':99'
+            subprocess.run([script_path, "--restart"], check=True, env=env)
         except subprocess.CalledProcessError:
             logger.error("NCALayer перезапущен.")
             cls.healthcheck_ncalayer()

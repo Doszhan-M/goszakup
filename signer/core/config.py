@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     BASE_DIR: str = str(Path(__file__).resolve().parent.parent)
     REDIS_HOST: str = "127.0.0.1:6379"
     REDIS_DB: int = 1
-    NCALAYER_PATH: str
+    NCALAYER_PATH: str = "/home/asus/Programs/NCALayer/ncalayer.sh"
     ENVIRONMENT: str = "VIVOBOOK"
     RESTART_NCALAYER: bool = True
 
