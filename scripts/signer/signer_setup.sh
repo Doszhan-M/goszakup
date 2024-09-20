@@ -19,6 +19,7 @@ mkdir -p /home/$USER/.config/systemd/user
 
 # Создание сервисного файла
 cat <<EOT > \$SERVICE_FILE
+
 [Unit]
 Description=Signer Service
 After=graphical.target xvfb.service
@@ -33,6 +34,7 @@ RestartSec=5
 
 [Install]
 WantedBy=default.target
+
 EOT
 
 # Установка правильных прав доступа к сервисному файлу
