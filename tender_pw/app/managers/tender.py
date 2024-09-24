@@ -91,6 +91,8 @@ class TenderManager:
             return self.result
         except PlaywrightTimeoutError as e:
             await self.handle_timeout(e)
+        except Exception:
+            logger.exception("Unknown error")
 
     async def wait_until_the_start(self) -> None:
         await self.page.goto(self.announce_url, wait_until="domcontentloaded")

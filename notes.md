@@ -22,7 +22,7 @@ python3 -m grpc_tools.protoc \
     --grpc_python_out=./signer/pb2 \
     eds.proto
 
-sudo kill -9 $(sudo lsof -t -i :13579)
+sudo kill -9 $(sudo lsof -t -i :8000)
 
 ssh asus@91.147.93.228
 DEmOuSiGhAwtHENteThfORMATeInEynTEnT
