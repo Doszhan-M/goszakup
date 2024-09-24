@@ -80,7 +80,7 @@ def check_and_schedule_task(announce_id, participant_id):
     elif start_time > datetime.now():
         existing_count = Task.objects.filter(scheduled_time=task.scheduled_time).count()
         if existing_count > 0:
-            delay = existing_count * 10
+            delay = existing_count * 12
             task.scheduled_time += timedelta(seconds=delay)    
         task.status = "pending"
         start_tender.apply_async(
