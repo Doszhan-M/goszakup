@@ -23,7 +23,6 @@ def start_tender(announce_id, data):
     response = requests.post(url, headers=headers, data=data, timeout=9600)
     status_code = response.status_code
     result: dict = response.json()
-    print("result: ", result)
     if status_code == 200 and result.get("success"):
         task.start_time = make_aware(parse_datetime(result["start_time"]))
         task.finish_time = make_aware(parse_datetime(result["finish_time"]))

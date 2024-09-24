@@ -71,8 +71,8 @@ class Status(TextChoices):
     checking = "checking", "Проверка объявления"
     pending = "pending", "В ожидании"
     in_progress = "in_progress", "В процессе"
-    success = "success", "Завершено успешно!"
-    error = "error", "Завершено с ошибкой!"
+    success = "success", "Успешно!"
+    error = "error", "Ошибка!"
 
 
 class Task(Model):

@@ -1,6 +1,7 @@
 ## Страницы доступа
 http://127.0.0.1:8000/goszakup/docs#/  
 http://127.0.0.1:8080/admin/  
+http://127.0.0.1:5554/flower_backend/tasks
 
 http://192.168.244.3:8080/admin/  
 http://192.168.244.3:8000/goszakup/docs#/  

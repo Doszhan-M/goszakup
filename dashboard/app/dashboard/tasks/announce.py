@@ -64,7 +64,7 @@ def check_and_schedule_task(announce_id, participant_id):
     task.error = ""
     task.announce_name = announce_data["announce_name"]
     start_time = parse_datetime(announce_data["start_time"])
-    task.scheduled_time = make_aware(start_time) - timedelta(minutes=5)
+    task.scheduled_time = make_aware(start_time) - timedelta(minutes=6)
     finish_time = parse_datetime(announce_data["finish_time"])
     if finish_time < datetime.now():
         task.status = "success"
@@ -78,6 +78,10 @@ def check_and_schedule_task(announce_id, participant_id):
             eta=scheduled_time,
         )
     elif start_time > datetime.now():
+        existing_count = Task.objects.filter(scheduled_time=task.scheduled_time).count()
+        if existing_count > 0:
+            delay = existing_count * 10
+            task.scheduled_time += timedelta(seconds=delay)    
         task.status = "pending"
         start_tender.apply_async(
             args=(announce_id, data),
