@@ -25,7 +25,7 @@ fi
 if [ ! -f "$VNC_PASSWORD_FILE" ]; then
   echo "Создание файла пароля VNC..."
   mkdir -p "$(dirname "$VNC_PASSWORD_FILE")"
-  echo "$VNC_PASSWORD" | x11vnc -storepasswd /dev/stdin "$VNC_PASSWORD_FILE"
+  x11vnc -storepasswd "$VNC_PASSWORD" "$VNC_PASSWORD_FILE"
   chmod 600 "$VNC_PASSWORD_FILE"
   echo "Файл пароля VNC создан по пути $VNC_PASSWORD_FILE."
 else
