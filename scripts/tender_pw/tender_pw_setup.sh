@@ -5,6 +5,11 @@ USER="asus"
 SCRIPT_PATH="/home/$USER/github/goszakup/scripts/tender_pw/tender_pw_start.sh"
 VENV_PATH="/home/$USER/github/goszakup/venv"
 
+# Проверка на выполнение от имени пользователя (не root)
+if [ "$EUID" -eq 0 ]; then
+  echo "Пожалуйста, запустите скрипт от имени обычного пользователя, а не root."
+  exit 1
+fi
 
 # Проверка существования виртуального окружения
 if [ ! -d "$VENV_PATH" ]; then

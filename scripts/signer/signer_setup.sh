@@ -5,13 +5,12 @@ USER="asus"
 SCRIPT_PATH="/home/$USER/github/goszakup/scripts/signer/signer_start.sh"
 SERVICE_FILE="/home/$USER/.config/systemd/user/signer.service"
 
-if [ "$(id -u)" -ne 0 ]; then
-    echo "This script must be run as root."
-    exit 1
+# Проверка на выполнение от имени пользователя (не root)
+if [ "$EUID" -eq 0 ]; then
+  echo "Пожалуйста, запустите скрипт от имени обычного пользователя, а не root."
+  exit 1
 fi
 
-echo "Установка необходимых пакетов"
-apt-get update && apt-get install -y python3-tk python3-dev xclip dbus-x11
 
 echo "Создать пользовательский systemd сервисный файл для пользователя '$USER'"
 sudo -u $USER bash <<EOF

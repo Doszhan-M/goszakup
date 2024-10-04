@@ -4,8 +4,11 @@
 USER="asus"
 SERVICE_FILE="/home/$USER/.config/systemd/user/xvfb.service"
 
-echo "Установка необходимых пакетов"
-# sudo apt install xvfb -y
+# Проверка на выполнение от имени пользователя (не root)
+if [ "$EUID" -eq 0 ]; then
+  echo "Пожалуйста, запустите скрипт от имени обычного пользователя, а не root."
+  exit 1
+fi
 
 echo "Создать пользовательский systemd сервисный файл для пользователя '$USER'"
 sudo -u $USER bash <<EOF
