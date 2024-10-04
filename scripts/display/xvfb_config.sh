@@ -7,13 +7,12 @@ SERVICE_FILE="/home/$USER/.config/systemd/user/xvfb.service"
 echo "Установка необходимых пакетов"
 # sudo apt install xvfb -y
 
-
 echo "Создать пользовательский systemd сервисный файл для пользователя '$USER'"
 sudo -u $USER bash <<EOF
 mkdir -p /home/$USER/.config/systemd/user
 
 # Создание сервисного файла
-cat <<EOT > \$SERVICE_FILE
+cat <<EOT > /home/$USER/.config/systemd/user/xvfb.service
 
 [Unit]
 Description=Virtual Framebuffer X Server
@@ -28,11 +27,10 @@ RestartSec=5
 [Install]
 WantedBy=default.target
 
-
 EOT
 
 # Установка правильных прав доступа к сервисному файлу
-chmod 644 \$SERVICE_FILE
+chmod 644 /home/$USER/.config/systemd/user/xvfb.service
 
 # Перезагрузка конфигурации systemd для пользователя
 systemctl --user daemon-reload
