@@ -14,12 +14,12 @@ if [ "$EUID" -eq 0 ]; then
   exit 1
 fi
 
-# Обновление списка пакетов и установка x11vnc
-echo "Обновление списка пакетов..."
-sudo apt-get update
+# # Обновление списка пакетов и установка x11vnc
+# echo "Обновление списка пакетов..."
+# sudo apt-get update
 
-echo "Установка x11vnc..."
-sudo apt-get install -y x11vnc
+# echo "Установка x11vnc..."
+# sudo apt-get install -y x11vnc
 
 # Настройка пароля VNC
 if [ ! -f "$VNC_PASSWORD_FILE" ]; then
@@ -32,45 +32,45 @@ else
   echo "Файл пароля VNC уже существует: $VNC_PASSWORD_FILE."
 fi
 
-# Создание systemd-сервиса для x11vnc
-echo "Создание systemd-сервиса для x11vnc..."
+# # Создание systemd-сервиса для x11vnc
+# echo "Создание systemd-сервиса для x11vnc..."
 
-mkdir -p "$(dirname "$SERVICE_FILE")"
+# mkdir -p "$(dirname "$SERVICE_FILE")"
 
-cat <<EOF > "$SERVICE_FILE"
-[Unit]
-Description=Start x11vnc at startup
-After=graphical.target xvfb.service
-Requires=xvfb.service
+# cat <<EOF > "$SERVICE_FILE"
+# [Unit]
+# Description=Start x11vnc at startup
+# After=graphical.target xvfb.service
+# Requires=xvfb.service
 
-[Service]
-Type=simple
-ExecStart=/usr/bin/x11vnc -display :99 -forever -shared -rfbauth $VNC_PASSWORD_FILE -noxdamage -repeat -rfbport 5900 -localhost no
-Environment=DISPLAY=:99
-Restart=on-failure
-RestartSec=5
+# [Service]
+# Type=simple
+# ExecStart=/usr/bin/x11vnc -display :99 -forever -shared -rfbauth /home/asus/.vnc/passwd -noxdamage
+# Environment=DISPLAY=:99
+# Restart=on-failure
+# RestartSec=5
 
-[Install]
-WantedBy=default.target
-EOF
+# [Install]
+# WantedBy=default.target
+# EOF
 
-echo "Systemd-сервис для x11vnc создан по пути $SERVICE_FILE."
+# echo "Systemd-сервис для x11vnc создан по пути $SERVICE_FILE."
 
-# Перезагрузка systemd конфигурации пользователя
-echo "Перезагрузка systemd конфигурации пользователя..."
-systemctl --user daemon-reload
+# # Перезагрузка systemd конфигурации пользователя
+# echo "Перезагрузка systemd конфигурации пользователя..."
+# systemctl --user daemon-reload
 
-# Включение и запуск сервиса x11vnc
-echo "Включение и запуск сервиса x11vnc..."
-systemctl --user enable x11vnc.service
-systemctl --user start x11vnc.service
+# # Включение и запуск сервиса x11vnc
+# echo "Включение и запуск сервиса x11vnc..."
+# systemctl --user enable x11vnc.service
+# systemctl --user start x11vnc.service
 
-echo "x11vnc настроен и запущен."
+# echo "x11vnc настроен и запущен."
 
-# Инструкции для пользователя
-echo "Проверьте статус сервиса x11vnc с помощью команды:"
-echo "  systemctl --user status x11vnc.service"
-echo "  systemctl --user restart x11vnc.service"
+# # Инструкции для пользователя
+# echo "Проверьте статус сервиса x11vnc с помощью команды:"
+# echo "  systemctl --user status x11vnc.service"
+# echo "  systemctl --user restart x11vnc.service"
 
-echo "Если требуется, разрешите доступ через брандмауэр для порта 5900:"
-echo "  sudo ufw allow 5900/tcp"
+# echo "Если требуется, разрешите доступ через брандмауэр для порта 5900:"
+# echo "  sudo ufw allow 5900/tcp"
