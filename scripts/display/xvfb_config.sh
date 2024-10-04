@@ -5,7 +5,7 @@ USER="asus"
 SERVICE_FILE="/home/$USER/.config/systemd/user/xvfb.service"
 
 echo "Установка необходимых пакетов"
-sudo apt install xvfb -y
+# sudo apt install xvfb -y
 
 
 echo "Создать пользовательский systemd сервисный файл для пользователя '$USER'"
