@@ -1,9 +1,9 @@
 #!/bin/bash
 
-
 USER="asus"
 SCRIPT_PATH="/home/$USER/github/goszakup/scripts/tender_pw/tender_pw_start.sh"
 VENV_PATH="/home/$USER/github/goszakup/venv"
+SERVICE_FILE="/home/$USER/.config/systemd/user/tender_pw.service"
 
 # Проверка на выполнение от имени пользователя (не root)
 if [ "$EUID" -eq 0 ]; then
@@ -16,20 +16,18 @@ if [ ! -d "$VENV_PATH" ]; then
     echo "Виртуальное окружение не найдено по пути $VENV_PATH."
 fi
 
-echo "Активиация виртуальное окружение и устанавка зависимости Playwright..."
+echo "Активиация виртуального окружения и установка зависимости Playwright..."
 sudo -u $USER bash <<EOF
 source "$VENV_PATH/bin/activate"
 playwright install --with-deps
 EOF
 
-
 echo "Создать пользовательский systemd сервисный файл для пользователя '$USER'"
+
 sudo -u $USER bash <<EOF
 mkdir -p /home/$USER/.config/systemd/user
 
-SERVICE_FILE="/home/$USER/.config/systemd/user/tender_pw.service"
-
-cat <<EOT > \$SERVICE_FILE
+cat <<EOT > /home/$USER/.config/systemd/user/tender_pw.service
 
 [Unit]
 Description=tender_pw Service
@@ -48,7 +46,7 @@ WantedBy=default.target
 
 EOT
 
-chmod 644 \$SERVICE_FILE
+chmod 644 /home/$USER/.config/systemd/user/tender_pw.service
 
 # Перезагрузка конфигурации systemd для пользователя
 systemctl --user daemon-reload
@@ -60,7 +58,7 @@ systemctl --user enable tender_pw.service
 systemctl --user start tender_pw.service
 EOF
 
-echo "Пользовательский systemd сервис создан по пути /home/$USER/.config/systemd/user/tender_pw.service"
+echo "Пользовательский systemd сервис создан по пути $SERVICE_FILE"
 echo "Сервис был запущен и настроен на автозапуск при входе в систему."
 echo "Вы можете управлять сервисом с помощью следующих команд (от имени пользователя '$USER'):"
 echo "systemctl --user start tender_pw.service"

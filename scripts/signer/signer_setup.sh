@@ -11,13 +11,13 @@ if [ "$EUID" -eq 0 ]; then
   exit 1
 fi
 
-
 echo "Создать пользовательский systemd сервисный файл для пользователя '$USER'"
+
 sudo -u $USER bash <<EOF
 mkdir -p /home/$USER/.config/systemd/user
 
 # Создание сервисного файла
-cat <<EOT > \$SERVICE_FILE
+cat <<EOT > /home/$USER/.config/systemd/user/signer.service
 
 [Unit]
 Description=Signer Service
@@ -26,7 +26,7 @@ Requires=xvfb.service
 
 [Service]
 Type=simple
-ExecStart=/home/asus/github/goszakup/scripts/signer/signer_start.sh
+ExecStart=$SCRIPT_PATH
 Environment=DISPLAY=:99
 Restart=on-failure
 RestartSec=5
@@ -37,7 +37,7 @@ WantedBy=default.target
 EOT
 
 # Установка правильных прав доступа к сервисному файлу
-chmod 644 \$SERVICE_FILE
+chmod 644 /home/$USER/.config/systemd/user/signer.service
 
 # Перезагрузка конфигурации systemd для пользователя
 systemctl --user daemon-reload
@@ -49,7 +49,7 @@ systemctl --user enable signer.service
 systemctl --user start signer.service
 EOF
 
-echo "Пользовательский systemd сервис создан по пути /home/$USER/.config/systemd/user/signer.service"
+echo "Пользовательский systemd сервис создан по пути $SERVICE_FILE"
 echo "Сервис был запущен и настроен на автозапуск при входе в систему."
 echo "Вы можете управлять сервисом с помощью следующих команд (от имени пользователя 'asus'):"
 echo "systemctl --user start signer.service"
