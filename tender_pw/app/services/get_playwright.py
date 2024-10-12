@@ -20,16 +20,16 @@ class PlaywrightDriver:
             "-no-remote",
             "-wait-for-browser",
             "-foreground",
-            # "-silent",
             "-profile /tmp/playwright_chromiumdev_profile-XXXXXXkbLjo1",
             "-juggler-pipe",
+            "-silent",
         ]
         if head_driver:
             self.browser = await self.playwright.firefox.launch(
                 headless=False,
                 executable_path=firefox_executable_path,
-                args=custom_args,
-                ignore_default_args=True,
+                # args=custom_args,
+                # ignore_default_args=True,
             )
             print("self.browser: ", self.browser.args)
         else:
