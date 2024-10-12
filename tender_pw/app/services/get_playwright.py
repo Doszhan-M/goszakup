@@ -20,8 +20,6 @@ class PlaywrightDriver:
             '-wait-for-browser',
             '-foreground',
         ]
-        default_args = self.playwright.firefox._default_args
-        print('default_args: ', default_args)
         if head_driver:
             self.browser = await self.playwright.firefox.launch(
                 headless=False,
