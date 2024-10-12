@@ -22,7 +22,7 @@ class PlaywrightDriver:
             "-foreground",
             "-profile /tmp/playwright_chromiumdev_profile-XXXXXXkbLjo1",
             "-juggler-pipe",
-            "-silent",
+            # "-silent",
         ]
         if head_driver:
             self.browser = await self.playwright.firefox.launch(
