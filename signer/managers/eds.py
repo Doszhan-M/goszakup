@@ -145,13 +145,13 @@ class EdsManager:
         logger.info("restart_ncalayer.")
         try:
             # Удалить папку ncalayer-cache
-            cache_dir = "$HOME/.config/NCALayer/ncalayer-cache"
+            cache_dir = "~/.config/NCALayer/ncalayer-cache"
             if os.path.exists(cache_dir):
                 shutil.rmtree(cache_dir)
                 logger.info(f"Ncalayer сброшен: {cache_dir}")
             # Скопировать плагин
-            source_file = "$HOME/github/goszakup/scripts/files/kz.ecc.NurSignBundle_5.1.1_2e62beae-e900-4c8c-9d8e-37286ace46ec.jar"
-            dest_dir = "$HOME/.config/NCALayer/bundles"
+            source_file = "~/github/goszakup/scripts/files/kz.ecc.NurSignBundle_5.1.1_2e62beae-e900-4c8c-9d8e-37286ace46ec.jar"
+            dest_dir = "~/.config/NCALayer/bundles"
             os.makedirs(dest_dir, exist_ok=True)  # Создаем папку, если не существует
             shutil.copy(source_file, dest_dir)
             logger.info(f"Плагин скопирован: {source_file} -> {dest_dir}")
