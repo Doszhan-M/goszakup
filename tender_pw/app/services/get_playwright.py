@@ -5,7 +5,6 @@ from playwright.async_api._generated import Playwright as AsyncPlaywright
 
 from app.core.config import settings
 
-# /usr/bin/firefox-esr -no-remote -wait-for-browser -foreground -profile /tmp/playwright_chromiumdev_profile-XXXXXXkbLjo1 -juggler-pipe -silent
 
 class PlaywrightDriver:
     def __init__(self):
@@ -15,27 +14,11 @@ class PlaywrightDriver:
 
     async def start(self, head_driver=None) -> Page:
         self.playwright = await async_playwright().start()
-        firefox_executable_path = "/usr/bin/firefox-esr"
-        custom_args = [
-            "-no-remote",
-            "-wait-for-browser",
-            "-foreground",
-            "-profile /tmp/playwright_chromiumdev_profile-XXXXXXkbLjo1",
-            "-juggler-pipe",
-            # "-silent",
-        ]
         if head_driver:
-            self.browser = await self.playwright.firefox.launch(
-                headless=False,
-                executable_path=firefox_executable_path,
-                args=custom_args,
-                ignore_default_args=True,
-            )
-            print("self.browser: ", self.browser.args)
+            self.browser = await self.playwright.webkit.launch(headless=False)
         else:
-            self.browser = await self.playwright.firefox.launch(
-                headless=settings.HEADLESS_DRIVER,
-                executable_path=firefox_executable_path,
+            self.browser = await self.playwright.webkit.launch(
+                headless=settings.HEADLESS_DRIVER
             )
         self.page = await self.browser.new_page()
         self.page.set_default_timeout(6000)
