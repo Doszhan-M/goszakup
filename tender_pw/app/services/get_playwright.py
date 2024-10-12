@@ -5,7 +5,7 @@ from playwright.async_api._generated import Playwright as AsyncPlaywright
 
 from app.core.config import settings
 
-# /usr/bin/firefox-esr -no-remote -wait-for-browser -foreground -profile /tmp/playwright_test_profile -silent
+# /usr/bin/firefox-esr -no-remote -wait-for-browser -foreground -profile /tmp/playwright_chromiumdev_profile-XXXXXXkbLjo1 -juggler-pipe -silent
 
 class PlaywrightDriver:
     def __init__(self):
@@ -20,9 +20,9 @@ class PlaywrightDriver:
             "-no-remote",
             "-wait-for-browser",
             "-foreground",
-            "-silent",
-            "-profile",
-            "/tmp/playwright_test_profile",
+            # "-silent",
+            "-profile /tmp/playwright_chromiumdev_profile-XXXXXXkbLjo1",
+            "-juggler-pipe",
         ]
         if head_driver:
             self.browser = await self.playwright.firefox.launch(
