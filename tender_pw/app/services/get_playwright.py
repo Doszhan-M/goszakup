@@ -5,6 +5,7 @@ from playwright.async_api._generated import Playwright as AsyncPlaywright
 
 from app.core.config import settings
 
+# /usr/bin/firefox-esr -no-remote -wait-for-browser -foreground -profile /tmp/playwright_test_profile -silent
 
 class PlaywrightDriver:
     def __init__(self):
@@ -16,9 +17,12 @@ class PlaywrightDriver:
         self.playwright = await async_playwright().start()
         firefox_executable_path = "/usr/bin/firefox-esr"
         custom_args = [
-            '-no-remote',
-            '-wait-for-browser',
-            '-foreground',
+            "-no-remote",
+            "-wait-for-browser",
+            "-foreground",
+            "-silent",
+            "-profile",
+            "/tmp/playwright_test_profile",
         ]
         if head_driver:
             self.browser = await self.playwright.firefox.launch(
@@ -27,7 +31,7 @@ class PlaywrightDriver:
                 args=custom_args,
                 ignore_default_args=True,
             )
-            print('self.browser: ', self.browser.args)
+            print("self.browser: ", self.browser.args)
         else:
             self.browser = await self.playwright.firefox.launch(
                 headless=settings.HEADLESS_DRIVER,
