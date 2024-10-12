@@ -56,7 +56,6 @@ class EdsManager:
         
         lock = redis.exists("eds_manager_busy")
         if not lock:
-            print('lock: ', lock)
             cls.healthcheck_ncalayer()
         return not lock
 
@@ -149,13 +148,13 @@ class EdsManager:
             cache_dir = os.path.expanduser("~/.config/NCALayer/ncalayer-cache")
             if os.path.exists(cache_dir):
                 shutil.rmtree(cache_dir)
-                logger.info(f"NCAlayer сброшен: {cache_dir}")
+                logger.info(f"NCAlayer сброшен.")
             # Скопировать плагин
             source_file = os.path.expanduser("~/github/goszakup/scripts/files/kz.ecc.NurSignBundle_5.1.1_2e62beae-e900-4c8c-9d8e-37286ace46ec.jar")
             dest_dir = os.path.expanduser("~/.config/NCALayer/bundles")
             os.makedirs(dest_dir, exist_ok=True)  # Создаем папку, если не существует
             shutil.copy(source_file, dest_dir)
-            logger.info(f"Плагин скопирован: {source_file} -> {dest_dir}")
+            logger.info(f"Плагин скопирован.")
             
             script_path = os.path.expanduser(settings.NCALAYER_PATH)
             env = os.environ.copy()
