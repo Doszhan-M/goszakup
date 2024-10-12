@@ -11,7 +11,7 @@ asus ALL=(ALL) NOPASSWD: ALL
 ```
 `•` Доступ к asus через ssh  
 ```
-ssh-copy-id asus@192.168.1.140 
+ssh-copy-id asus@192.168.244.3 
 ```
 `•` Установить Gnome:
 ```

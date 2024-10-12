@@ -13,8 +13,3 @@ https://goszakup.keenetic.pro
 http://91.147.93.228:8080/admin/  
 http://91.147.93.228:8000/goszakup/docs#/  
 http://91.147.93.228:5554/flower_backend/tasks
-
-
-http://192.168.1.140:8080/admin/  
-http://192.168.1.140:8000/goszakup/docs#/  
-http://192.168.1.140:5554/flower_backend/tasks
