@@ -52,12 +52,13 @@ class EdsManager:
 
     @classmethod
     def is_not_busy(cls) -> bool:
-        """
-        Проверяет, занята ли система (т.е. установлена ли блокировка).
-        Возвращает True, если не занята, иначе False.
-        """
-        is_locked = redis.exists("eds_manager_busy")
-        return not is_locked
+        """Проверяет, занята ли система (т.е. установлена ли блокировка)."""
+        
+        lock = redis.exists("eds_manager_busy")
+        if not lock:
+            print('lock: ', lock)
+            cls.healthcheck_ncalayer()
+        return not lock
 
     def click_obj(self, btn_path: str, timeout=5) -> None:
         start_time = time()
@@ -177,7 +178,7 @@ class EdsManager:
             response = websocket.recv()
             if "result" in response:
                 logger.info("NCALayer work properly!")
-                sleep(1)
+                sleep(0.2)
             websocket.close()
         except ConnectionRefusedError:
             logger.error("NCALayer dont work, waiting....")
