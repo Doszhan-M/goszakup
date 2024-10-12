@@ -14,11 +14,8 @@ class PlaywrightDriver:
 
     async def start(self, head_driver=None) -> Page:
         self.playwright = await async_playwright().start()
-        executable_path = "/usr/bin/google-chrome"
         if head_driver:
-            self.browser = await self.playwright.chromium.launch(
-                headless=False, executable_path=executable_path
-            )
+            self.browser = await self.playwright.chromium.launch(headless=False)
         else:
             self.browser = await self.playwright.chromium.launch(
                 headless=settings.HEADLESS_DRIVER
