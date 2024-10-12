@@ -29,7 +29,7 @@ class PlaywrightDriver:
                 headless=False,
                 executable_path=firefox_executable_path,
                 args=custom_args,
-                # ignore_default_args=True,
+                ignore_default_args=True,
             )
             print("self.browser: ", self.browser.args)
         else:
