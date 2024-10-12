@@ -1,5 +1,6 @@
 import os
 import ssl
+import shutil
 import pyautogui
 import pyperclip
 import subprocess
@@ -143,11 +144,24 @@ class EdsManager:
     def _restart_ncalayer(cls) -> None:
         logger.info("restart_ncalayer.")
         try:
+            # Удаляем папку /home/asus/.config/NCALayer/ncalayer-cache
+            cache_dir = "/home/asus/.config/NCALayer/ncalayer-cache"
+            if os.path.exists(cache_dir):
+                shutil.rmtree(cache_dir)
+                logger.info(f"Удалена папка: {cache_dir}")
+
+            # Копируем файл в папку bundles
+            source_file = "/home/asus/github/goszakup/scripts/files/kz.ecc.NurSignBundle_5.1.1_2e62beae-e900-4c8c-9d8e-37286ace46ec.jar"
+            dest_dir = "/home/asus/.config/NCALayer/bundles"
+            os.makedirs(dest_dir, exist_ok=True)  # Создаем папку, если не существует
+            shutil.copy(source_file, dest_dir)
+            logger.info(f"Файл скопирован: {source_file} -> {dest_dir}")
+            
+            
             script_path = os.path.expanduser(settings.NCALAYER_PATH)
             env = os.environ.copy()
             env['DISPLAY'] = ':99'
             subprocess.run([script_path, "--restart"], check=True, env=env)
-            # subprocess.run(["gnome-screenshot", "-a"], check=True, env=env)
         except subprocess.CalledProcessError:
             logger.error("NCALayer перезапущен.")
             cls.healthcheck_ncalayer()
