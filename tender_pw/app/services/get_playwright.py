@@ -27,6 +27,7 @@ class PlaywrightDriver:
                 args=custom_args,
                 ignore_default_args=True,
             )
+            print('self.browser: ', self.browser.args)
         else:
             self.browser = await self.playwright.firefox.launch(
                 headless=settings.HEADLESS_DRIVER,
