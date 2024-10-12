@@ -91,7 +91,7 @@ cat /tmp/workspace_selection.log
 `•` Скачать NCALayer из офф сайта и установить п папку Programs.  
 Если есть ошибка на xdd, то установить xdd:
 ```
-sudo apt install xdd -y
+sudo apt install xxd -y
 ```
 `•` Проверить модуль гос закупок на этих сайтах:  
 https://mhelp.kz/ncalayer-skachat/#google_vignette  
@@ -169,3 +169,7 @@ sudo ./tender_pw_setup.sh
 cd $HOME/github/goszakup/scripts/signer
 sudo ./signer_setup.sh
 ```
+
+
+deb http://deb.debian.org/debian/ bookworm-updates main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian/ bookworm-updates main contrib non-free non-free-firmware
