@@ -18,3 +18,22 @@ deb-src http://deb.debian.org/debian/ bookworm-updates main contrib non-free non
 ```
 
 sudo apt install vim xxd libnss3-tools -y
+
+
+
+
+```
+vim .zshrc
+--------------------------------------------------------------
+cd /home/asus/github/goszakup
+source /home/asus/github/goszakup/venv/bin/activate
+--------------------------------------------------------------
+```
+
+
+
+## 7. Установить Docker
+```
+cd $HOME/github/goszakup/scripts/
+./docker_debian.sh
+```

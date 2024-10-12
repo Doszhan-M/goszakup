@@ -11,7 +11,7 @@ asus ALL=(ALL) NOPASSWD: ALL
 ```
 `•` Доступ к asus через ssh  
 ```
-ssh-copy-id asus@185.23.108.189 
+ssh-copy-id asus@192.168.1.140 
 ```
 `•` Установить Gnome:
 ```
@@ -112,8 +112,7 @@ cd $HOME/github/goszakup/scripts/
 
 ## 5. Настроить зависимости
 ```
-cd $HOME/github/goszakup/scripts/
-./setup_req.sh
+pip install -r requirements.txt
 ```
 
 ## 6. Создать env для сервисов на основе example
