@@ -14,16 +14,25 @@ class PlaywrightDriver:
 
     async def start(self, head_driver=None) -> Page:
         self.playwright = await async_playwright().start()
-        firefox_executable_path = '/usr/bin/firefox-esr'
+        firefox_executable_path = "/usr/bin/firefox-esr"
+        custom_args = [
+            '-no-remote',
+            '-wait-for-browser',
+            '-foreground',
+        ]
+        default_args = self.playwright.firefox._default_args
+        print('default_args: ', default_args)
         if head_driver:
             self.browser = await self.playwright.firefox.launch(
                 headless=False,
-                executable_path=firefox_executable_path
+                executable_path=firefox_executable_path,
+                args=custom_args,
+                ignore_all_default_args=True,
             )
         else:
             self.browser = await self.playwright.firefox.launch(
                 headless=settings.HEADLESS_DRIVER,
-                executable_path=firefox_executable_path
+                executable_path=firefox_executable_path,
             )
         self.page = await self.browser.new_page()
         self.page.set_default_timeout(6000)
