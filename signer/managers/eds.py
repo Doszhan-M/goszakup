@@ -144,19 +144,17 @@ class EdsManager:
     def _restart_ncalayer(cls) -> None:
         logger.info("restart_ncalayer.")
         try:
-            # Удаляем папку /home/asus/.config/NCALayer/ncalayer-cache
-            cache_dir = "/home/asus/.config/NCALayer/ncalayer-cache"
+            # Удалить папку ncalayer-cache
+            cache_dir = "$HOME/.config/NCALayer/ncalayer-cache"
             if os.path.exists(cache_dir):
                 shutil.rmtree(cache_dir)
-                logger.info(f"Удалена папка: {cache_dir}")
-
-            # Копируем файл в папку bundles
-            source_file = "/home/asus/github/goszakup/scripts/files/kz.ecc.NurSignBundle_5.1.1_2e62beae-e900-4c8c-9d8e-37286ace46ec.jar"
-            dest_dir = "/home/asus/.config/NCALayer/bundles"
+                logger.info(f"Ncalayer сброшен: {cache_dir}")
+            # Скопировать плагин
+            source_file = "$HOME/github/goszakup/scripts/files/kz.ecc.NurSignBundle_5.1.1_2e62beae-e900-4c8c-9d8e-37286ace46ec.jar"
+            dest_dir = "$HOME/.config/NCALayer/bundles"
             os.makedirs(dest_dir, exist_ok=True)  # Создаем папку, если не существует
             shutil.copy(source_file, dest_dir)
-            logger.info(f"Файл скопирован: {source_file} -> {dest_dir}")
-            
+            logger.info(f"Плагин скопирован: {source_file} -> {dest_dir}")
             
             script_path = os.path.expanduser(settings.NCALAYER_PATH)
             env = os.environ.copy()
