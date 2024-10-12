@@ -15,9 +15,9 @@ class PlaywrightDriver:
     async def start(self, head_driver=None) -> Page:
         self.playwright = await async_playwright().start()
         if head_driver:
-            self.browser = await self.playwright.chromium.launch(headless=False)
+            self.browser = await self.playwright.firefox.launch(headless=False)
         else:
-            self.browser = await self.playwright.chromium.launch(
+            self.browser = await self.playwright.firefox.launch(
                 headless=settings.HEADLESS_DRIVER
             )
         self.page = await self.browser.new_page()

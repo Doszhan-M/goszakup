@@ -144,13 +144,13 @@ sudo ./dependencies.sh
 ## 10. Настроить автозапуск сервиса xvfb
 ```
 cd $HOME/github/goszakup/scripts/display
-sudo ./xvfb_config.sh
+./xvfb_config.sh
 ```
 
 ## 11. Настроить автозапуск сервиса VNC
 ```
 cd $HOME/github/goszakup/scripts/dependencies
-sudo ./vnc_config.sh
+./vnc_config.sh
 ```
 
 ## 12. Настроить автозапуск сервиса tender_pw
@@ -158,7 +158,7 @@ sudo ./vnc_config.sh
 скрипт запускается от root, поэтому домашний каталог и юзер должен быть другой 
 ```
 cd $HOME/github/goszakup/scripts/tender_pw
-sudo ./tender_pw_setup.sh
+./tender_pw_setup.sh
 ```
 
 ## 13. Настроить автозапуск сервиса signer
@@ -166,7 +166,7 @@ sudo ./tender_pw_setup.sh
 скрипт запускается от root, поэтому домашний каталог и юзер должен быть другой 
 ```
 cd $HOME/github/goszakup/scripts/signer
-sudo ./signer_setup.sh
+./signer_setup.sh
 ```
 
 
