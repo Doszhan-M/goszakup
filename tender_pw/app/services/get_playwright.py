@@ -25,7 +25,7 @@ class PlaywrightDriver:
                 headless=False,
                 executable_path=firefox_executable_path,
                 args=custom_args,
-                ignore_all_default_args=True,
+                ignore_default_args=True,
             )
         else:
             self.browser = await self.playwright.firefox.launch(
