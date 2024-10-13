@@ -1,10 +1,10 @@
 docker exec -it goszakup-dashboard-1 bash
 
 python manage.py createsuperuser  
+admin:aCiOnIQuArdE  
 python manage.py makemigrations  
 python manage.py migrate  
 
-admin:aCiOnIQuArdE  
 
 941140001504
 021240015299

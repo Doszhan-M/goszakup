@@ -7,5 +7,5 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 sudo apt-get update
-sudo apt-get install -y python3-tk python3-dev xclip dbus-x11 xvfb x11vnc xdotool
+sudo apt-get install -y python3-tk python3-dev xclip dbus-x11 xvfb x11vnc xdotool gnome-screenshot
 sudo reboot

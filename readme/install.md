@@ -149,7 +149,7 @@ cd $HOME/github/goszakup/scripts/display
 
 ## 11. Настроить автозапуск сервиса VNC
 ```
-cd $HOME/github/goszakup/scripts/dependencies
+cd $HOME/github/goszakup/scripts/display
 ./vnc_config.sh
 ```
 
@@ -168,7 +168,3 @@ cd $HOME/github/goszakup/scripts/tender_pw
 cd $HOME/github/goszakup/scripts/signer
 ./signer_setup.sh
 ```
-
-
-deb http://deb.debian.org/debian/ bookworm-updates main contrib non-free non-free-firmware
-deb-src http://deb.debian.org/debian/ bookworm-updates main contrib non-free non-free-firmware
