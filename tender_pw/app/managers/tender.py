@@ -80,13 +80,8 @@ class TenderManager:
             self.result["start_time"] = datetime.now()
             await self.fill_and_submit_application()
             await self.select_lots()
+            
             required_docs_urls = await self.get_required_docs_links()
-            # for url in required_docs_urls:
-            #     try:
-            #         await self.generate_document(url)
-            #         await self.sign_document()
-            #     except SignatureFound:
-            #         continue
             tasks = []
             for url in required_docs_urls:
                 tasks.append(asyncio.create_task(self.process_document(url)))
@@ -103,20 +98,11 @@ class TenderManager:
 
     async def process_document(self, url):
         try:
-            # Создаем новую вкладку (страницу)
             browser = self.page.context.browser
-
-            # Создаем новый контекст с использованием сохраненного состояния
             new_context = await browser.new_context(storage_state=self.storage)
-
-            # Создаем новую страницу в новом контексте
             new_page = await new_context.new_page()
-
-            # Переходим по URL и обрабатываем документ на новой странице
             await self.generate_document(url, page=new_page)
             await self.sign_document(page=new_page)
-
-            # Закрываем вкладку после обработки
             await new_page.close()
         except SignatureFound:
             pass
