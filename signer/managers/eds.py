@@ -18,7 +18,9 @@ redis = get_redis()
 
 
 if settings.ENVIRONMENT == "TUF17":
-    pyautogui_images = settings.BASE_DIR + "/static/tuf17/"
+    xvfb_1 = settings.BASE_DIR + "/static/tuf17_1/"
+    xvfb_2 = settings.BASE_DIR + "/static/tuf17_2/"
+    pyautogui_images = xvfb_1     
 elif settings.ENVIRONMENT == "VIVOBOOK":
     xvfb_1 = settings.BASE_DIR + "/static/server_gnome/"
     xvfb_2 = settings.BASE_DIR + "/static/vivobook/"
@@ -159,6 +161,8 @@ class EdsManager:
             script_path = os.path.expanduser(settings.NCALAYER_PATH)
             env = os.environ.copy()
             env['DISPLAY'] = ':99'
+            if settings.ENVIRONMENT == "TUF17":
+                env['DISPLAY'] = ':0'
             subprocess.run([script_path, "--restart"], check=True, env=env)
         except subprocess.CalledProcessError:
             logger.error("NCALayer перезапущен.")

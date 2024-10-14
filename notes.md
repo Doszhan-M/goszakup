@@ -29,3 +29,10 @@ DEmOuSiGhAwtHENteThfORMATeInEynTEnT
 Doszhan89!
 
 Перевод за сервер 15 ноября
+
+
+
+https://v3bl.goszakup.gov.kz/ru/application/lots/13162719/59733216
+https://v3bl.goszakup.gov.kz/ru/application/docs/13162719/59733216
+https://v3bl.goszakup.gov.kz/ru/application/show_doc/13162719/59733216/3244
+https://v3bl.goszakup.gov.kz/ru/application/show_doc/13162719/59733216/3243
