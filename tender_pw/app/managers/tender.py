@@ -25,6 +25,7 @@ class TenderManager:
     def __init__(self, announce_number, auth_data) -> None:
         self.session = GoszakupAuth(auth_data)
         self.page: Page = None
+        self.storage = None
         self.cancel_manager = TenderCancelManager(announce_number, auth_data)
         self.announce_number: str = announce_number
         self.result = {"success": True}
@@ -73,18 +74,24 @@ class TenderManager:
         try:
             if not self.page:
                 self.page = await self.session.get_auth_session()
+                self.storage = await self.page.context.storage_state()
             await self.wait_until_the_start()
             await self.tender_start()
             self.result["start_time"] = datetime.now()
             await self.fill_and_submit_application()
             await self.select_lots()
             required_docs_urls = await self.get_required_docs_links()
+            # for url in required_docs_urls:
+            #     try:
+            #         await self.generate_document(url)
+            #         await self.sign_document()
+            #     except SignatureFound:
+            #         continue
+            tasks = []
             for url in required_docs_urls:
-                try:
-                    await self.generate_document(url)
-                    await self.sign_document()
-                except SignatureFound:
-                    continue
+                tasks.append(asyncio.create_task(self.process_document(url)))
+            await asyncio.gather(*tasks)   
+                     
             await self.next_page()
             await self.apply_application()
             await self.check_application_result()
@@ -94,6 +101,26 @@ class TenderManager:
         except Exception:
             logger.exception("Unknown error")
 
+    async def process_document(self, url):
+        try:
+            # Создаем новую вкладку (страницу)
+            browser = self.page.context.browser
+
+            # Создаем новый контекст с использованием сохраненного состояния
+            new_context = await browser.new_context(storage_state=self.storage)
+
+            # Создаем новую страницу в новом контексте
+            new_page = await new_context.new_page()
+
+            # Переходим по URL и обрабатываем документ на новой странице
+            await self.generate_document(url, page=new_page)
+            await self.sign_document(page=new_page)
+
+            # Закрываем вкладку после обработки
+            await new_page.close()
+        except SignatureFound:
+            pass
+    
     async def wait_until_the_start(self) -> None:
         await self.page.goto(self.announce_url, wait_until="domcontentloaded")
         html = await self.page.content()
@@ -177,33 +204,35 @@ class TenderManager:
                     required_docs.append(link["href"])
         return required_docs
 
-    async def generate_document(self, url) -> None:
-        await self.page.goto(url)
-        submit_button = await self.page.query_selector(
+    async def generate_document(self, url, page=None) -> None:
+        if page is None:
+            page = self.page
+        await page.goto(url)
+        submit_button = await page.query_selector(
             "input[type='submit'][value='Сформировать документ']"
         )
         if submit_button:
             await submit_button.click()
             return
-        save_button = await self.page.query_selector(
+        save_button = await page.query_selector(
             "input[type='submit'][value='Сохранить']"
         )
         if save_button:
-            select_element = await self.page.query_selector("select[name='user_id']")
+            select_element = await page.query_selector("select[name='user_id']")
             if select_element:
                 await select_element.select_option(index=1)
             await save_button.click()
             submit_button = None
             for _ in range(3):
-                submit_button = await self.page.query_selector(
+                submit_button = await page.query_selector(
                     "input[type='submit'][value='Сформировать документ']"
                 )
                 if submit_button:
                     break
-                await asyncio.sleep(0.5)  # Задержка на 500 мс
+                await asyncio.sleep(0.4)  # Задержка на 500 мс
             await submit_button.click()
             return
-        signatures_table = await self.page.query_selector("table#show_doc_block1")
+        signatures_table = await page.query_selector("table#show_doc_block1")
         if signatures_table:
             rows = await signatures_table.query_selector_all("tbody tr")
             for row in rows:
@@ -213,8 +242,10 @@ class TenderManager:
                     if "Подпись" in cell_text:
                         raise SignatureFound("Signature found in the table")
 
-    async def sign_document(self) -> None:
-        nclayer_call_btn = await self.page.wait_for_selector(".btn-add-signature")
+    async def sign_document(self, page=None) -> None:
+        if page is None:
+            page = self.page        
+        nclayer_call_btn = await page.wait_for_selector(".btn-add-signature")
         async with grpc.aio.insecure_channel(settings.SIGNER_HOST) as channel:
             stub = eds_pb2_grpc.EdsServiceStub(channel)
             eds_manager_status = stub.SendStatus(eds_pb2.EdsManagerStatusCheck())
@@ -230,19 +261,9 @@ class TenderManager:
             )
             sign_by_eds = await stub.ExecuteSignByEds(eds_data)
             if sign_by_eds.result:
-                await self.page.wait_for_timeout(1000)
+                await page.wait_for_timeout(1000)
 
     async def next_page(self) -> None:
-        while True:
-            try:
-                footer = await self.page.wait_for_selector(
-                    ".panel-footer a", timeout=5000
-                )
-                link = await footer.get_attribute("href")
-                await self.page.goto(link)
-                break
-            except PlaywrightTimeoutError:
-                pass
         next_button = await self.page.wait_for_selector("#next")
         await next_button.click()
 

@@ -18,7 +18,7 @@ redis = get_redis()
 
 
 if settings.ENVIRONMENT == "TUF17":
-    xvfb_1 = settings.BASE_DIR + "/static/tuf17_1/"
+    xvfb_1 = settings.BASE_DIR + "/static/tuf17_2/"
     xvfb_2 = settings.BASE_DIR + "/static/tuf17_2/"
     pyautogui_images = xvfb_1     
 elif settings.ENVIRONMENT == "VIVOBOOK":
