@@ -93,6 +93,8 @@ cat /tmp/workspace_selection.log
 Если есть ошибка на xdd, то установить xdd:
 ```
 sudo apt install xxd -y
+
+Если установка на сервер без иксов, тогда необходимо export DISPLAY=:99
 ```
 `•` Проверить модуль гос закупок на этих сайтах:  
 https://mhelp.kz/ncalayer-skachat/#google_vignette  
