@@ -17,7 +17,7 @@ v6VnxyP48sveBZdXloP7iRVL0jmwJv3116Q
 `•` Установить Gnome:
 ```
 sudo apt update
-sudo apt install tmux htop vim curl wget libnss3-tools unzip git gnome-screenshot
+sudo apt install tmux htop vim curl wget libnss3-tools unzip git gnome-screenshot -y
 sudo apt upgrade -y  
 sudo reboot
 tmux new -t gz
