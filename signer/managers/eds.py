@@ -31,7 +31,7 @@ elif settings.ENVIRONMENT == "SERVER_GNOME":
     pyautogui_images = xvfb_1
 elif settings.ENVIRONMENT == "SERVER":
     xvfb_1 = settings.BASE_DIR + "/static/server_gnome_2/"
-    xvfb_2 = settings.BASE_DIR + "/static/server_gnome/"
+    xvfb_2 = settings.BASE_DIR + "/static/server_gnome_2/"
     pyautogui_images = xvfb_1
 
 
@@ -66,6 +66,7 @@ class EdsManager:
         return not lock
 
     def click_obj(self, btn_path: str, timeout=5) -> None:
+        print('settings.ENVIRONMENT: ', settings.ENVIRONMENT)
         start_time = time()
         button = None
         while not button and time() - start_time < timeout:
