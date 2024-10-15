@@ -10,13 +10,9 @@ if [ "$EUID" -eq 0 ]; then
   exit 1
 fi
 
-echo "Создать пользовательский systemd сервисный файл для пользователя '$USER'"
-sudo -u $USER bash <<EOF
-mkdir -p /home/$USER/.config/systemd/user
+mkdir -p "$(dirname "$SERVICE_FILE")"
 
-# Создание сервисного файла
-cat <<EOT > /home/$USER/.config/systemd/user/xvfb.service
-
+cat <<EOF > "$SERVICE_FILE"
 [Unit]
 Description=Virtual Framebuffer X Server
 After=network.target
@@ -29,8 +25,7 @@ RestartSec=5
 
 [Install]
 WantedBy=default.target
-
-EOT
+EOF
 
 # Установка правильных прав доступа к сервисному файлу
 chmod 644 /home/$USER/.config/systemd/user/xvfb.service
@@ -43,7 +38,6 @@ systemctl --user enable xvfb.service
 
 # Запуск сервиса немедленно
 systemctl --user start xvfb.service
-EOF
 
 echo "DISPLAY=:99 xdpyinfo"
 echo "systemctl --user start xvfb"

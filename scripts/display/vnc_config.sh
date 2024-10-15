@@ -25,9 +25,6 @@ else
   echo "Файл пароля VNC уже существует: $VNC_PASSWORD_FILE."
 fi
 
-# Создание systemd-сервиса для x11vnc
-echo "Создание systemd-сервиса для x11vnc..."
-
 mkdir -p "$(dirname "$SERVICE_FILE")"
 
 cat <<EOF > "$SERVICE_FILE"

@@ -13,12 +13,9 @@ fi
 
 echo "Создать пользовательский systemd сервисный файл для пользователя '$USER'"
 
-sudo -u $USER bash <<EOF
-mkdir -p /home/$USER/.config/systemd/user
+mkdir -p "$(dirname "$SERVICE_FILE")"
 
-# Создание сервисного файла
-cat <<EOT > /home/$USER/.config/systemd/user/signer.service
-
+cat <<EOF > "$SERVICE_FILE"
 [Unit]
 Description=Signer Service
 After=graphical.target xvfb.service
@@ -33,8 +30,7 @@ RestartSec=5
 
 [Install]
 WantedBy=default.target
-
-EOT
+EOF
 
 # Установка правильных прав доступа к сервисному файлу
 chmod 644 /home/$USER/.config/systemd/user/signer.service
@@ -47,13 +43,11 @@ systemctl --user enable signer.service
 
 # Запуск сервиса немедленно
 systemctl --user start signer.service
-EOF
 
 echo "Пользовательский systemd сервис создан по пути $SERVICE_FILE"
 echo "Сервис был запущен и настроен на автозапуск при входе в систему."
-echo "Вы можете управлять сервисом с помощью следующих команд (от имени пользователя 'asus'):"
-echo "systemctl --user start signer.service"
-echo "systemctl --user stop signer.service"
-echo "systemctl --user restart signer.service"
-echo "systemctl --user status signer.service"
-echo "journalctl --user -u signer.service -f"
+echo "systemctl --user start signer"
+echo "systemctl --user stop signer"
+echo "systemctl --user restart signer"
+echo "systemctl --user status signer"
+echo "journalctl --user -u signer -f"

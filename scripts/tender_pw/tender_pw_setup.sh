@@ -17,18 +17,13 @@ if [ ! -d "$VENV_PATH" ]; then
 fi
 
 echo "Активиация виртуального окружения и установка зависимости Playwright..."
-sudo -u $USER bash <<EOF
 source "$VENV_PATH/bin/activate"
 playwright install --with-deps
-EOF
 
-echo "Создать пользовательский systemd сервисный файл для пользователя '$USER'"
 
-sudo -u $USER bash <<EOF
-mkdir -p /home/$USER/.config/systemd/user
+mkdir -p "$(dirname "$SERVICE_FILE")"
 
-cat <<EOT > /home/$USER/.config/systemd/user/tender_pw.service
-
+cat <<EOF > "$SERVICE_FILE"
 [Unit]
 Description=tender_pw Service
 After=graphical.target xvfb.service
@@ -43,8 +38,7 @@ RestartSec=5
 
 [Install]
 WantedBy=default.target
-
-EOT
+EOF
 
 chmod 644 /home/$USER/.config/systemd/user/tender_pw.service
 
@@ -60,9 +54,8 @@ EOF
 
 echo "Пользовательский systemd сервис создан по пути $SERVICE_FILE"
 echo "Сервис был запущен и настроен на автозапуск при входе в систему."
-echo "Вы можете управлять сервисом с помощью следующих команд (от имени пользователя '$USER'):"
-echo "systemctl --user start tender_pw.service"
-echo "systemctl --user stop tender_pw.service"
-echo "systemctl --user restart tender_pw.service"
-echo "systemctl --user status tender_pw.service"
-echo "journalctl --user -u tender_pw.service -f"
+echo "systemctl --user start tender_pw"
+echo "systemctl --user stop tender_pw"
+echo "systemctl --user restart tender_pw"
+echo "systemctl --user status tender_pw"
+echo "journalctl --user -u tender_pw -f"

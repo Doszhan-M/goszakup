@@ -68,4 +68,19 @@ services:
       - "6379:6379"    
     volumes:
       - gz_redis:/data      
-    
+
+  # test:
+  #   build: test/.
+  #   restart: always
+  #   env_file:
+  #     - env/signer1.env    
+  #   ports:
+  #     - 5800:5900
+  #     - 50051:50051
+  #     - 99:99
+  #   extra_hosts:
+  #     - "host.docker.internal:host-gateway"      
+  #   volumes:
+  #     - ./test/app:/app/
+  #     - /tmp/.X11-unix:/tmp/.X11-unix    
+      
