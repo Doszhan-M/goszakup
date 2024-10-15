@@ -59,8 +59,8 @@ echo "x11vnc настроен и запущен."
 
 # Инструкции для пользователя
 echo "Проверьте статус сервиса x11vnc с помощью команды:"
-echo "  systemctl --user status x11vnc.service"
-echo "  systemctl --user restart x11vnc.service"
+echo "  systemctl --user status x11vnc"
+echo "  systemctl --user restart x11vnc"
 
 echo "Если требуется, разрешите доступ через брандмауэр для порта 5900:"
 echo "  sudo ufw allow 5900/tcp"
