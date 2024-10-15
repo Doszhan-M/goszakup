@@ -29,6 +29,10 @@ elif settings.ENVIRONMENT == "SERVER_GNOME":
     xvfb_1 = settings.BASE_DIR + "/static/server_gnome/"
     xvfb_2 = settings.BASE_DIR + "/static/server_gnome_3/"
     pyautogui_images = xvfb_1
+elif settings.ENVIRONMENT == "SERVER":
+    xvfb_1 = settings.BASE_DIR + "/static/server_gnome_2/"
+    xvfb_2 = settings.BASE_DIR + "/static/server_gnome/"
+    pyautogui_images = xvfb_1
 
 
 class EdsManager:
