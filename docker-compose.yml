@@ -69,18 +69,22 @@ services:
     volumes:
       - gz_redis:/data      
 
-  # test:
-  #   build: test/.
-  #   restart: always
+  # nginx:
+  #   build:
+  #     context: ./nginx
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "13579:443"
+
+  # signer_d:
+  #   build: signer_d/.
   #   env_file:
-  #     - env/signer1.env    
+  #     - env/signerd.env    
   #   ports:
   #     - 5800:5900
   #     - 50051:50051
-  #     - 99:99
-  #   extra_hosts:
-  #     - "host.docker.internal:host-gateway"      
+  #     - 8443:8443
+  #   #   - 13579:13579
   #   volumes:
-  #     - ./test/app:/app/
-  #     - /tmp/.X11-unix:/tmp/.X11-unix    
-      
+  #     - ./signer_d/app:/app/
+    
