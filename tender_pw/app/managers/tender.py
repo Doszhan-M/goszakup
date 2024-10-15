@@ -29,6 +29,7 @@ class TenderManager:
         self.cancel_manager = TenderCancelManager(announce_number, auth_data)
         self.announce_number: str = announce_number
         self.result = {"success": True}
+        self.new_pages = []
         self.application_data: dict = auth_data.application_data.model_dump()
         self.announce_url = (
             f"https://v3bl.goszakup.gov.kz/ru/announce/index/{announce_number}"
@@ -83,13 +84,17 @@ class TenderManager:
             
             required_docs_urls = await self.get_required_docs_links()
             tasks = []
-            for url in required_docs_urls:
+            for i, url in enumerate(required_docs_urls):
+                if i > 0:
+                    await asyncio.sleep(1)
                 tasks.append(asyncio.create_task(self.process_document(url)))
             await asyncio.gather(*tasks)   
                      
             await self.next_page()
             await self.apply_application()
             await self.check_application_result()
+            for new_page in self.new_pages:
+                await new_page.close()
             return self.result
         except PlaywrightTimeoutError as e:
             await self.handle_timeout(e)
@@ -103,9 +108,10 @@ class TenderManager:
             new_page = await new_context.new_page()
             await self.generate_document(url, page=new_page)
             await self.sign_document(page=new_page)
-            await new_page.close()
         except SignatureFound:
             pass
+        finally:
+            self.new_pages.append(new_page)
     
     async def wait_until_the_start(self) -> None:
         await self.page.goto(self.announce_url, wait_until="domcontentloaded")
