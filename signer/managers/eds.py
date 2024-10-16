@@ -66,7 +66,6 @@ class EdsManager:
         return not lock
 
     def click_obj(self, btn_path: str, timeout=5) -> None:
-        print('settings.ENVIRONMENT: ', settings.ENVIRONMENT)
         start_time = time()
         button = None
         while not button and time() - start_time < timeout:
