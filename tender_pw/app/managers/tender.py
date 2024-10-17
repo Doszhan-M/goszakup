@@ -25,11 +25,9 @@ class TenderManager:
     def __init__(self, announce_number, auth_data) -> None:
         self.session = GoszakupAuth(auth_data)
         self.page: Page = None
-        self.storage = None
         self.cancel_manager = TenderCancelManager(announce_number, auth_data)
         self.announce_number: str = announce_number
         self.result = {"success": True}
-        self.new_pages = []
         self.application_data: dict = auth_data.application_data.model_dump()
         self.announce_url = (
             f"https://v3bl.goszakup.gov.kz/ru/announce/index/{announce_number}"
@@ -75,19 +73,12 @@ class TenderManager:
         try:
             if not self.page:
                 self.page = await self.session.get_auth_session()
-                self.storage = await self.page.context.storage_state()
             await self.wait_until_the_start()
             await self.tender_start()
             self.result["start_time"] = datetime.now()
             await self.fill_and_submit_application()
             await self.select_lots()
-            required_docs_urls = await self.get_required_docs_links()
-            # tasks = []
-            # for i, url in enumerate(required_docs_urls):
-            #     if i > 0:
-            #         await asyncio.sleep(1)
-            #     tasks.append(asyncio.create_task(self.process_document(url)))
-            # await asyncio.gather(*tasks)  
+            required_docs_urls = await self.get_required_docs_links() 
             for url in required_docs_urls:
                 try:
                     await self.generate_document(url)
@@ -97,25 +88,11 @@ class TenderManager:
             await self.next_page()
             await self.apply_application()
             await self.check_application_result()
-            for new_page in self.new_pages:
-                await new_page.close()
             return self.result
         except PlaywrightTimeoutError as e:
             await self.handle_timeout(e)
         except Exception:
             logger.exception("Unknown error")
-
-    async def process_document(self, url):
-        try:
-            browser = self.page.context.browser
-            new_context = await browser.new_context(storage_state=self.storage)
-            new_page = await new_context.new_page()
-            await self.generate_document(url, page=new_page)
-            await self.sign_document(page=new_page)
-        except SignatureFound:
-            pass
-        finally:
-            self.new_pages.append(new_page)
     
     async def wait_until_the_start(self) -> None:
         await self.page.goto(self.announce_url, wait_until="domcontentloaded")
