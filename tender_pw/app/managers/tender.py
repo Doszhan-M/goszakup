@@ -88,9 +88,12 @@ class TenderManager:
             #         await asyncio.sleep(1)
             #     tasks.append(asyncio.create_task(self.process_document(url)))
             # await asyncio.gather(*tasks)  
-            for url in required_docs_urls: 
-                await self.generate_document(url)
-                await self.sign_document()
+            for url in required_docs_urls:
+                try:
+                    await self.generate_document(url)
+                    await self.sign_document()
+                except SignatureFound:
+                    continue
             await self.next_page()
             await self.apply_application()
             await self.check_application_result()
