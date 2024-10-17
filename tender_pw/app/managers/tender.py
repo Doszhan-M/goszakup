@@ -90,7 +90,7 @@ class TenderManager:
             # await asyncio.gather(*tasks)  
             for url in required_docs_urls: 
                 await self.generate_document(url)
-                await self.sign_document(url)
+                await self.sign_document()
             await self.next_page()
             await self.apply_application()
             await self.check_application_result()
