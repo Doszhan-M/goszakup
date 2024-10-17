@@ -81,15 +81,16 @@ class TenderManager:
             self.result["start_time"] = datetime.now()
             await self.fill_and_submit_application()
             await self.select_lots()
-            
             required_docs_urls = await self.get_required_docs_links()
-            tasks = []
-            for i, url in enumerate(required_docs_urls):
-                if i > 0:
-                    await asyncio.sleep(1)
-                tasks.append(asyncio.create_task(self.process_document(url)))
-            await asyncio.gather(*tasks)   
-                     
+            # tasks = []
+            # for i, url in enumerate(required_docs_urls):
+            #     if i > 0:
+            #         await asyncio.sleep(1)
+            #     tasks.append(asyncio.create_task(self.process_document(url)))
+            # await asyncio.gather(*tasks)  
+            for url in required_docs_urls: 
+                await self.generate_document(url)
+                await self.sign_document(url)
             await self.next_page()
             await self.apply_application()
             await self.check_application_result()
