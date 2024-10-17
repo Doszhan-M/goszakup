@@ -260,6 +260,16 @@ class TenderManager:
                 await page.wait_for_timeout(1000)
 
     async def next_page(self) -> None:
+        while True:
+            try:
+                footer = await self.page.wait_for_selector(
+                    ".panel-footer a", timeout=5000
+                )
+                link = await footer.get_attribute("href")
+                await self.page.goto(link)
+                break
+            except PlaywrightTimeoutError:
+                pass
         next_button = await self.page.wait_for_selector("#next")
         await next_button.click()
 
