@@ -29,7 +29,3 @@ DEmOuSiGhAwtHENteThfORMATeInEynTEnT
 Doszhan89!
 
 Перевод за сервер 15 ноября
-
-
-13176388
-13176443
