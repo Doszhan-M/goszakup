@@ -45,5 +45,3 @@ The project is designed to participate in government procurement tenders. It aut
 ## [Installation](readme/install.md)
 
 ## [Procedure for participation in the tender](readme/tender.md)
-
-## [Pritunl on Debian 11](readme/pritunl.md)
