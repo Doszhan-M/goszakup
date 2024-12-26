@@ -1,6 +1,0 @@
-.dockerignore
-**/.idea
-**/__pycache__
-app/logs/**/*
-Dockerfile
-README.md

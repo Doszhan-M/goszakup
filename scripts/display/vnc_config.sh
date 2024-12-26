@@ -4,7 +4,7 @@
 set -e  # Прерывать скрипт при ошибке
 
 # Переменные
-VNC_PASSWORD="Doszhan89!"  # Пароль для VNC-доступа
+VNC_PASSWORD="YcEKM9U2AhRPvnZGoE0"  # Пароль для VNC-доступа
 VNC_PASSWORD_FILE="$HOME/.vnc/passwd"
 SERVICE_FILE="$HOME/.config/systemd/user/x11vnc.service"
 

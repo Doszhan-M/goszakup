@@ -45,4 +45,4 @@ sudo pritunl setup-key
 ```
 
 debian@195.49.210.241  
-pritunl_admin:AnewingSitHeigNIZaREstoNeisEAtIonJ  
+admin:AnewingSitHeigNIZaREAtIonJ  

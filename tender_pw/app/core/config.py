@@ -11,8 +11,8 @@ load_dotenv(f"{BASE_DIR.parent.parent}/env/tender.env")
 
 
 class Settings(BaseSettings):
-    OPENAPI_USER: str = "admin"
-    OPENAPI_PASS: str = "aCiOnIQuArdE"
+    OPENAPI_USER: str
+    OPENAPI_PASS: str
     HEADLESS_DRIVER: bool = False
     BASE_DIR: str = str(BASE_DIR)
     SIGNER_HOST: str = "127.0.0.1:50051"
